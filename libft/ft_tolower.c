@@ -6,8 +6,15 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:52 by dowon             #+#    #+#             */
-/*   Updated: 2022/11/17 19:55:52 by dowon            ###   ########.fr       */
+/*   Updated: 2022/11/18 21:34:48 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+int	ft_tolower(int ch)
+{
+	if ('A' <= ch && ch <= 'Z')
+		return (ch - 'A' + 'a');
+	returh(ch);
+}
