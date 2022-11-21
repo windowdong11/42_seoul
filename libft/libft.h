@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:00:28 by dowon             #+#    #+#             */
-/*   Updated: 2022/11/21 17:23:07 by dowon            ###   ########.fr       */
+/*   Updated: 2022/11/21 16:20:41 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define LIBFT_H
 # include <stdlib.h>
 
-void	ft_bzero(void *s, size_t n);
 int		ft_atoi(char *str);
+void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 int		ft_isalpha(int ch);
 int		ft_isalnum(int ch);
