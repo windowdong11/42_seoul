@@ -6,13 +6,13 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:01:58 by dowon             #+#    #+#             */
-/*   Updated: 2022/11/21 16:57:21 by dowon            ###   ########.fr       */
+/*   Updated: 2022/11/21 20:19:10 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	isascii(int ch)
+int	ft_isascii(int ch)
 {
 	return (0 <= ch && ch <= 127);
 }

@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:34 by dowon             #+#    #+#             */
-/*   Updated: 2022/11/18 22:05:07 by dowon            ###   ########.fr       */
+/*   Updated: 2022/11/21 21:29:54 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 char	*ft_strchr(const char *str, int ch)
 {
-	const char	*last_found;
-
-	last_found = NULL;
-	while (*str)
+	while (1)
 	{
 		if (*str == ch)
-			last_found = str;
+			return ((char *)str);
+		if (*str == '\0')
+			return (NULL);
 		str++;
 	}
-	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:01:37 by dowon             #+#    #+#             */
-/*   Updated: 2022/11/18 23:31:49 by dowon            ###   ########.fr       */
+/*   Updated: 2022/11/21 21:20:23 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,13 @@ int	ft_atoi(char *str)
 	while (('\t' <= *str && *str <= '\r') || *str == ' ')
 		str++;
 	sign = 1;
-	while (*str == '+' || *str == '-')
-		if (*str++ == '-')
-			sign *= -1;
+	if (*str == '-')
+	{
+		sign = -1;
+		str++;
+	}
+	else if (*str == '+')
+		str++;
 	number = 0;
 	while ('0' <= *str && *str <= '9')
 	{

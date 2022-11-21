@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:16 by dowon             #+#    #+#             */
-/*   Updated: 2022/11/21 16:57:47 by dowon            ###   ########.fr       */
+/*   Updated: 2022/11/21 21:33:19 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,11 @@ void	*ft_memchr(const void *p, int value, size_t num)
 {
 	const unsigned char	*ptr = (unsigned char *)p;
 
-	while (*ptr && *ptr != (unsigned char)value && num--)
+	while (num--)
+	{
+		if (*ptr == (unsigned char)value)
+			return ((void *)ptr);
 		ptr++;
-	return ((void *)ptr);
+	}
+	return (NULL);
 }
