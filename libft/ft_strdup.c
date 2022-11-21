@@ -6,8 +6,21 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:35 by dowon             #+#    #+#             */
-/*   Updated: 2022/11/17 19:55:22 by dowon            ###   ########.fr       */
+/*   Updated: 2022/11/21 16:29:00 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+char	*strdup(const char *s1)
+{
+	size_t	length;
+	char	*new_str;
+
+	length = ft_strlen(s1);
+	new_str = malloc(sizeof(char) * length);
+	if (!new_str)
+		return (NULL);
+	ft_strlcpy(new_str, s1, length);
+	return (new_str);
+}

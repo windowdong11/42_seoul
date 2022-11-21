@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:00:28 by dowon             #+#    #+#             */
-/*   Updated: 2022/11/18 21:16:46 by dowon            ###   ########.fr       */
+/*   Updated: 2022/11/21 16:20:41 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 int		ft_atoi(char *str);
 void	ft_bzero(void *s, size_t n);
+void	*ft_calloc(size_t count, size_t size);
 int		ft_isalpha(int ch);
 int		ft_isalnum(int ch);
 int		ft_isascii(int ch);
@@ -28,6 +29,7 @@ void	*ft_memmove(void *dest, const void *src, size_t cnt);
 void	*ft_memset(void *b, int c, size_t len);
 char	*ft_strchr(const char *str, int ch);
 int		ft_strcmp(char *s1, char *s2);
+char	*strdup(const char *s1);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlen(const char *str);
