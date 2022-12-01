@@ -6,8 +6,12 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:40 by dowon             #+#    #+#             */
-/*   Updated: 2022/11/17 19:55:24 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/01 21:56:56 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+char *ft_strjoin(char const *s1, char const *s2)
+{
+}

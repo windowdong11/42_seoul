@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:00:28 by dowon             #+#    #+#             */
-/*   Updated: 2022/11/21 20:18:51 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/01 21:04:48 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	*ft_memcpy(void *dest, const void *src, size_t cnt);
 void	*ft_memmove(void *dest, const void *src, size_t cnt);
 void	*ft_memchr(const void *p, int value, size_t num);
 void	*ft_memset(void *b, int c, size_t len);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strchr(const char *str, int ch);
 int		ft_strcmp(char *s1, char *s2);
 char	*strdup(const char *s1);
