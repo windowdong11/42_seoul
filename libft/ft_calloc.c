@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:01:54 by dowon             #+#    #+#             */
-/*   Updated: 2022/11/21 16:29:14 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/01 20:57:00 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,14 @@
 void	*ft_calloc(size_t count, size_t size)
 {
 	void	*original_ptr;
-	char	*moving_ptr;
-	size_t	cnt;
+	size_t	total_size;
 
-	original_ptr = malloc(count * size);
+	total_size = count * size;
+	if (total_size == 0 || total_size / count != size)
+		return (NULL);
+	original_ptr = malloc(total_size);
 	if (!original_ptr)
 		return (NULL);
-	moving_ptr = (char *)original_ptr;
-	while (size--)
-	{
-		cnt = count;
-		while (cnt--)
-			*moving_ptr++ = 0;
-	}
+	ft_memset(original_ptr, 0, total_size);
 	return (original_ptr);
 }
