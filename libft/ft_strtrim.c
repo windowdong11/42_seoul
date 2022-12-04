@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: wondong-gyu <wondong-gyu@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:49 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/01 23:15:56 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/03 16:35:59 by wondong-gyu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,11 @@ char const	*ft_strtrim_head(char const *s1, char const *set)
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	size_t		s1_remain_len;
 	char const	*s1_end_ptr;
 	char const	*set_ptr;
 	char		*ptr;
 
 	s1 = ft_strtrim_head(s1, set);
-	s1_remain_len = ft_strlen(s1);
 	s1_end_ptr = s1;
 	while (*s1_end_ptr)
 		s1_end_ptr++;
