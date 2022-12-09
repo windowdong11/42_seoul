@@ -6,13 +6,44 @@
 /*   By: wondong-gyu <wondong-gyu@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:49 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/03 16:35:59 by wondong-gyu      ###   ########.fr       */
+/*   Updated: 2022/12/08 20:18:48 by wondong-gyu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char const	*ft_strtrim_head(char const *s1, char const *set)
+size_t	ft_strlen(const char *str)
+{
+	size_t	len;
+
+	len = 0;
+	while (*str)
+	{
+		len++;
+		str++;
+	}
+	return (len);
+}
+
+static char	*ft_strndup(const char *src, size_t length)
+{
+	char	*ptr;
+	size_t	index;
+
+	ptr = (char *)malloc(sizeof(char) * (length + 1));
+	if (!ptr)
+		return (NULL);
+	index = 0;
+	while (index < length)
+	{
+		ptr[index] = src[index];
+		index++;
+	}
+	ptr[length] = '\0';
+	return (ptr);
+}
+
+char const	*ft_move_head(char const *s1, char const *set)
 {
 	char const	*set_ptr;
 
@@ -32,14 +63,9 @@ char	*ft_strtrim(char const *s1, char const *set)
 {
 	char const	*s1_end_ptr;
 	char const	*set_ptr;
-	char		*ptr;
 
-	s1 = ft_strtrim_head(s1, set);
-	s1_end_ptr = s1;
-	while (*s1_end_ptr)
-		s1_end_ptr++;
-	if (s1 != s1_end_ptr)
-		s1_end_ptr--;
+	s1 = ft_move_head(s1, set);
+	s1_end_ptr = s1 + ft_strlen(s1) - 1;
 	while (s1 < s1_end_ptr)
 	{
 		set_ptr = set;
@@ -49,8 +75,5 @@ char	*ft_strtrim(char const *s1, char const *set)
 			break ;
 		s1_end_ptr--;
 	}
-	ptr = (char *)malloc(sizeof(char) * (s1_end_ptr - s1 + 2));
-	if (ptr)
-		ft_strlcpy(ptr, s1, s1_end_ptr - s1 + 2);
-	return (ptr);
+	return (ft_strndup(s1, s1_end_ptr + 1 - s1));
 }
