@@ -6,8 +6,21 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:36 by dowon             #+#    #+#             */
-/*   Updated: 2022/11/17 19:55:23 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/09 17:02:20 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+void	ft_striteri(char *s, void (*f)(unsigned int, char*))
+{
+	unsigned int	idx;
+
+	idx = 0;
+	while (*s)
+	{
+		f(idx, s);
+		idx++;
+		s++;
+	}
+}

@@ -10,7 +10,7 @@ OBJECTS = $(SOURCES:.c=.o)
 all: $(NAME) clean
 
 %.o: %.c
-	$(CC) $(CFLAGS) $< -o $@ -I $(CURDIR)/libft.h
+	$(CC) $(CFLAGS) $< -o $@ -I $(CURDIR)
 
 $(NAME): $(OBJECTS)
 	ar cr $@ $(OBJECTS)

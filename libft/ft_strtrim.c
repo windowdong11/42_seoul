@@ -3,27 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wondong-gyu <wondong-gyu@student.42.fr>    +#+  +:+       +#+        */
+/*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:49 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/08 20:18:48 by wondong-gyu      ###   ########.fr       */
+/*   Updated: 2022/12/09 16:53:50 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-size_t	ft_strlen(const char *str)
-{
-	size_t	len;
-
-	len = 0;
-	while (*str)
-	{
-		len++;
-		str++;
-	}
-	return (len);
-}
 
 static char	*ft_strndup(const char *src, size_t length)
 {
@@ -43,7 +30,7 @@ static char	*ft_strndup(const char *src, size_t length)
 	return (ptr);
 }
 
-char const	*ft_move_head(char const *s1, char const *set)
+static char const	*ft_move_head(char const *s1, char const *set)
 {
 	char const	*set_ptr;
 
