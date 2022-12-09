@@ -6,11 +6,11 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:20 by dowon             #+#    #+#             */
-/*   Updated: 2022/11/21 16:59:04 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/09 23:11:54 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
 
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {

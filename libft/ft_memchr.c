@@ -6,11 +6,11 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:16 by dowon             #+#    #+#             */
-/*   Updated: 2022/11/21 21:33:19 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/09 23:11:08 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
 
 void	*ft_memchr(const void *p, int value, size_t num)
 {

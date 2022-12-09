@@ -6,11 +6,11 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:01 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/09 16:52:30 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/09 23:10:22 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
 
 static int	ft_intlen(int n)
 {

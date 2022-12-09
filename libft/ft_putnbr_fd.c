@@ -6,11 +6,10 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:29 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/09 17:51:25 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/09 23:12:39 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include <unistd.h>
 
 void	ft_putnbr_fd(int n, int fd)

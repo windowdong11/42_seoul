@@ -6,11 +6,11 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:21 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/01 20:52:08 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/09 23:11:59 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
 
 void	*ft_memset(void *b, int c, size_t len)
 {
