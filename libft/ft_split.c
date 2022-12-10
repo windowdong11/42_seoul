@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: wondong-gyu <wondong-gyu@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:32 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/09 16:54:29 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/10 11:08:12 by wondong-gyu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
 
 static size_t	ft_count_word(const char *str, char c)
 {

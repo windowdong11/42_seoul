@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: wondong-gyu <wondong-gyu@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:49 by dowon             #+#    #+#             */
-/*   Updated: 2022/11/30 02:53:23 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/10 11:17:42 by wondong-gyu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
 
 char	*ft_strrchr(const char *str, int ch)
 {

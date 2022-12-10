@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: wondong-gyu <wondong-gyu@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:36 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/09 17:02:20 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/10 11:43:55 by wondong-gyu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "libft.h"
 
 void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {

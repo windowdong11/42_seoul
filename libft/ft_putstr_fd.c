@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: wondong-gyu <wondong-gyu@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:31 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/09 23:12:45 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/10 11:13:35 by wondong-gyu      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include <unistd.h>
 
 void	ft_putstr_fd(char *s, int fd)
