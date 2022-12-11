@@ -6,11 +6,11 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:01:37 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/09 23:07:56 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/12 02:08:51 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_atoi(char *str)
+int	ft_atoi(const char *str)
 {
 	int	number;
 	int	sign;

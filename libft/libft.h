@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wondong-gyu <wondong-gyu@student.42.fr>    +#+  +:+       +#+        */
+/*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:00:28 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/10 11:58:37 by wondong-gyu      ###   ########.fr       */
+/*   Updated: 2022/12/12 02:09:41 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
-int		ft_atoi(char *str);
+int		ft_atoi(const char *str);
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 int		ft_isalpha(int ch);
@@ -42,7 +42,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlen(const char *str);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-int		ft_strncmp(char *s1, char *s2, unsigned int n);
+int		ft_strncmp(const char *s1, const char *s2, unsigned int n);
 char	*ft_strnstr(const char *str, const char *to_find, size_t len);
 char	**ft_split(char const *s, char c);
 char	*ft_strrchr(const char *str, int ch);

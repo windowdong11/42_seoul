@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:41 by dowon             #+#    #+#             */
-/*   Updated: 2022/11/21 20:15:07 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/12 02:09:21 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	size_t	dest_len;
 	size_t	src_len;
 
-	dest_len = ft_strlen(dst);
 	src_len = ft_strlen(src);
+	if (!dstsize)
+		return (src_len);
+	dest_len = ft_strlen(dst);
 	if (dstsize <= dest_len)
 		return (dstsize + src_len);
 	while (*dst)
