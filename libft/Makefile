@@ -6,7 +6,7 @@
 #    By: dowon <dowon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/12 02:10:08 by dowon             #+#    #+#              #
-#    Updated: 2022/12/12 02:10:09 by dowon            ###   ########.fr        #
+#    Updated: 2022/12/12 02:14:23 by dowon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,6 @@ OBJS = $(SRC_OBJS)
 endif
 
 all: $(NAME)
-	sleep 1
 
 bonus: $(NAME)
 	make _BONUS_=1 all
