@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 20:44:33 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/24 22:47:50 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/24 22:51:01 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ ssize_t	ft_putbase(unsigned long long num, const char *base, size_t base_len)
 	return (write(STDOUT_FILENO, arr + sizeof(unsigned int) * 8 - idx, idx));
 }
 
-ssize_t	ft_putbase_prefix(unsigned long long num, const char *base, size_t base_len,
-	const char *prefix)
+ssize_t	ft_putbase_prefix(unsigned long long num, const char *base,
+	size_t base_len, const char *prefix)
 {
 	const size_t	prefix_len = ft_strlen(prefix);
 	ssize_t			putbase_result;
