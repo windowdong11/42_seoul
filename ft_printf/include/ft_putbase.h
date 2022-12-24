@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_put.c                                           :+:      :+:    :+:   */
+/*   ft_putbase.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/24 14:18:55 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/24 20:45:29 by dowon            ###   ########.fr       */
+/*   Created: 2022/12/24 20:42:35 by dowon             #+#    #+#             */
+/*   Updated: 2022/12/24 20:44:24 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ft_put.h"
-#include "../include/ft_str.h"
+#ifndef FT_PUTBASE_H
+# define FT_PUTBASE_H
 
-ssize_t	ft_putchar(int c)
-{
-	return (write(STDOUT_FILENO, &c, 1));
-}
+# include <unistd.h>
 
-ssize_t	ft_putstr(const char *str)
-{
-	return (write(STDOUT_FILENO, str, ft_strlen(str)));
-}
+ssize_t	ft_putbase_unsigned(long long num, const char *base, size_t base_len);
+ssize_t	ft_putbase_prefix(int num, const char *base, size_t base_len,
+			const char *prefix);
+ssize_t	ft_putbase_signed(int num, const char *base, size_t base_len,
+			const char *prefix);
+
+#endif

@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 14:19:13 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/24 17:17:17 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/24 20:44:13 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,5 @@
 
 ssize_t	ft_putchar(int c);
 ssize_t	ft_putstr(const char *str);
-ssize_t	ft_putbase(int num, char *prefix, const char *base, size_t base_len);
 
 #endif

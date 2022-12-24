@@ -6,36 +6,37 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 18:36:33 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/24 17:33:56 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/24 20:43:49 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_printf.h"
 #include "../include/ft_put.h"
+#include "../include/ft_putbase.h"
 #include <stdarg.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 ssize_t	ft_format_handler(const char *format, va_list *args)
 {
-	const char	*base_hex_lower = "0123456789abcdef";
-	const char	*base_hex_upper = "0123456789ABCDEF";
-	const char	*base_dec = "0123456789";
+	const char	*hex_lower = "0123456789abcdef";
+	const char	*hex_upper = "0123456789ABCDEF";
+	const char	*dec = "0123456789";
 
 	if (*format == 'c')
 		return (ft_putchar(va_arg(*args, int)));
 	else if (*format == 's')
 		return (ft_putstr(va_arg(*args, char *)));
 	else if (*format == 'p')
-		return (ft_putbase(va_arg(*args, int), "0x", base_hex_lower, 16));
+		return (ft_putbase_prefix(va_arg(*args, int), hex_lower, 16, "0x"));
 	else if (*format == 'd' || *format == 'i')
-		return (ft_putbase(va_arg(*args, int), "", base_dec, 10));
+		return (ft_putbase_signed(va_arg(*args, int), dec, 10, "-"));
 	else if (*format == 'u')
-		return (ft_putbase(va_arg(*args, int), "", base_dec, 10));
+		return (ft_putbase_unsigned(va_arg(*args, int), dec, 10));
 	else if (*format == 'x')
-		return (ft_putbase(va_arg(*args, int), "", base_hex_lower, 16));
+		return (ft_putbase_unsigned(va_arg(*args, int), hex_lower, 16));
 	else if (*format == 'X')
-		return (ft_putbase(va_arg(*args, int), "", base_hex_upper, 16));
+		return (ft_putbase_unsigned(va_arg(*args, int), hex_upper, 16));
 	else if (*format == '%')
 		return (ft_putchar('%'));
 	return (0);
