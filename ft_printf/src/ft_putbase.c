@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 20:44:33 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/24 20:52:36 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/24 22:47:50 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,52 +14,41 @@
 #include "../include/ft_str.h"
 #include <limits.h>
 
-ssize_t	ft_putbase_unsigned(int num, const char *base, size_t base_len)
+ssize_t	ft_putbase(unsigned long long num, const char *base, size_t base_len)
 {
 	int		idx;
-	char	arr[sizeof(int) * 8];
+	char	arr[sizeof(unsigned int) * 8];
 
 	if (num == 0)
 		return (write(STDOUT_FILENO, base, 1));
-	idx = sizeof(int) * 8 - 1;
+	idx = 0;
 	while (num)
 	{
-		arr[idx] = base[num / base_len];
+		arr[sizeof(unsigned int) * 8 - 1 - idx] = base[num % base_len];
 		num /= base_len;
-		idx--;
+		idx++;
 	}
-	return (write(STDOUT_FILENO, arr + idx, sizeof(int) * 8 - idx));
+	return (write(STDOUT_FILENO, arr + sizeof(unsigned int) * 8 - idx, idx));
 }
 
-ssize_t	ft_putbase_prefix(int num, const char *base, size_t base_len,
+ssize_t	ft_putbase_prefix(unsigned long long num, const char *base, size_t base_len,
 	const char *prefix)
 {
 	const size_t	prefix_len = ft_strlen(prefix);
-	int				putbase_result;
+	ssize_t			putbase_result;
 
 	if (write(1, prefix, prefix_len) == -1)
 		return (-1);
-	putbase_result = ft_putbase_unsigned(num, base, base_len);
+	putbase_result = ft_putbase(num, base, base_len);
 	if (putbase_result == -1)
 		return (-1);
 	return (prefix_len + putbase_result);
 }
 
-ssize_t	ft_putbase_signed(int num, const char *base, size_t base_len,
+ssize_t	ft_putbase_signed(long long num, const char *base, size_t base_len,
 	const char *prefix)
 {
-	ssize_t	putbase_result;
-	ssize_t	lastnumber_result;
-
 	if (num >= 0)
-		return (ft_putbase_unsigned(num, base, base_len));
-	else if (num != INT_MIN)
-		return (ft_putbase_prefix(-num, base, base_len, prefix));
-	putbase_result = ft_putbase_prefix(-(num / 10), base, base_len, prefix);
-	if (putbase_result == -1)
-		return (-1);
-	lastnumber_result = write(1, base + -(INT_MIN % base_len), 1);
-	if (lastnumber_result == -1)
-		return (-1);
-	return (putbase_result + lastnumber_result);
+		return (ft_putbase(num, base, base_len));
+	return (ft_putbase_prefix(-num, base, base_len, prefix));
 }

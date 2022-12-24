@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 18:36:33 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/24 20:43:49 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/24 22:49:19 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,15 @@ ssize_t	ft_format_handler(const char *format, va_list *args)
 	else if (*format == 's')
 		return (ft_putstr(va_arg(*args, char *)));
 	else if (*format == 'p')
-		return (ft_putbase_prefix(va_arg(*args, int), hex_lower, 16, "0x"));
+		return (ft_putbase_prefix(va_arg(*args, size_t), hex_lower, 16, "0x"));
 	else if (*format == 'd' || *format == 'i')
 		return (ft_putbase_signed(va_arg(*args, int), dec, 10, "-"));
 	else if (*format == 'u')
-		return (ft_putbase_unsigned(va_arg(*args, int), dec, 10));
+		return (ft_putbase(va_arg(*args, unsigned int), dec, 10));
 	else if (*format == 'x')
-		return (ft_putbase_unsigned(va_arg(*args, int), hex_lower, 16));
+		return (ft_putbase(va_arg(*args, unsigned int), hex_lower, 16));
 	else if (*format == 'X')
-		return (ft_putbase_unsigned(va_arg(*args, int), hex_upper, 16));
+		return (ft_putbase(va_arg(*args, unsigned int), hex_upper, 16));
 	else if (*format == '%')
 		return (ft_putchar('%'));
 	return (0);
