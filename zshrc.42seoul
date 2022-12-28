@@ -1,0 +1,43 @@
+# backup/restore to/from github
+function backup() {
+	echo "[Backup $1 files]"
+	rsync -av --exclude=".*" ~/Desktop/42/$1 ~/Desktop/42backup \
+		&& echo "> File copied"
+	(cd ~/Desktop/42backup \
+		&& git add . && git commit -m "backup $1" && git push \
+		&& echo "> File pushed to repos" || echo "File push failed")
+}
+
+function restore() {
+	(cd ~/Desktop/42backup && git pull \
+		&& echo "Files pulled" \
+		&& rsync -av --exclude=".*" ~/Desktop/42backup/$1 ~/Desktop/42/$1)
+}
+
+# 42 gcc norm francinette
+alias gccw='gcc -Wall -Werror -Wextra'
+alias norm='norminette'
+
+alias fr='francinette'
+alias frs='fr -s'
+
+alias francinette=/Users/dowon/francinette/tester.sh
+
+alias paco=/Users/dowon/francinette/tester.sh
+
+alias clearcache=`rm -rf ~/Library/Application\ Support/Code/User/workspaceStorage \
+rm -rf ~/Library/Application\ Support/Slack/Service\ Worker/CacheStorage \
+rm -rf ~/Library/Application\ Support/discord/Cache \
+rm -rf ~/Library/Application\ Support/Code/CachedData \
+rm -rf ~/Library/Developer/CoreSimulator`
+
+alias warn_resetlibrary='touch ~/.reset_library'
+alias warn_reset='touch ~/.reset'
+alias warn_resetall='warn_resetlibrary&warn_reset'
+
+alias set_workspace='git clone git@github.com:windowdong11/42_seoul.git ~/goinfre/workspace && ~/goinfre/workspace/vscode_unzip.sh'
+alias save_worksapce='~/goinfre/workspace/vscode_zip.sh && git push'
+
+alias normex="norminette -R CheckForbiddenSourceHeader"
+alias normchk="norminette -R CheckForbiddenSourceHeader | grep Error\! && echo 'Error' || echo 'ok'"
+alias gitpush="normex | grep Error\! && echo Norm_Error || git push"
