@@ -6,7 +6,7 @@
 #    By: dowon <dowon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/12 02:10:08 by dowon             #+#    #+#              #
-#    Updated: 2022/12/13 18:54:53 by dowon            ###   ########.fr        #
+#    Updated: 2022/12/23 18:10:30 by dowon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ bonus: $(NAME)
 	make _BONUS_=1 all
 
 %.o: %.c
-	$(CC) $(CFLAGS) $< -o $@ -I $(CURDIR)
+	$(CC) $(CFLAGS) $^ -o $@ -I $(CURDIR)
 
 $(NAME): $(OBJS)
 	ar cr $@ $^
