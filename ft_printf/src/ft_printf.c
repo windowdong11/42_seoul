@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 18:36:33 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/24 22:49:19 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/28 07:44:25 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdint.h>
 
 ssize_t	ft_format_handler(const char *format, va_list *args)
 {
@@ -28,7 +29,7 @@ ssize_t	ft_format_handler(const char *format, va_list *args)
 	else if (*format == 's')
 		return (ft_putstr(va_arg(*args, char *)));
 	else if (*format == 'p')
-		return (ft_putbase_prefix(va_arg(*args, size_t), hex_lower, 16, "0x"));
+		return (ft_putbase_ptr(va_arg(*args, void *), hex_lower, 16, "0x"));
 	else if (*format == 'd' || *format == 'i')
 		return (ft_putbase_signed(va_arg(*args, int), dec, 10, "-"));
 	else if (*format == 'u')
