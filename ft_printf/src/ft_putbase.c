@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 20:44:33 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/28 08:25:46 by dowon            ###   ########.fr       */
+/*   Updated: 2022/12/28 08:52:57 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,4 @@ ssize_t	ft_putbase_signed(long long num, const char *base, size_t base_len,
 	if (num >= 0)
 		return (ft_putbase(num, base, base_len));
 	return (ft_putbase_prefix(-num, base, base_len, prefix));
-}
-
-ssize_t	ft_putbase_ptr(void *ptr, const char *base, size_t base_len,
-	const char *prefix)
-{
-	if (ptr == NULL)
-		return (write(STDOUT_FILENO, "(nil)", 5));
-	return (ft_putbase_prefix((unsigned long long)ptr, base, base_len, prefix));
 }
