@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 18:36:33 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/28 10:38:53 by dowon            ###   ########.fr       */
+/*   Updated: 2023/01/11 04:45:47 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	ft_printf(const char *format, ...)
 		if (*format == '%')
 		{
 			result = ft_format_handler(format + 1, &args);
-			if (result != 0)
+			if (result >= 0)
 				format++;
 		}
 		else
