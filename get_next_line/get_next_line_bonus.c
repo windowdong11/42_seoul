@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 09:12:31 by dowon             #+#    #+#             */
-/*   Updated: 2023/02/07 21:55:09 by dowon            ###   ########.fr       */
+/*   Updated: 2023/02/07 21:57:17 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include "get_next_line_utils.h"
+#include "get_next_line_bonus.h"
+#include "get_next_line_utils_bonus.h"
 #include <fcntl.h>
 #include <stdlib.h>
 
