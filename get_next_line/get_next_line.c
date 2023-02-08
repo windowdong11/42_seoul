@@ -6,12 +6,11 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 09:12:31 by dowon             #+#    #+#             */
-/*   Updated: 2023/02/07 21:55:09 by dowon            ###   ########.fr       */
+/*   Updated: 2023/02/08 17:10:08 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "get_next_line_utils.h"
 #include <fcntl.h>
 #include <stdlib.h>
 
@@ -63,37 +62,29 @@ char	*free_gnl_fd(t_gnl_fd *gnl_fd)
 	return (NULL);
 }
 
-#include <stdio.h>
 char	*read_until_endl(t_gnl_fd *gnl_fd)
 {
 	char	*str;
 	size_t	total_length;
 	size_t	prev_len;
-	ssize_t	read_size;
 
 	str = NULL;
 	total_length = 0;
-	read_size = gnl_fd->len;
 	while (1)
 	{
 		if (gnl_fd->len == 0)
-			read_size = read(gnl_fd->fd, gnl_fd->buffer, BUFFER_SIZE);
-		if (read_size == -1)
+			gnl_fd->len = read(gnl_fd->fd, gnl_fd->buffer, BUFFER_SIZE);
+		if ((ssize_t)gnl_fd->len == -1)
 		{
 			free(str);
 			return (NULL);
 		}
-		gnl_fd->len = (size_t)read_size;
-		if (read_size == 0)
-		{
-			if (total_length == 0)
-				return (NULL);
+		if (gnl_fd->len == 0)
 			return (gnl_strcat(str, gnl_fd, total_length));
-		}
 		prev_len = gnl_fd->len;
 		str = gnl_strcat(str, gnl_fd, total_length);
 		total_length += prev_len - gnl_fd->len;
-		if (str[total_length - 1] == '\n')	
+		if (str[total_length - 1] == '\n')
 			break ;
 	}
 	return (str);

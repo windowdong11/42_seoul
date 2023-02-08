@@ -6,11 +6,11 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 09:13:20 by dowon             #+#    #+#             */
-/*   Updated: 2023/02/07 21:57:28 by dowon            ###   ########.fr       */
+/*   Updated: 2023/02/08 17:09:41 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_utils_bonus.h"
+#include "get_next_line_utils.h"
 #include <stdlib.h>
 
 char	*gnl_strcat(char *src, t_gnl_fd *gnl_fd, size_t src_len)
@@ -19,6 +19,8 @@ char	*gnl_strcat(char *src, t_gnl_fd *gnl_fd, size_t src_len)
 	size_t	idx;
 	size_t	offset;
 
+	if (src_len == 0 && gnl_fd->len == 0)
+		return (NULL);
 	result = malloc(sizeof(char) * (gnl_fd->len + src_len + 1));
 	idx = -1;
 	while (++idx < src_len)
