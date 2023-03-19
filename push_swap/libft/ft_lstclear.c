@@ -1,19 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/13 23:13:53 by dowon             #+#    #+#             */
-/*   Updated: 2023/03/13 23:17:28 by dowon            ###   ########.fr       */
+/*   Created: 2022/11/17 19:02:06 by dowon             #+#    #+#             */
+/*   Updated: 2022/12/09 20:43:30 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#include "libft.h"
 
-void	handle_error(char *message, int exit_code);
-void	is_valid_args(int argc, char *argv[]);
+void	ft_lstclear(t_list **lst, void (*del)(void *))
+{
+	t_list	*cur_list;
 
-#endif
+	if (!*lst)
+		return ;
+	while (*lst)
+	{
+		cur_list = *lst;
+		*lst = cur_list->next;
+		del(cur_list->content);
+		free(cur_list);
+	}
+}

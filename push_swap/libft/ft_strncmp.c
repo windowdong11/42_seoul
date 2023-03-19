@@ -1,19 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/13 23:13:53 by dowon             #+#    #+#             */
-/*   Updated: 2023/03/13 23:17:28 by dowon            ###   ########.fr       */
+/*   Created: 2022/11/17 19:02:46 by dowon             #+#    #+#             */
+/*   Updated: 2022/12/15 19:21:29 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
-
-void	handle_error(char *message, int exit_code);
-void	is_valid_args(int argc, char *argv[]);
-
-#endif
+int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
+{
+	while (*s1 == *s2 && n)
+	{
+		if (*s1 == '\0')
+			return (0);
+		s1++;
+		s2++;
+		n--;
+	}
+	if (!n)
+		return (0);
+	return ((unsigned char)*s1 - (unsigned char)*s2);
+}

@@ -1,19 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/13 23:13:53 by dowon             #+#    #+#             */
-/*   Updated: 2023/03/13 23:17:28 by dowon            ###   ########.fr       */
+/*   Created: 2022/11/17 19:02:03 by dowon             #+#    #+#             */
+/*   Updated: 2022/12/09 20:10:25 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#include "libft.h"
 
-void	handle_error(char *message, int exit_code);
-void	is_valid_args(int argc, char *argv[]);
-
-#endif
+void	ft_lstadd_back(t_list **lst, t_list *new)
+{
+	if (!*lst)
+	{
+		*lst = new;
+		return ;
+	}
+	ft_lstlast(*lst)->next = new;
+}

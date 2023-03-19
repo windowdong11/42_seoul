@@ -1,19 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/13 23:13:53 by dowon             #+#    #+#             */
-/*   Updated: 2023/03/13 23:17:28 by dowon            ###   ########.fr       */
+/*   Created: 2022/11/17 19:01:58 by dowon             #+#    #+#             */
+/*   Updated: 2022/12/09 23:08:27 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
-
-void	handle_error(char *message, int exit_code);
-void	is_valid_args(int argc, char *argv[]);
-
-#endif
+int	ft_isascii(int ch)
+{
+	return (0 <= ch && ch <= 127);
+}

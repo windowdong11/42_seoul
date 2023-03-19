@@ -1,19 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/13 23:13:53 by dowon             #+#    #+#             */
-/*   Updated: 2023/03/13 23:17:28 by dowon            ###   ########.fr       */
+/*   Created: 2022/11/17 19:01:54 by dowon             #+#    #+#             */
+/*   Updated: 2022/12/12 02:10:48 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#include "libft.h"
 
-void	handle_error(char *message, int exit_code);
-void	is_valid_args(int argc, char *argv[]);
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*original_ptr;
+	size_t	total_size;
 
-#endif
+	total_size = count * size;
+	original_ptr = malloc(total_size);
+	if (!original_ptr)
+		return (NULL);
+	ft_memset(original_ptr, 0, total_size);
+	return (original_ptr);
+}

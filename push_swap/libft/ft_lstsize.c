@@ -1,19 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/13 23:13:53 by dowon             #+#    #+#             */
-/*   Updated: 2023/03/13 23:17:28 by dowon            ###   ########.fr       */
+/*   Created: 2022/11/17 19:02:15 by dowon             #+#    #+#             */
+/*   Updated: 2022/12/09 20:14:45 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#include "libft.h"
 
-void	handle_error(char *message, int exit_code);
-void	is_valid_args(int argc, char *argv[]);
+int	ft_lstsize(t_list *lst)
+{
+	int	size;
 
-#endif
+	size = 0;
+	if (!lst)
+		return (size);
+	while (lst)
+	{
+		lst = lst->next;
+		size++;
+	}
+	return (size);
+}

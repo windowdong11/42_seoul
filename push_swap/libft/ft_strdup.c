@@ -1,19 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/13 23:13:53 by dowon             #+#    #+#             */
-/*   Updated: 2023/03/13 23:17:28 by dowon            ###   ########.fr       */
+/*   Created: 2022/11/17 19:02:35 by dowon             #+#    #+#             */
+/*   Updated: 2022/12/12 02:11:04 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#include "libft.h"
 
-void	handle_error(char *message, int exit_code);
-void	is_valid_args(int argc, char *argv[]);
+char	*ft_strdup(const char *s1)
+{
+	size_t	length;
+	char	*new_str;
 
-#endif
+	length = ft_strlen(s1);
+	new_str = malloc(sizeof(char) * (length + 1));
+	if (!new_str)
+		return (NULL);
+	ft_strlcpy(new_str, s1, (length + 1));
+	return (new_str);
+}

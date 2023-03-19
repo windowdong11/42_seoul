@@ -1,19 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/13 23:13:53 by dowon             #+#    #+#             */
-/*   Updated: 2023/03/13 23:17:28 by dowon            ###   ########.fr       */
+/*   Created: 2022/11/17 19:02:45 by dowon             #+#    #+#             */
+/*   Updated: 2022/12/09 16:58:11 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#include "libft.h"
 
-void	handle_error(char *message, int exit_code);
-void	is_valid_args(int argc, char *argv[]);
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+{
+	char			*ptr;
+	size_t			str_len;
+	unsigned int	idx;
 
-#endif
+	str_len = ft_strlen(s);
+	ptr = (char *)malloc(sizeof(char) * (str_len + 1));
+	if (!ptr)
+		return (NULL);
+	idx = 0;
+	while (s[idx])
+	{
+		ptr[idx] = f(idx, s[idx]);
+		idx++;
+	}
+	ptr[idx] = '\0';
+	return (ptr);
+}

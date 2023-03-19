@@ -1,19 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/13 23:13:53 by dowon             #+#    #+#             */
-/*   Updated: 2023/03/13 23:17:28 by dowon            ###   ########.fr       */
+/*   Created: 2022/11/17 19:02:29 by dowon             #+#    #+#             */
+/*   Updated: 2022/12/12 02:10:58 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#include "libft.h"
 
-void	handle_error(char *message, int exit_code);
-void	is_valid_args(int argc, char *argv[]);
+void	ft_putnbr_fd(int n, int fd)
+{
+	char	num_str[11];
+	int		idx;
 
-#endif
+	idx = 0;
+	num_str[10] = '\0';
+	if (n < 0)
+	{
+		ft_putchar_fd('-', fd);
+		num_str[9 - idx++] = -(n % 10) + '0';
+		n = -(n / 10);
+	}
+	else if (n == 0)
+		num_str[9 - idx++] = '0';
+	while (n)
+	{
+		num_str[9 - idx++] = n % 10 + '0';
+		n /= 10;
+	}
+	ft_putstr_fd(num_str + (10 - idx), fd);
+}

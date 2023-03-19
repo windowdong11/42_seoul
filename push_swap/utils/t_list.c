@@ -6,31 +6,13 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 20:37:12 by dowon             #+#    #+#             */
-/*   Updated: 2023/02/11 22:39:05 by dowon            ###   ########.fr       */
+/*   Updated: 2023/02/27 12:23:42 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "stack_ab.h"
 #include <stdlib.h>
 
-t_list	*new_list(int value)
-{
-	t_list *const	new_node = malloc(sizeof(t_list));
-
-	new_node->next = NULL;
-	new_node->prev = NULL;
-	new_node->next = NULL;
-	new_node->prev = NULL;
-	new_node->value = value;
-	return (new_node);
-}
-
-t_list	*append_list(t_list *prev_node, t_list *cur_node)
-{
-	cur_node->prev = prev_node;
-	cur_node->next = prev_node->next;
-	if (prev_node->next != NULL)
-		prev_node->next->prev = cur_node;
-	prev_node->next = cur_node;
-	return (cur_node);
-}
+t_dbl_list	*new_t_dbl_list(void);
+t_deque		*new_t_deque(void);
+t_stack_ab	*new_t_stack_ab(t_deque *stack_a, t_deque *stack_b);

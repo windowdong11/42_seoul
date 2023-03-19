@@ -5,29 +5,35 @@
 #                                                     +:+ +:+         +:+      #
 #    By: dowon <dowon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/02/11 18:41:24 by dowon             #+#    #+#              #
-#    Updated: 2023/02/11 18:41:25 by dowon            ###   ########.fr        #
+#    Created: 2023/02/23 17:04:03 by dowon             #+#    #+#              #
+#    Updated: 2023/03/13 23:16:44 by dowon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -c
+CFLAGS = -Wall -Wextra -Werror
 
 NAME = push_swap
 
-SRC = main.c
-SRC_OBJS = $(SRC:.c=.o)
+SRC = main.c valid_args.c
+OBJS = $(SRC:.c=.o)
 
-all: $(NAME)
+SUBS = libft ft_printf
+ARCS = $(foreach d,$(SUBS),$(d)/$(d).a)
+
+all:
+	$(foreach d, $(SUBS), make -C $(d);)
+	make $(NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) $^ -o $@ -I $(CURDIR)
+	$(CC) $(CFLAGS) -c $^ -o $@
 
 $(NAME): $(OBJS)
-	ar cr $@ $^
+	$(CC) $(CFLAGS) $(OBJS) $(ARCS) -o $(NAME)
 
 clean:
-	rm -f $(SRC_OBJS) $(BONUS_OBJS)
+	$(foreach d, $(SUBS), make -C $(d) fclean;)
+	rm -f $(OBJS)
 
 fclean: clean
 	rm -f $(NAME)
