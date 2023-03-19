@@ -6,7 +6,7 @@
 #    By: dowon <dowon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/23 17:04:03 by dowon             #+#    #+#              #
-#    Updated: 2023/03/13 23:16:44 by dowon            ###   ########.fr        #
+#    Updated: 2023/03/19 12:57:22 by dowon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRC = main.c valid_args.c
 OBJS = $(SRC:.c=.o)
 
 SUBS = libft ft_printf
-ARCS = $(foreach d,$(SUBS),$(d)/$(d).a)
+ARCS = $(foreach d,$(SUBS),$(d)/$(d:ft_%=libft%).a)
 
 all:
 	$(foreach d, $(SUBS), make -C $(d);)
@@ -29,6 +29,7 @@ all:
 	$(CC) $(CFLAGS) -c $^ -o $@
 
 $(NAME): $(OBJS)
+	echo $(ARCS)
 	$(CC) $(CFLAGS) $(OBJS) $(ARCS) -o $(NAME)
 
 clean:

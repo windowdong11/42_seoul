@@ -6,12 +6,29 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 23:12:43 by dowon             #+#    #+#             */
-/*   Updated: 2023/03/13 23:17:55 by dowon            ###   ########.fr       */
+/*   Updated: 2023/03/19 13:29:23 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
 #include "push_swap.h"
+
+static int	is_int_str_equal(int str_int, char *str)
+{
+	const int	is_minus = str_int < 0;
+	const int	
+	int			idx;
+
+	idx = ft_strlen(str) - 1;
+	while (is_minus <= idx)
+	{
+		if (str[idx] != (str_int % 10) * (-1 + 2 * (str[0] != '-')) + '0')
+			return (0);
+		str_int /= 10;
+		idx--;
+	}
+	return (len > is_minus);
+}
 
 static int	is_proper_int(char *str)
 {
@@ -29,16 +46,7 @@ static int	is_proper_int(char *str)
 	}
 	if (len > 10 + is_op)
 		return (0);
-	str_int = ft_atoi(str);
-	idx = len - 1;
-	while (idx >= is_op)
-	{
-		if (str[idx] != (str_int % 10) * (-1 + 2 * (str[0] != '-')) + '0')
-			return (0);
-		str_int /= 10;
-		idx--;
-	}
-	return (len > is_op);
+	return (is_int_str_equal(ft_atoi(str), str));
 }
 
 // some arguments aren’t integers, some arguments are
