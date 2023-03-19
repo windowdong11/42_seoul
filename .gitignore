@@ -4,5 +4,4 @@
 *.out
 *.a
 *.o
-*main.c
 *.out.dSYM
