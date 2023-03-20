@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 19:24:22 by dowon             #+#    #+#             */
-/*   Updated: 2023/02/27 22:11:00 by dowon            ###   ########.fr       */
+/*   Updated: 2023/03/20 13:58:02 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,46 +40,79 @@ typedef struct s_dbl_list
 	struct s_dbl_list	*next;
 	struct s_dbl_list	*prev;
 	int					value;
-	void				(*append)();
-	void				(*remove)();
-	void				(*get_value)();
-	void				(*set_value)();
-}	t_dbl_list;
+	void				(*destructor)(struct s_dbl_list *this);
+	void				(*push_front)(struct s_dbl_list *this,
+						struct s_dbl_list *new_node);
+	void				(*push_back)(struct s_dbl_list *this,
+						struct s_dbl_list *new_node);
+	struct s_dbl_list	*(*pop_front)(struct s_dbl_list *this);
+	struct s_dbl_list	*(*pop_back)(struct s_dbl_list *this);
+	void				(*swap)(struct s_dbl_list *this,
+					struct s_dbl_list *node);
+}						t_dbl_list;
 
-typedef struct s_deque
+typedef struct s_stack
 {
-	struct s_dbl_list	*head;
-	struct s_dbl_list	*tail;
+	t_dbl_list			*top;
+	t_dbl_list			*bottom;
 	int					size;
-	void				(*push)();
-	int					(*pop)();
-	int					(*top)();
-	int					(*bottom)();
-	int					(*reverse)();
-	int					(*get_size)();
-}	t_deque;
+	void				(*destructor)(struct s_stack *this);
+	void				(*push)(struct s_stack *this, t_dbl_list *new_node);
+	t_dbl_list			*(*pop)(struct s_stack *this);
+	void				(*swap)(struct s_stack *this);
+	void				(*rotate)(struct s_stack *this);
+	void				(*rrotate)(struct s_stack *this);
+}						t_stack;
 
 typedef struct s_stack_ab
 {
-	t_deque	stack_a;
-	t_deque	stack_b;
-	void	(*sa)();
-	void	(*sb)();
-	void	(*ss)();
-	void	(*pa)();
-	void	(*pb)();
-	void	(*ra)();
-	void	(*rb)();
-	void	(*rr)();
-	void	(*rra)();
-	void	(*rrb)();
-	void	(*rrr)();
-	t_deque	(*get_stack_a)();
-	t_deque	(*get_stack_b)();
-}	t_stack_ab;
+	t_stack				*stack_a;
+	t_stack				*stack_b;
+	void				(*destructor)(struct s_stack_ab *this);
+	void				(*sa)(struct s_stack_ab *this);
+	void				(*sb)(struct s_stack_ab *this);
+	void				(*ss)(struct s_stack_ab *this);
+	void				(*pa)(struct s_stack_ab *this);
+	void				(*pb)(struct s_stack_ab *this);
+	void				(*ra)(struct s_stack_ab *this);
+	void				(*rb)(struct s_stack_ab *this);
+	void				(*rr)(struct s_stack_ab *this);
+	void				(*rra)(struct s_stack_ab *this);
+	void				(*rrb)(struct s_stack_ab *this);
+	void				(*rrr)(struct s_stack_ab *this);
+}						t_stack_ab;
 
-t_dbl_list	*new_t_dbl_list(void);
-t_deque		*new_t_deque(void);
-t_stack_ab	*new_t_stack_ab(t_deque *stack_a, t_deque *stack_b);
+t_dbl_list				*new_t_dbl_list(int value);
+t_stack					*new_t_stack(void);
+t_stack_ab				*new_t_stack_ab(t_stack *stack_a, t_stack *stack_b);
 
+void					delete_t_dbl_list(t_dbl_list *this);
+void					delete_t_stack(t_stack *this);
+void					delete_t_stack_ab(t_stack_ab *this);
+
+void					t_dbl_list_push_front(t_dbl_list *this,
+							t_dbl_list *new_node);
+void					t_dbl_list_push_back(t_dbl_list *this,
+							t_dbl_list *new_node);
+t_dbl_list				*t_dbl_list_pop_front(t_dbl_list *this);
+t_dbl_list				*t_dbl_list_pop_back(t_dbl_list *this);
+void					t_dbl_list_swap(t_dbl_list *this, t_dbl_list *node);
+
+void					t_stack_push(t_stack *this, t_dbl_list *new_node);
+t_dbl_list				*t_stack_pop(t_stack *this);
+void					t_stack_swap(t_stack *this);
+void					t_stack_rotate(t_stack *this);
+void					t_stack_rrotate(t_stack *this);
+
+void					sa(t_stack_ab *this);
+void					sb(t_stack_ab *this);
+void					ss(t_stack_ab *this);
+void					pa(t_stack_ab *this);
+void					pb(t_stack_ab *this);
+void					ra(t_stack_ab *this);
+void					rb(t_stack_ab *this);
+void					rr(t_stack_ab *this);
+void					rra(t_stack_ab *this);
+void					rrb(t_stack_ab *this);
+void					rrr(t_stack_ab *this);
 #endif

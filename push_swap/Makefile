@@ -6,7 +6,7 @@
 #    By: dowon <dowon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/23 17:04:03 by dowon             #+#    #+#              #
-#    Updated: 2023/03/19 12:57:22 by dowon            ###   ########.fr        #
+#    Updated: 2023/03/20 13:10:11 by dowon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 NAME = push_swap
 
-SRC = main.c valid_args.c
+SRC = main.c parse_args.c utils/*
 OBJS = $(SRC:.c=.o)
 
 SUBS = libft ft_printf
@@ -29,7 +29,6 @@ all:
 	$(CC) $(CFLAGS) -c $^ -o $@
 
 $(NAME): $(OBJS)
-	echo $(ARCS)
 	$(CC) $(CFLAGS) $(OBJS) $(ARCS) -o $(NAME)
 
 clean:
