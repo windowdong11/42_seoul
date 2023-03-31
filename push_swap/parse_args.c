@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 23:12:43 by dowon             #+#    #+#             */
-/*   Updated: 2023/03/20 14:33:48 by dowon            ###   ########.fr       */
+/*   Updated: 2023/03/23 09:50:06 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ static int	parse_int(char *str, int *result)
 // bigger than an integer and/or there are duplicates
 t_stack	*parse_args(int argc, char *argv[])
 {
-	int	idx;
-	int	num;
-	t_stack *stack_a = new_t_stack();
+	int				idx;
+	int				num;
+	t_stack*const	stack_a = new_t_stack();
 
 	if (argc < 2)
 		handle_error("Error\n", 0);

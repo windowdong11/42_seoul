@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 17:14:56 by dowon             #+#    #+#             */
-/*   Updated: 2023/03/20 14:36:49 by dowon            ###   ########.fr       */
+/*   Updated: 2023/03/31 11:42:34 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,32 @@ void	handle_error(char *message, int exit_code)
 	exit(exit_code);
 }
 
+void merge_sort(t_stack_ab* st)
+{
+	const int	total_size = st->stack_a->size;
+	int			idx;
+
+	idx = 0;
+	while (idx < total_size / 3)
+	{
+		st->pb(st);
+		st->rb(st);
+	}
+	idx = 0;
+	while (idx < total_size / 3)
+		st->pb(st);
+	idx = 0;
+	while (idx < total_size - total_size / 3 * 2)
+		st->ra(st);
+}
+
 int	main(int argc, char *argv[])
 {
 	t_stack_ab	*stack_ab;
 
 	ft_printf("TODO : print error message to stderr\n");
 	stack_ab = new_t_stack_ab(parse_args(argc, argv), new_t_stack());
+	merge_sort(stack_ab);
 	stack_ab->destructor(stack_ab);
 	return (0);
 }
