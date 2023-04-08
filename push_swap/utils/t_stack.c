@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 20:31:59 by dowon             #+#    #+#             */
-/*   Updated: 2023/03/20 14:30:54 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/08 06:45:29 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,25 @@ void	t_stack_push(t_stack *this, t_dbl_list *new_node)
 	}
 	else
 	{
-		this->top->push_front(this->top, new_node);
+		this->top->push_prev(this->top, new_node);
 		this->top = new_node;
+	}
+	this->size++;
+}
+
+void	t_stack_push_back(t_stack *this, t_dbl_list *new_node)
+{
+	if (new_node == NULL)
+		return ;
+	if (this->size == 0)
+	{
+		this->top = new_node;
+		this->bottom = new_node;
+	}
+	else
+	{
+		this->bottom->push_next(this->bottom, new_node);
+		this->bottom = new_node;
 	}
 	this->size++;
 }
@@ -48,7 +65,7 @@ t_dbl_list*		t_stack_pop(t_stack *this)
 	else
 	{
 		this->top = this->top->next;
-		node = this->top->pop_front(this->top->next);
+		node = this->top->pop_prev(this->top);
 	}
 	this->size--;
 	return (node);
@@ -84,8 +101,8 @@ void	t_stack_rotate(t_stack *this)
 	else
 	{
 		this->top = this->top->next;
-		node = this->top->pop_front(this->top);
-		this->bottom->push_back(this->bottom, node);
+		node = this->top->pop_prev(this->top);
+		this->bottom->push_next(this->bottom, node);
 		this->bottom = node;
 	}
 }
@@ -101,8 +118,8 @@ void	t_stack_rrotate(t_stack *this)
 	else
 	{
 		this->bottom = this->bottom->prev;
-		node = this->bottom->pop_back(this->bottom);
-		this->top->push_front(this->top, node);
+		node = this->bottom->pop_next(this->bottom);
+		this->top->push_prev(this->top, node);
 		this->top = node;
 	}
 }

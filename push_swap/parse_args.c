@@ -6,11 +6,12 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 23:12:43 by dowon             #+#    #+#             */
-/*   Updated: 2023/03/23 09:50:06 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/08 07:04:14 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
+#include "ft_printf/include/ft_printf.h"
 #include "push_swap.h"
 
 static int	is_int_str_equal(int num, char *num_str)
@@ -74,18 +75,34 @@ t_stack	*parse_args(int argc, char *argv[])
 	int				idx;
 	int				num;
 	t_stack*const	stack_a = new_t_stack();
+	char			**split;
+	size_t			word_idx;
 
 	if (argc < 2)
 		handle_error("Error\n", 0);
 	idx = 1;
 	while (idx < argc)
 	{
-		if (parse_int(argv[idx], &num))
+		split = ft_split(argv[idx], ' ');
+		if (split == NULL)
 		{
 			stack_a->destructor(stack_a);
-			handle_error("Error\n", 0);
+			handle_error("sError\n", 0);
 		}
-		stack_a->push(stack_a, new_t_dbl_list(num));
+		word_idx = 0;
+		while (split[word_idx] != NULL)
+		{
+			ft_printf("split[%d] : %s\n", word_idx, split[word_idx]);
+			if (parse_int(split[word_idx], &num))
+			{
+				stack_a->destructor(stack_a);
+				handle_error("pError\n", 0);
+			}
+			stack_a->push_back(stack_a, new_t_dbl_list(num));
+			free(split[word_idx]);
+			word_idx++;
+		}
+		free(split);
 		idx++;
 	}
 	return (stack_a);

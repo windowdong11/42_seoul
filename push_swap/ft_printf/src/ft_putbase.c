@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 20:44:33 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/28 08:52:57 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/01 07:11:54 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ ssize_t	ft_putbase(unsigned long long num, const char *base, size_t base_len)
 ssize_t	ft_putbase_prefix(unsigned long long num, const char *base,
 	size_t base_len, const char *prefix)
 {
-	const size_t	prefix_len = ft_strlen(prefix);
+	const size_t	prefix_len = pf_strlen(prefix);
 	ssize_t			putbase_result;
 
 	if (write(1, prefix, prefix_len) == -1)

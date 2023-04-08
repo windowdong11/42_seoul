@@ -6,13 +6,13 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:29 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/12 02:10:58 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/01 07:13:54 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putnbr_fd(int n, int fd)
+ssize_t	ft_putnbr_fd(int n, int fd)
 {
 	char	num_str[11];
 	int		idx;
@@ -32,5 +32,5 @@ void	ft_putnbr_fd(int n, int fd)
 		num_str[9 - idx++] = n % 10 + '0';
 		n /= 10;
 	}
-	ft_putstr_fd(num_str + (10 - idx), fd);
+	return (ft_putstr_fd(num_str + (10 - idx), fd));
 }

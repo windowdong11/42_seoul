@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 14:18:55 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/24 22:44:07 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/01 07:11:57 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,5 @@ ssize_t	ft_putstr(const char *str)
 {
 	if (str == NULL)
 		return (write(STDOUT_FILENO, "(null)", 6));
-	return (write(STDOUT_FILENO, str, ft_strlen(str)));
+	return (write(STDOUT_FILENO, str, pf_strlen(str)));
 }

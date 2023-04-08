@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 15:42:11 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/24 21:20:41 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/01 07:12:18 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 
 # include <stdlib.h>
 
-size_t	ft_strlen(const char *s);
+size_t	pf_strlen(const char *s);
 
 #endif

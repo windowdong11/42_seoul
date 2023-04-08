@@ -11,10 +11,10 @@ t_dbl_list	*new_t_dbl_list(int value)
 	node->next = NULL;
 	node->prev = NULL;
 	node->value = value;
-	node->push_front = t_dbl_list_push_front;
-	node->push_back = t_dbl_list_push_back;
-	node->pop_front = t_dbl_list_pop_front;
-	node->pop_back = t_dbl_list_pop_back;
+	node->push_next = t_dbl_list_push_next;
+	node->push_prev = t_dbl_list_push_prev;
+	node->pop_prev = t_dbl_list_pop_prev;
+	node->pop_next = t_dbl_list_pop_next;
 	node->swap = t_dbl_list_swap;
 	return (node);
 }
@@ -31,6 +31,7 @@ t_stack		*new_t_stack(void)
 	stack->size = 0;
 	stack->pop = t_stack_pop;
 	stack->push = t_stack_push;
+	stack->push_back = t_stack_push_back;
 	stack->swap = t_stack_swap;
 	stack->rotate = t_stack_rotate;
 	stack->rrotate = t_stack_rrotate;

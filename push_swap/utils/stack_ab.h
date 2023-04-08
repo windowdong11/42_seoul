@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 19:24:22 by dowon             #+#    #+#             */
-/*   Updated: 2023/03/20 13:58:02 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/08 06:38:11 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ typedef struct s_dbl_list
 	struct s_dbl_list	*prev;
 	int					value;
 	void				(*destructor)(struct s_dbl_list *this);
-	void				(*push_front)(struct s_dbl_list *this,
+	void				(*push_next)(struct s_dbl_list *this,
 						struct s_dbl_list *new_node);
-	void				(*push_back)(struct s_dbl_list *this,
+	void				(*push_prev)(struct s_dbl_list *this,
 						struct s_dbl_list *new_node);
-	struct s_dbl_list	*(*pop_front)(struct s_dbl_list *this);
-	struct s_dbl_list	*(*pop_back)(struct s_dbl_list *this);
+	struct s_dbl_list	*(*pop_prev)(struct s_dbl_list *this);
+	struct s_dbl_list	*(*pop_next)(struct s_dbl_list *this);
 	void				(*swap)(struct s_dbl_list *this,
 					struct s_dbl_list *node);
 }						t_dbl_list;
@@ -58,6 +58,7 @@ typedef struct s_stack
 	int					size;
 	void				(*destructor)(struct s_stack *this);
 	void				(*push)(struct s_stack *this, t_dbl_list *new_node);
+	void				(*push_back)(struct s_stack *this, t_dbl_list *new_node);
 	t_dbl_list			*(*pop)(struct s_stack *this);
 	void				(*swap)(struct s_stack *this);
 	void				(*rotate)(struct s_stack *this);
@@ -82,6 +83,8 @@ typedef struct s_stack_ab
 	void				(*rrr)(struct s_stack_ab *this);
 }						t_stack_ab;
 
+void					visualize(t_stack *s);
+
 t_dbl_list				*new_t_dbl_list(int value);
 t_stack					*new_t_stack(void);
 t_stack_ab				*new_t_stack_ab(t_stack *stack_a, t_stack *stack_b);
@@ -90,15 +93,16 @@ void					delete_t_dbl_list(t_dbl_list *this);
 void					delete_t_stack(t_stack *this);
 void					delete_t_stack_ab(t_stack_ab *this);
 
-void					t_dbl_list_push_front(t_dbl_list *this,
+void					t_dbl_list_push_next(t_dbl_list *this,
 							t_dbl_list *new_node);
-void					t_dbl_list_push_back(t_dbl_list *this,
+void					t_dbl_list_push_prev(t_dbl_list *this,
 							t_dbl_list *new_node);
-t_dbl_list				*t_dbl_list_pop_front(t_dbl_list *this);
-t_dbl_list				*t_dbl_list_pop_back(t_dbl_list *this);
+t_dbl_list				*t_dbl_list_pop_prev(t_dbl_list *this);
+t_dbl_list				*t_dbl_list_pop_next(t_dbl_list *this);
 void					t_dbl_list_swap(t_dbl_list *this, t_dbl_list *node);
 
 void					t_stack_push(t_stack *this, t_dbl_list *new_node);
+void					t_stack_push_back(t_stack *this, t_dbl_list *new_node);
 t_dbl_list				*t_stack_pop(t_stack *this);
 void					t_stack_swap(t_stack *this);
 void					t_stack_rotate(t_stack *this);

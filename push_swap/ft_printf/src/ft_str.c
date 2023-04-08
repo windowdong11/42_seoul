@@ -6,13 +6,13 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 15:40:22 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/24 15:56:05 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/01 07:12:07 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_str.h"
 
-size_t	ft_strlen(const char *s)
+size_t	pf_strlen(const char *s)
 {
 	const char	*start = s;
 

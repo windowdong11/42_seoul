@@ -6,13 +6,14 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:00:28 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/23 16:35:44 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/01 07:12:52 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 # include <stdlib.h>
+# include <unistd.h>
 
 typedef struct s_list
 {
@@ -43,10 +44,10 @@ int		ft_memcmp(const void *p1, const void *p2, size_t num);
 void	*ft_memcpy(void *dest, const void *src, size_t cnt);
 void	*ft_memmove(void *dest, const void *src, size_t cnt);
 void	*ft_memset(void *b, int c, size_t len);
-void	ft_putchar_fd(char c, int fd);
-void	ft_putendl_fd(char *s, int fd);
-void	ft_putnbr_fd(int n, int fd);
-void	ft_putstr_fd(char *s, int fd);
+ssize_t	ft_putchar_fd(char c, int fd);
+ssize_t	ft_putendl_fd(char *s, int fd);
+ssize_t	ft_putnbr_fd(int n, int fd);
+ssize_t	ft_putstr_fd(char *s, int fd);
 char	**ft_split(char const *s, char c);
 char	*ft_strchr(const char *str, int ch);
 char	*ft_strdup(const char *s1);
