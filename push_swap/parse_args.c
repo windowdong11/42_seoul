@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 23:12:43 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/08 07:04:14 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/08 07:58:10 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ t_stack	*parse_args(int argc, char *argv[])
 		word_idx = 0;
 		while (split[word_idx] != NULL)
 		{
-			ft_printf("split[%d] : %s\n", word_idx, split[word_idx]);
 			if (parse_int(split[word_idx], &num))
 			{
 				stack_a->destructor(stack_a);

@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 17:14:56 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/08 07:04:44 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/08 07:56:43 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,11 +170,11 @@ int	main(int argc, char *argv[])
 	t_stack_ab	*stack_ab;
 
 	stack_ab = new_t_stack_ab(parse_args(argc, argv), new_t_stack());
-	visualize(stack_ab->stack_a);
-	visualize(stack_ab->stack_b);
+	// visualize(stack_ab->stack_a);
+	// visualize(stack_ab->stack_b);
 	merge_sort(stack_ab, stack_ab->stack_a->size);
-	visualize(stack_ab->stack_a);
-	visualize(stack_ab->stack_b);
+	// visualize(stack_ab->stack_a);
+	// visualize(stack_ab->stack_b);
 	stack_ab->destructor(stack_ab);
 	return (0);
 }
