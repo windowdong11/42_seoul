@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 20:37:12 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/07 08:13:34 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/08 22:54:51 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,10 @@ void	t_dbl_list_swap(t_dbl_list *this, t_dbl_list *node)
 		this->next = node_next;
 		node->prev = this_prev;
 		node->next = this;
+		if (node_next)
+			node_next->prev = this;
+		if (this_prev)
+			this_prev->next = node;
 		return ;
 	}
 	else if (this->prev == node)
@@ -84,6 +88,10 @@ void	t_dbl_list_swap(t_dbl_list *this, t_dbl_list *node)
 		this->prev = node_prev;
 		node->next = this_next;
 		node->prev = this;
+		if (this_next)
+			this_next->prev = node;
+		if (node_prev)
+			node_prev->next = this;
 		return ;
 	}
 	this->next = node_next;

@@ -25,5 +25,5 @@ void	visualize(t_stack* s)
 		node = node->next;
 		idx++;
 	}
-	ft_printf("\n");
+	ft_printf("[END]\n");
 }
