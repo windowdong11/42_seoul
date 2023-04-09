@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 17:14:56 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/10 05:30:36 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/10 05:45:38 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,14 @@ int ps_pow3(int n)
 	return (results[n]);
 }
 
-void merge_sort(t_stack_ab* st, const int total_size);
-
-void manual_sort3(t_stack_ab* st)
+void manual_sort3(t_stack_ab* st, int (*cmp)(int, int))
 {
-	if (st->stack_a->top->value < st->stack_a->top->next->value)
+	if (!cmp(st->stack_a->top->value, st->stack_a->top->next->value))
 		{
 			// 123
-			if (st->stack_a->top->next->value < st->stack_a->top->next->next->value)
+			if (!cmp(st->stack_a->top->next->value, st->stack_a->top->next->next->value))
 				return ;
-			if (st->stack_a->top->value < st->stack_a->top->next->next->value)
+			if (!cmp(st->stack_a->top->value, st->stack_a->top->next->next->value))
 			{
 				// 132
 				if (st->stack_a->size == 3)
@@ -85,13 +83,13 @@ void manual_sort3(t_stack_ab* st)
 		}
 		else
 		{
-			if (st->stack_a->top->value < st->stack_a->top->next->next->value)
+			if (!cmp(st->stack_a->top->value, st->stack_a->top->next->next->value))
 			{
 				// 2 1 3
 				ft_printf("sa\n");
 				st->sa(st);
 			}
-			else if (st->stack_a->top->next->value < st->stack_a->top->next->next->value)
+			else if (!cmp(st->stack_a->top->next->value, st->stack_a->top->next->next->value))
 			{
 				// 3 1 2
 				if (st->stack_a->size == 3)
@@ -257,7 +255,17 @@ int ps_nearpow3(int n)
 	return -1;
 }
 
-void merge_sort(t_stack_ab* st, const int total_size)
+int greater(int a, int b)
+{
+	return (a > b);
+}
+
+int smaller(int a, int b)
+{
+	return (a < b);
+}
+
+void merge_sort(t_stack_ab* st, const int total_size, int (*cmp)(int, int), int (*rcmp)(int, int))
 {
 	// const int	divided_size = ps_nearpow3(total_size);
 	const int	divided_size = total_size / 3;
@@ -270,7 +278,7 @@ void merge_sort(t_stack_ab* st, const int total_size)
 		return ;
 	else if (total_size == 2)
 	{
-		if (st->stack_a->top->value > st->stack_a->top->next->value)
+		if (cmp(st->stack_a->top->value, st->stack_a->top->next->value))
 		{
 			ft_printf("sa\n");
 			st->sa(st);
@@ -279,11 +287,11 @@ void merge_sort(t_stack_ab* st, const int total_size)
 	}
 	if (total_size == 3)
 	{
-		manual_sort3(st);
+		manual_sort3(st, cmp);
 		return;
 	}
 
-	merge_sort(st, sizes[1]);
+	merge_sort(st, sizes[1], cmp, rcmp);
 	idx = 0;
 	while (idx++ < sizes[1])
 	{
@@ -292,7 +300,7 @@ void merge_sort(t_stack_ab* st, const int total_size)
 	}
 	
 
-	merge_sort(st, sizes[0]);
+	merge_sort(st, sizes[0], cmp, rcmp);
 	idx = 0;
 	while (idx++ < sizes[0])
 	{
@@ -305,7 +313,7 @@ void merge_sort(t_stack_ab* st, const int total_size)
 		}
 	}
 
-	merge_sort(st, sizes[0]);
+	merge_sort(st, sizes[0], cmp, rcmp);
 	idx = 0;
 	while (idx++ < sizes[0])
 	{
@@ -323,7 +331,7 @@ int	main(int argc, char *argv[])
 
 	stack_ab = new_t_stack_ab(parse_args(argc, argv), new_t_stack());
 	// visualize_ab(stack_ab);
-	merge_sort(stack_ab, stack_ab->stack_a->size);
+	merge_sort(stack_ab, stack_ab->stack_a->size, greater, smaller);
 	stack_ab->destructor(stack_ab);
 	return (0);
 }
