@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 17:14:56 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/10 05:45:38 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/10 19:43:09 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,8 @@
 
 void visualize_ab(t_stack_ab *st)
 {
-	ft_printf("stack_a : ");
 	visualize(st->stack_a);
-	ft_printf("stack_b : ");
 	visualize(st->stack_b);
-}
-
-int ps_pow3(int n)
-{
-	static int results[20] = {1, };
-	if (results[n] == 0)
-		results[n] = 3 * ps_pow3(n - 1);
-	return (results[n]);
 }
 
 void manual_sort3(t_stack_ab* st, int (*cmp)(int, int))
@@ -45,18 +35,13 @@ void manual_sort3(t_stack_ab* st, int (*cmp)(int, int))
 				// 132
 				if (st->stack_a->size == 3)
 				{
-					ft_printf("rra\n");
 					st->rra(st);
-					ft_printf("sa\n");
 					st->sa(st);
 				}
 				else
 				{
-					ft_printf("ra\n");
 					st->ra(st);
-					ft_printf("sa\n");
 					st->sa(st);
-					ft_printf("rra\n");
 					st->rra(st);
 				}
 			}
@@ -65,18 +50,13 @@ void manual_sort3(t_stack_ab* st, int (*cmp)(int, int))
 				// 231
 				if (st->stack_a->size == 3)
 				{
-					ft_printf("rra\n");
 					st->rra(st);
 				}
 				else
 				{
-					ft_printf("ra\n");
 					st->ra(st);
-					ft_printf("sa\n");
 					st->sa(st);
-					ft_printf("rra\n");
 					st->rra(st);
-					ft_printf("sa\n");
 					st->sa(st);
 				}
 			}
@@ -86,7 +66,6 @@ void manual_sort3(t_stack_ab* st, int (*cmp)(int, int))
 			if (!cmp(st->stack_a->top->value, st->stack_a->top->next->next->value))
 			{
 				// 2 1 3
-				ft_printf("sa\n");
 				st->sa(st);
 			}
 			else if (!cmp(st->stack_a->top->next->value, st->stack_a->top->next->next->value))
@@ -94,18 +73,13 @@ void manual_sort3(t_stack_ab* st, int (*cmp)(int, int))
 				// 3 1 2
 				if (st->stack_a->size == 3)
 				{
-					ft_printf("ra\n");
 					st->ra(st);
 				}
 				else
 				{
-					ft_printf("sa\n");
 					st->sa(st);
-					ft_printf("ra\n");
 					st->ra(st);
-					ft_printf("sa\n");
 					st->sa(st);
-					ft_printf("rra\n");
 					st->rra(st);
 				}
 			}
@@ -114,22 +88,15 @@ void manual_sort3(t_stack_ab* st, int (*cmp)(int, int))
 				// 3 2 1
 				if (st->stack_a->size == 3)
 				{
-					ft_printf("ra\n");
 					st->ra(st);
-					ft_printf("sa\n");
 					st->sa(st);
 				}
 				else
 				{
-					ft_printf("sa\n");
 					st->sa(st);
-					ft_printf("ra\n");
 					st->ra(st);
-					ft_printf("sa\n");
 					st->sa(st);
-					ft_printf("rra\n");
 					st->rra(st);
-					ft_printf("sa\n");
 					st->sa(st);
 				}
 			}
@@ -145,25 +112,21 @@ void	handle_error(char *message, int exit_code)
 
 void merge_a_bottom(t_stack_ab *st)
 {
-	ft_printf("rra\n");
 	st->rra(st);
 }
 
 void merge_b_top(t_stack_ab *st)
 {
-	ft_printf("pa\n");
 	st->pa(st);
 }
 
 void merge_b_bottom(t_stack_ab *st)
 {
-	ft_printf("rrb\n");
 	st->rrb(st);
-	ft_printf("pa\n");
 	st->pa(st);
 }
 
-void merge_3way(t_stack_ab *st, int size_a_bottom, int size_b_top, int size_b_bottom)
+void merge_3way(t_stack_ab *st, int size_a_bottom, int size_b_top, int size_b_bottom, int (*cmp)(int, int))
 {
 	int total_size;
 	int a_bottom;
@@ -182,11 +145,11 @@ void merge_3way(t_stack_ab *st, int size_a_bottom, int size_b_top, int size_b_bo
 			b_bottom = st->stack_b->bottom->value;
 		if (size_a_bottom && size_b_bottom && size_b_top)
 		{
-			if (a_bottom > b_top && a_bottom > b_bottom)
+			if (cmp(a_bottom, b_top) && cmp(a_bottom, b_bottom))
 				merge_position = 2;
 			else
 			{
-				if (b_top > b_bottom)
+				if (cmp(b_top, b_bottom))
 					merge_position = 3;
 				else
 					merge_position = 4;
@@ -194,21 +157,21 @@ void merge_3way(t_stack_ab *st, int size_a_bottom, int size_b_top, int size_b_bo
 		}
 		else if (size_a_bottom && size_b_bottom)
 		{
-			if (a_bottom > b_bottom)
+			if (cmp(a_bottom, b_bottom))
 				merge_position = 2;
 			else
 				merge_position = 4;
 		}
 		else if (size_a_bottom && size_b_top)
 		{
-			if (a_bottom > b_top)
+			if (cmp(a_bottom, b_top))
 				merge_position = 2;
 			else
 				merge_position = 3;
 		}
 		else if (size_b_bottom && size_b_top)
 		{
-			if (b_top > b_bottom)
+			if (cmp(b_top, b_bottom))
 				merge_position = 3;
 			else
 				merge_position = 4;
@@ -237,24 +200,6 @@ void merge_3way(t_stack_ab *st, int size_a_bottom, int size_b_top, int size_b_bo
 	}
 }
 
-int ps_nearpow3(int n)
-{
-	int i;
-
-	if (n <= 3)
-		return 1;
-	i = 0;
-	while (i < 20)
-	{
-		if (ps_pow3(i) == n)
-			return (ps_pow3(i - 1));
-		if (n / 2 < ps_pow3(i) && n / 3 < ps_pow3(i))
-			return (ps_pow3(i - 1));
-		i++;
-	}
-	return -1;
-}
-
 int greater(int a, int b)
 {
 	return (a > b);
@@ -267,11 +212,8 @@ int smaller(int a, int b)
 
 void merge_sort(t_stack_ab* st, const int total_size, int (*cmp)(int, int), int (*rcmp)(int, int))
 {
-	// const int	divided_size = ps_nearpow3(total_size);
 	const int	divided_size = total_size / 3;
-	// const int	sizes[] = {total_size - divided_size * 2, divided_size, divided_size};
 	const int	sizes[] = {divided_size, total_size - divided_size * 2};
-	// const int	sizes[] = {divided_size, divided_size, total_size - divided_size * 2};
 	int			idx;
 
 	if (total_size <= 1)
@@ -279,10 +221,7 @@ void merge_sort(t_stack_ab* st, const int total_size, int (*cmp)(int, int), int 
 	else if (total_size == 2)
 	{
 		if (cmp(st->stack_a->top->value, st->stack_a->top->next->value))
-		{
-			ft_printf("sa\n");
 			st->sa(st);
-		}
 		return ;
 	}
 	if (total_size == 3)
@@ -294,44 +233,46 @@ void merge_sort(t_stack_ab* st, const int total_size, int (*cmp)(int, int), int 
 	merge_sort(st, sizes[1], cmp, rcmp);
 	idx = 0;
 	while (idx++ < sizes[1])
-	{
-		ft_printf("pb\n");
 		st->pb(st);
-	}
-	
+
+	merge_sort(st, sizes[0], rcmp, cmp);
+	idx = 0;
+	while (idx++ < sizes[0])
+		st->pb(st);
 
 	merge_sort(st, sizes[0], cmp, rcmp);
 	idx = 0;
 	while (idx++ < sizes[0])
-	{
-		ft_printf("pb\n");
-		st->pb(st);
-		if (st->stack_b->size > 1)
-		{
-			ft_printf("rb\n");
-			st->rb(st);
-		}
-	}
+		st->rr(st);
 
-	merge_sort(st, sizes[0], cmp, rcmp);
-	idx = 0;
-	while (idx++ < sizes[0])
-	{
-		ft_printf("ra\n");
-		st->ra(st);
-	}
-
-	merge_3way(st, sizes[0], sizes[1], sizes[0]);
-	// visualize_ab(st);
+	merge_3way(st, sizes[0], sizes[1], sizes[0], cmp);
 }
 
 int	main(int argc, char *argv[])
 {
 	t_stack_ab	*stack_ab;
+	t_dbl_list	*cmd;
+	const char	*command[5] = {
+		"",
+		"s",
+		"r",
+		"rr",
+		"p"
+	};
+	const char	*command_postfix[3] = {
+		"r",
+		"a",
+		"b"
+	};
 
 	stack_ab = new_t_stack_ab(parse_args(argc, argv), new_t_stack());
-	// visualize_ab(stack_ab);
 	merge_sort(stack_ab, stack_ab->stack_a->size, greater, smaller);
+	cmd = stack_ab->command->bottom;
+	while (cmd)
+	{
+		print_command(cmd->value);
+		cmd = cmd->prev;
+	}
 	stack_ab->destructor(stack_ab);
 	return (0);
 }

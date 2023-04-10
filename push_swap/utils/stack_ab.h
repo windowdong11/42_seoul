@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 19:24:22 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/08 06:38:11 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/10 21:22:33 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,23 @@ rrb (reverse rotate b): Shift down all elements of stack b by 1.
 					The last element becomes the first one.
 rrr : rra and rrb at the same time.
 */
+
+typedef enum e_command
+{
+	SS = 10,
+	RR = 20,
+	RRR = 30,
+
+	SA = 11,
+	RA = 21,
+	RRA = 31,
+	PA = 41,
+
+	SB = 12,
+	RB = 22,
+	RRB = 32,
+	PB = 42,
+}	t_command;
 
 typedef struct s_dbl_list
 {
@@ -67,23 +84,28 @@ typedef struct s_stack
 
 typedef struct s_stack_ab
 {
+	t_stack				*command;
 	t_stack				*stack_a;
 	t_stack				*stack_b;
 	void				(*destructor)(struct s_stack_ab *this);
-	void				(*sa)(struct s_stack_ab *this);
-	void				(*sb)(struct s_stack_ab *this);
-	void				(*ss)(struct s_stack_ab *this);
-	void				(*pa)(struct s_stack_ab *this);
-	void				(*pb)(struct s_stack_ab *this);
-	void				(*ra)(struct s_stack_ab *this);
-	void				(*rb)(struct s_stack_ab *this);
-	void				(*rr)(struct s_stack_ab *this);
-	void				(*rra)(struct s_stack_ab *this);
-	void				(*rrb)(struct s_stack_ab *this);
-	void				(*rrr)(struct s_stack_ab *this);
+	void				(*sa)(struct s_stack_ab *this, int optimize);
+	void				(*sb)(struct s_stack_ab *this, int optimize);
+	void				(*ss)(struct s_stack_ab *this, int optimize);
+	void				(*pa)(struct s_stack_ab *this, int optimize);
+	void				(*pb)(struct s_stack_ab *this, int optimize);
+	void				(*ra)(struct s_stack_ab *this, int optimize);
+	void				(*rb)(struct s_stack_ab *this, int optimize);
+	void				(*rr)(struct s_stack_ab *this, int optimize);
+	void				(*rra)(struct s_stack_ab *this, int optimize);
+	void				(*rrb)(struct s_stack_ab *this, int optimize);
+	void				(*rrr)(struct s_stack_ab *this, int optimize);
 }						t_stack_ab;
 
 void					visualize(t_stack *s);
+int						is_a_command(t_command command);
+int						is_b_command(t_command command);
+void					print_command(t_command command);
+int						find_n_remove(t_stack_ab *this, t_command command, int view_history);
 
 t_dbl_list				*new_t_dbl_list(int value);
 t_stack					*new_t_stack(void);
