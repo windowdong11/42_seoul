@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 17:14:56 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/10 19:43:09 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/10 22:55:33 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ void manual_sort3(t_stack_ab* st, int (*cmp)(int, int))
 				// 132
 				if (st->stack_a->size == 3)
 				{
-					st->rra(st);
-					st->sa(st);
+					st->rra(st, 1);
+					st->sa(st, 1);
 				}
 				else
 				{
-					st->ra(st);
-					st->sa(st);
-					st->rra(st);
+					st->ra(st, 1);
+					st->sa(st, 1);
+					st->rra(st, 1);
 				}
 			}
 			else
@@ -50,14 +50,14 @@ void manual_sort3(t_stack_ab* st, int (*cmp)(int, int))
 				// 231
 				if (st->stack_a->size == 3)
 				{
-					st->rra(st);
+					st->rra(st, 1);
 				}
 				else
 				{
-					st->ra(st);
-					st->sa(st);
-					st->rra(st);
-					st->sa(st);
+					st->ra(st, 1);
+					st->sa(st, 1);
+					st->rra(st, 1);
+					st->sa(st, 1);
 				}
 			}
 		}
@@ -66,21 +66,21 @@ void manual_sort3(t_stack_ab* st, int (*cmp)(int, int))
 			if (!cmp(st->stack_a->top->value, st->stack_a->top->next->next->value))
 			{
 				// 2 1 3
-				st->sa(st);
+				st->sa(st, 1);
 			}
 			else if (!cmp(st->stack_a->top->next->value, st->stack_a->top->next->next->value))
 			{
 				// 3 1 2
 				if (st->stack_a->size == 3)
 				{
-					st->ra(st);
+					st->ra(st, 1);
 				}
 				else
 				{
-					st->sa(st);
-					st->ra(st);
-					st->sa(st);
-					st->rra(st);
+					st->sa(st, 1);
+					st->ra(st, 1);
+					st->sa(st, 1);
+					st->rra(st, 1);
 				}
 			}
 			else
@@ -88,16 +88,16 @@ void manual_sort3(t_stack_ab* st, int (*cmp)(int, int))
 				// 3 2 1
 				if (st->stack_a->size == 3)
 				{
-					st->ra(st);
-					st->sa(st);
+					st->ra(st, 1);
+					st->sa(st, 1);
 				}
 				else
 				{
-					st->sa(st);
-					st->ra(st);
-					st->sa(st);
-					st->rra(st);
-					st->sa(st);
+					st->sa(st, 1);
+					st->ra(st, 1);
+					st->sa(st, 1);
+					st->rra(st, 1);
+					st->sa(st, 1);
 				}
 			}
 		}
@@ -112,18 +112,18 @@ void	handle_error(char *message, int exit_code)
 
 void merge_a_bottom(t_stack_ab *st)
 {
-	st->rra(st);
+	st->rra(st, 1);
 }
 
 void merge_b_top(t_stack_ab *st)
 {
-	st->pa(st);
+	st->pa(st, 1);
 }
 
 void merge_b_bottom(t_stack_ab *st)
 {
-	st->rrb(st);
-	st->pa(st);
+	st->rrb(st, 1);
+	st->pa(st, 1);
 }
 
 void merge_3way(t_stack_ab *st, int size_a_bottom, int size_b_top, int size_b_bottom, int (*cmp)(int, int))
@@ -221,7 +221,7 @@ void merge_sort(t_stack_ab* st, const int total_size, int (*cmp)(int, int), int 
 	else if (total_size == 2)
 	{
 		if (cmp(st->stack_a->top->value, st->stack_a->top->next->value))
-			st->sa(st);
+			st->sa(st, 1);
 		return ;
 	}
 	if (total_size == 3)
@@ -230,20 +230,20 @@ void merge_sort(t_stack_ab* st, const int total_size, int (*cmp)(int, int), int 
 		return;
 	}
 
-	merge_sort(st, sizes[1], cmp, rcmp);
-	idx = 0;
-	while (idx++ < sizes[1])
-		st->pb(st);
-
 	merge_sort(st, sizes[0], rcmp, cmp);
 	idx = 0;
 	while (idx++ < sizes[0])
-		st->pb(st);
+		st->pb(st, 1);
 
 	merge_sort(st, sizes[0], cmp, rcmp);
 	idx = 0;
 	while (idx++ < sizes[0])
-		st->rr(st);
+		st->rr(st, 1);
+
+	merge_sort(st, sizes[1], cmp, rcmp);
+	idx = 0;
+	while (idx++ < sizes[1])
+		st->pb(st, 1);
 
 	merge_3way(st, sizes[0], sizes[1], sizes[0], cmp);
 }
@@ -252,18 +252,6 @@ int	main(int argc, char *argv[])
 {
 	t_stack_ab	*stack_ab;
 	t_dbl_list	*cmd;
-	const char	*command[5] = {
-		"",
-		"s",
-		"r",
-		"rr",
-		"p"
-	};
-	const char	*command_postfix[3] = {
-		"r",
-		"a",
-		"b"
-	};
 
 	stack_ab = new_t_stack_ab(parse_args(argc, argv), new_t_stack());
 	merge_sort(stack_ab, stack_ab->stack_a->size, greater, smaller);

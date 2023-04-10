@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 19:24:22 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/10 21:22:33 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/10 22:56:33 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ rrr : rra and rrb at the same time.
 
 typedef enum e_command
 {
+	NONE = 0,
 	SS = 10,
 	RR = 20,
 	RRR = 30,
@@ -130,15 +131,15 @@ void					t_stack_swap(t_stack *this);
 void					t_stack_rotate(t_stack *this);
 void					t_stack_rrotate(t_stack *this);
 
-void					sa(t_stack_ab *this);
-void					sb(t_stack_ab *this);
-void					ss(t_stack_ab *this);
-void					pa(t_stack_ab *this);
-void					pb(t_stack_ab *this);
-void					ra(t_stack_ab *this);
-void					rb(t_stack_ab *this);
-void					rr(t_stack_ab *this);
-void					rra(t_stack_ab *this);
-void					rrb(t_stack_ab *this);
-void					rrr(t_stack_ab *this);
+void					sa(t_stack_ab *this, int optimize);
+void					sb(t_stack_ab *this, int optimize);
+void					ss(t_stack_ab *this, int optimize);
+void					pa(t_stack_ab *this, int optimize);
+void					pb(t_stack_ab *this, int optimize);
+void					ra(t_stack_ab *this, int optimize);
+void					rb(t_stack_ab *this, int optimize);
+void					rr(t_stack_ab *this, int optimize);
+void					rra(t_stack_ab *this, int optimize);
+void					rrb(t_stack_ab *this, int optimize);
+void					rrr(t_stack_ab *this, int optimize);
 #endif

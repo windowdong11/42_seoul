@@ -65,7 +65,6 @@ t_stack_ab	*new_t_stack_ab(t_stack *stack_a, t_stack *stack_b)
 
 void print_command(t_command command)
 {
-	t_dbl_list	*cmd;
 	const char	*command_prefix[5] = {
 		"",
 		"s",
@@ -104,6 +103,14 @@ int	is_b_command(t_command command)
 
 int	find_n_remove(t_stack_ab *this, t_command command, int view_history)
 {
+	const t_command	rev_commands[5][3] = {
+		{ NONE, NONE, NONE },
+		{ SS, SA, SB },
+		{ RRR, RRA, RRB },
+		{ RR, RA, RB },
+		{ NONE, PB, PA }
+	};
+	const t_command rev_command = rev_commands[command / 10][command % 10];
 	t_dbl_list	*node;
 	t_dbl_list	*tmp;
 	int			(*is_command)(t_command);
@@ -115,26 +122,31 @@ int	find_n_remove(t_stack_ab *this, t_command command, int view_history)
 		is_command = is_b_command;
 	if (node != NULL)
 	{
-		if (node->value == command)
+		if ((t_command)node->value == rev_command)
 		{
 			this->command->pop(this->command);
 			return (1);
 		}
 		if (view_history == 0)
 			return (0);
-		while (node->next && !is_a_command(node->value))
+		// ft_printf("[debug] ");
+		// print_command(node->value);
+		while (node->next && !is_command(node->value))
 		{
-			print_command(node->next->value);
-			if (node->next->value == command)
+			// ft_printf("[debug] ");
+			// print_command(node->next->value);
+			if ((t_command)node->next->value == rev_command)
 			{
 				if (this->command->bottom == node->next)
 					this->command->bottom = node;
 				tmp = node->pop_next(node);
 				tmp->destructor(tmp);
+				// ft_printf("<remove>\n");
 				return (1);
 			}
 			node = node->next;
 		}
+		// ft_printf("<end>\n");
 	}
 	return (0);
 }
