@@ -65,7 +65,7 @@ void	adv_merge_3way(t_stack_ab *st, const int sizes[4],
 	int (*cmp)(int, int), int (*rcmp)(int, int), t_position dst)
 {
 	if (dst == A_TOP)
-		merge3_a_top(st, (int [4]){0, sizes[A_BOTTOM], sizes[B_TOP], sizes[B_BOTTOM]}, cmp);
+		merge_all_a_top(st, (int [4]){0, sizes[A_BOTTOM], sizes[B_TOP], sizes[B_BOTTOM]}, cmp);
 	else if (dst == A_BOTTOM)
 	{
 		merge_any2(st, get_merge_data((int[2]){sizes[A_BOTTOM], sizes[B_BOTTOM]}, (t_position[2]){A_BOTTOM, B_BOTTOM}, A_TOP, rcmp));

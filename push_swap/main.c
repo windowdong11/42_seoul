@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 17:14:56 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/13 14:52:43 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/13 15:03:52 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	merge_any2(t_stack_ab *st, t_merge_data meta)
 		meta.merge(st, meta.src[1]);
 }
 
-void	merge3_a_top(t_stack_ab *st, int sizes[4], int (*cmp)(int, int))
+void	merge_all_a_top(t_stack_ab *st, int sizes[4], int (*cmp)(int, int))
 {
 	int			total_size;
 	int			values[4];
@@ -141,25 +141,12 @@ void	merge3_a_top(t_stack_ab *st, int sizes[4], int (*cmp)(int, int))
 			merge_position = B_TOP;
 		else
 			merge_position = B_BOTTOM;
-		if (merge_position == A_BOTTOM)
-		{
-			merge_a_top(st, A_BOTTOM);
-			sizes[A_BOTTOM]--;
-		}
-		else if (merge_position == B_TOP)
-		{
-			merge_a_top(st, B_TOP);
-			sizes[B_TOP]--;
-		}
-		else if (merge_position == B_BOTTOM)
-		{
-			merge_a_top(st, B_BOTTOM);
-			sizes[B_BOTTOM]--;
-		}
+		merge_a_top(st, merge_position);
+		sizes[merge_position]--;
 	}
 }
 
-int	merge_sort_single(t_stack_ab* st, t_position dst)
+int	merge_sort_single(t_stack_ab *st, t_position dst)
 {
 	if (dst == A_BOTTOM)
 		st->ra(st, 1);

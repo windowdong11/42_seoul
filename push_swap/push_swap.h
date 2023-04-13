@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 23:13:53 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/13 14:52:57 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/13 14:57:52 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void			merge_any2(t_stack_ab *st, t_merge_data meta);
 
 int				merge_sort_double(t_stack_ab *st,
 					int (*cmp)(int, int), t_position dst);
-void			merge3_a_top(t_stack_ab *st, int sizes[4],
+void			merge_all_a_top(t_stack_ab *st, int sizes[4],
 					int (*cmp)(int, int));
 void			adv_merge_3way(t_stack_ab *st, const int sizes[4],
 					int (*cmp)(int, int), int (*rcmp)(int, int),
