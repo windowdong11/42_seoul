@@ -92,6 +92,7 @@ int	is_a_command(t_command command)
 		return (1);
 	return (0);
 }
+
 int	is_b_command(t_command command)
 {
 	if (command == PA)

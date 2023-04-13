@@ -2,7 +2,7 @@
 #include "../ft_printf/include/ft_printf.h"
 #include <stdlib.h>
 
-void	visualize(t_stack* s)
+static void	visualize(t_stack *s)
 {
 	t_dbl_list	*node;
 	long long	idx;
@@ -26,4 +26,13 @@ void	visualize(t_stack* s)
 		idx++;
 	}
 	ft_printf("[END]\n");
+}
+
+void	visualize_ab(t_stack_ab *st, const char *prefix, int d)
+{
+	ft_printf("(%d) %s", d, prefix);
+	ft_printf("stack_a: ");
+	visualize(st->stack_a);
+	ft_printf("stack_b: ");
+	visualize(st->stack_b);
 }

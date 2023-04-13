@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 19:24:22 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/10 23:43:02 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/13 12:59:18 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ typedef struct s_stack_ab
 	void				(*rrr)(struct s_stack_ab *this, int optimize);
 }						t_stack_ab;
 
-void					visualize(t_stack *s);
 int						is_a_command(t_command command);
 int						is_b_command(t_command command);
 void					print_command(t_command command);
@@ -150,4 +149,6 @@ void					rr(t_stack_ab *this, int optimize);
 void					rra(t_stack_ab *this, int optimize);
 void					rrb(t_stack_ab *this, int optimize);
 void					rrr(t_stack_ab *this, int optimize);
+
+void	visualize_ab(t_stack_ab *st, const char *prefix, int d);
 #endif

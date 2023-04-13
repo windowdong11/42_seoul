@@ -6,7 +6,7 @@
 #    By: dowon <dowon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/23 17:04:03 by dowon             #+#    #+#              #
-#    Updated: 2023/04/08 07:55:12 by dowon            ###   ########.fr        #
+#    Updated: 2023/04/13 13:49:33 by dowon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CFLAGS = -g -Wall -Wextra -Werror
 
 NAME = push_swap
 
-SRC = main.c parse_args.c utils/constructors.c utils/t_stack.c utils/t_stack_ab_reverse.c utils/destructors.c utils/t_list.c utils/t_stack_ab_push_swap.c utils/t_stack_ab_rotate.c utils/visualizer.c
+SRC = compare.c  main.c  manual_sort_a_bottom.c  manual_sort_a_top.c  manual_sort_b_bottom.c  manual_sort_b_top.c  merge.c  parse_args.c utils/constructors.c utils/t_stack.c utils/t_stack_ab_reverse.c utils/destructors.c utils/t_list.c utils/t_stack_ab_push_swap.c utils/t_stack_ab_rotate.c utils/visualizer.c
 OBJS = $(SRC:.c=.o)
 
 ARC_DIRS = libft ft_printf
