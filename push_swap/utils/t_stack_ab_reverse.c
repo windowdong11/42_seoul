@@ -2,10 +2,12 @@
 
 void	rra(t_stack_ab *this, int optimize)
 {
+	if (this->stack_a->size == 0)
+		return ;
 	this->stack_a->rrotate(this->stack_a);
 	if (optimize && find_n_remove(this, RRA, 1))
 		return ;
-	else if (optimize && this->command->top->value == RRB)
+	else if (optimize && this->command->top && this->command->top->value == RRB)
 	{
 		this->command->pop(this->command);
 		if (optimize && find_n_remove(this, RRR, 0))
@@ -18,10 +20,12 @@ void	rra(t_stack_ab *this, int optimize)
 
 void	rrb(t_stack_ab *this, int optimize)
 {
+	if (this->stack_b->size == 0)
+		return ;
 	this->stack_b->rrotate(this->stack_b);
 	if (optimize && find_n_remove(this, RRB, 1))
 		return ;
-	else if (optimize && this->command->top->value == RRA)
+	else if (optimize && this->command->top && this->command->top->value == RRA)
 	{
 		this->command->pop(this->command);
 		if (optimize && find_n_remove(this, RRR, 0))
@@ -34,6 +38,8 @@ void	rrb(t_stack_ab *this, int optimize)
 
 void	rrr(t_stack_ab *this, int optimize)
 {
+	if (this->stack_a->size == 0 && this->stack_b->size == 0)
+		return ;
 	this->rra(this, 0);
 	this->rrb(this, 0);
 	this->command->pop(this->command);

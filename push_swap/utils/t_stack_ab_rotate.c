@@ -2,6 +2,8 @@
 
 void	ra(t_stack_ab *this, int optimize)
 {
+	if (this->stack_a->size == 0)
+		return ;
 	this->stack_a->rotate(this->stack_a);
 	if (optimize && find_n_remove(this, RA, 1))
 		return ;
@@ -18,6 +20,8 @@ void	ra(t_stack_ab *this, int optimize)
 
 void	rb(t_stack_ab *this, int optimize)
 {
+	if (this->stack_b->size == 0)
+		return ;
 	this->stack_a->rotate(this->stack_b);
 	if (optimize && find_n_remove(this, RB, 1))
 		return ;
@@ -34,6 +38,8 @@ void	rb(t_stack_ab *this, int optimize)
 
 void	rr(t_stack_ab *this, int optimize)
 {
+	if (this->stack_a->size == 0 && this->stack_b->size == 0)
+		return ;
 	this->ra(this, 0);
 	this->rb(this, 0);
 	this->command->pop(this->command);

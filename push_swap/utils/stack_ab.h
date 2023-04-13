@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 19:24:22 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/10 22:56:33 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/10 23:43:02 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,14 @@ typedef enum e_command
 	RRB = 32,
 	PB = 42,
 }	t_command;
+
+typedef enum e_position
+{
+	A_TOP,
+	A_BOTTOM,
+	B_TOP,
+	B_BOTTOM,
+}	t_position;
 
 typedef struct s_dbl_list
 {

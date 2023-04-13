@@ -1,5 +1,4 @@
 #include "stack_ab.h"
-#include "../ft_printf/include/ft_printf.h"
 #include <stdlib.h>
 #include <stdio.h>
 

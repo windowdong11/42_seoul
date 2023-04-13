@@ -129,24 +129,18 @@ int	find_n_remove(t_stack_ab *this, t_command command, int view_history)
 		}
 		if (view_history == 0)
 			return (0);
-		// ft_printf("[debug] ");
-		// print_command(node->value);
 		while (node->next && !is_command(node->value))
 		{
-			// ft_printf("[debug] ");
-			// print_command(node->next->value);
 			if ((t_command)node->next->value == rev_command)
 			{
 				if (this->command->bottom == node->next)
 					this->command->bottom = node;
 				tmp = node->pop_next(node);
 				tmp->destructor(tmp);
-				// ft_printf("<remove>\n");
 				return (1);
 			}
 			node = node->next;
 		}
-		// ft_printf("<end>\n");
 	}
 	return (0);
 }
