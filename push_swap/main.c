@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 17:14:56 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/13 14:31:34 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/13 14:52:43 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,70 +18,33 @@
 #include <stdlib.h>
 
 // 1 1 2 -> 9 or 10
-void	manual_sort4(t_stack_ab *st, int (*cmp)(int, int))
-{
-	const t_dbl_list	*top = st->stack_a->top;
+// void	manual_sort4(t_stack_ab *st, int (*cmp)(int, int))
+// {
+// 	const t_dbl_list	*top = st->stack_a->top;
 
-	if (cmp(top->value, top->next->value)
-		&& cmp(top->value, top->next->next->value)
-		&& cmp(top->value, top->next->next->next->value))
-	{
-		st->pa(st, 1);
-		manual_sort_a_top(st, cmp);
-		st->pb(st, 1);
-	}
-	else if (cmp(top->next->next->next->value, top->value)
-		&& cmp(top->next->next->next->value, top->next->value)
-		&& cmp(top->next->next->next->value, top->next->next->value))
-	{
-		st->pa(st, 1);
-		manual_sort_a_top(st, cmp);
-		st->pb(st, 1);
-	}
-}
+// 	if (cmp(top->value, top->next->value)
+// 		&& cmp(top->value, top->next->next->value)
+// 		&& cmp(top->value, top->next->next->next->value))
+// 	{
+// 		st->pa(st, 1);
+// 		manual_sort_a_top(st, cmp);
+// 		st->pb(st, 1);
+// 	}
+// 	else if (cmp(top->next->next->next->value, top->value)
+// 		&& cmp(top->next->next->next->value, top->next->value)
+// 		&& cmp(top->next->next->next->value, top->next->next->value))
+// 	{
+// 		st->pa(st, 1);
+// 		manual_sort_a_top(st, cmp);
+// 		st->pb(st, 1);
+// 	}
+// }
 
 // ! Warning : stderr or stdout
 void	handle_error(char *message, int exit_code)
 {
 	ft_printf(message);
 	exit(exit_code);
-}
-
-int	is_sorted(t_stack_ab *st, int (*cmp)(int, int), int count)
-{
-	const t_dbl_list	*top = st->stack_a->top;
-	int					idx;
-
-	idx = 1;
-	while (idx < count)
-	{
-		if (!cmp(top->value, top->next->value))
-			return (0);
-		top = top->next;
-		idx++;
-	}
-	return (1);
-}
-
-t_merge_data	get_merge_data(int size[2], t_position src[2],
-	t_position dst, int (*cmp)(int, int))
-{
-	t_merge_data	meta;
-
-	meta.size[0] = size[0];
-	meta.size[1] = size[1];
-	meta.src[0] = src[0];
-	meta.src[1] = src[1];
-	meta.cmp = cmp;
-	if (dst == A_TOP)
-		meta.merge = merge_a_top;
-	else if (dst == A_BOTTOM)
-		meta.merge = merge_a_bottom;
-	else if (dst == B_TOP)
-		meta.merge = merge_b_top;
-	else if (dst == B_BOTTOM)
-		meta.merge = merge_b_bottom;
-	return (meta);
 }
 
 t_dbl_list	**get_position_ptr(t_stack_ab *st, t_position position)
@@ -126,27 +89,26 @@ void	merge_any2(t_stack_ab *st, t_merge_data meta)
 void	merge3_a_top(t_stack_ab *st, int sizes[4], int (*cmp)(int, int))
 {
 	int			total_size;
-	int			a_bottom;
-	int			b_top;
-	int			b_bottom;
+	int			values[4];
 	t_position	merge_position;
 
 	total_size = sizes[A_BOTTOM] + sizes[B_TOP] + sizes[B_BOTTOM];
 	while (total_size-- > 0)
 	{
 		if (sizes[A_BOTTOM])
-			a_bottom = st->stack_a->bottom->value;
+			values[A_BOTTOM] = st->stack_a->bottom->value;
 		if (sizes[B_TOP])
-			b_top = st->stack_b->top->value;
+			values[B_TOP] = st->stack_b->top->value;
 		if (sizes[B_BOTTOM])
-			b_bottom = st->stack_b->bottom->value;
+			values[B_BOTTOM] = st->stack_b->bottom->value;
 		if (sizes[A_BOTTOM] && sizes[B_BOTTOM] && sizes[B_TOP])
 		{
-			if (!(cmp(a_bottom, b_top) || cmp(a_bottom, b_bottom)))
+			if (!(cmp(values[A_BOTTOM], values[B_TOP])
+					|| cmp(values[A_BOTTOM], values[B_BOTTOM])))
 				merge_position = A_BOTTOM;
 			else
 			{
-				if (!cmp(b_top, b_bottom))
+				if (!cmp(values[B_TOP], values[B_BOTTOM]))
 					merge_position = B_TOP;
 				else
 					merge_position = B_BOTTOM;
@@ -154,21 +116,21 @@ void	merge3_a_top(t_stack_ab *st, int sizes[4], int (*cmp)(int, int))
 		}
 		else if (sizes[A_BOTTOM] && sizes[B_BOTTOM])
 		{
-			if (!cmp(a_bottom, b_bottom))
+			if (!cmp(values[A_BOTTOM], values[B_BOTTOM]))
 				merge_position = A_BOTTOM;
 			else
 				merge_position = B_BOTTOM;
 		}
 		else if (sizes[A_BOTTOM] && sizes[B_TOP])
 		{
-			if (!cmp(a_bottom, b_top))
+			if (!cmp(values[A_BOTTOM], values[B_TOP]))
 				merge_position = A_BOTTOM;
 			else
 				merge_position = B_TOP;
 		}
 		else if (sizes[B_BOTTOM] && sizes[B_TOP])
 		{
-			if (!cmp(b_top, b_bottom))
+			if (!cmp(values[B_TOP], values[B_BOTTOM]))
 				merge_position = B_TOP;
 			else
 				merge_position = B_BOTTOM;
@@ -197,48 +159,18 @@ void	merge3_a_top(t_stack_ab *st, int sizes[4], int (*cmp)(int, int))
 	}
 }
 
-int	handle_sorted(t_stack_ab *st, const int total_size, int (*cmp)(int, int),
-		int (*rcmp)(int, int), t_position dst)
+int	merge_sort_single(t_stack_ab* st, t_position dst)
 {
-	int	idx;
-
-	idx = 0;
-	if (dst == A_TOP && is_sorted(st, cmp, total_size))
-		return (1);
-	else if (dst == A_BOTTOM && is_sorted(st, rcmp, total_size))
-	{
-		while (idx++ < total_size)
-			st->ra(st, 1);
-		return (1);
-	}
-	else if (dst == B_TOP && is_sorted(st, rcmp, total_size))
-	{
-		while (idx++ < total_size)
-			st->pb(st, 1);
-		return (1);
-	}
+	if (dst == A_BOTTOM)
+		st->ra(st, 1);
+	else if (dst == B_TOP)
+		st->pb(st, 1);
 	else if (dst == B_BOTTOM)
 	{
-		if (is_sorted(st, cmp, total_size))
-		{
-			while (idx++ < total_size)
-				st->pb(st, 1);
-			idx = 0;
-			while (idx++ < total_size)
-				st->rb(st, 1);
-			return (1);
-		}
-		else if (is_sorted(st, rcmp, total_size))
-		{
-			while (idx++ < total_size)
-			{
-				st->pb(st, 1);
-				st->rb(st, 1);
-			}
-			return (1);
-		}
+		st->pb(st, 1);
+		st->rb(st, 1);
 	}
-	return (0);
+	return (1);
 }
 
 void	adv_merge_sort(t_stack_ab *st, const int total_size, int (*cmp)(int, int),
@@ -247,55 +179,10 @@ void	adv_merge_sort(t_stack_ab *st, const int total_size, int (*cmp)(int, int),
 	const int	sizes[4] = {0, total_size / 3,
 		total_size - total_size / 3 * 2, total_size / 3};
 
-	if (handle_sorted(st, total_size, cmp, rcmp, dst))
+	if (total_size <= 0 || handle_sorted(st, total_size, cmp, rcmp, dst)
+		|| (total_size == 1 && merge_sort_single(st, dst))
+		|| (total_size == 2 && merge_sort_double(st, cmp, dst)))
 		return ;
-	if (total_size <= 0)
-		return ;
-	if (total_size == 1)
-	{
-		if (dst == A_BOTTOM)
-			st->ra(st, 1);
-		else if (dst == B_TOP)
-			st->pb(st, 1);
-		else if (dst == B_BOTTOM)
-		{
-			st->pb(st, 1);
-			st->rb(st, 1);
-		}
-		return ;
-	}
-	else if (total_size == 2)
-	{
-		if (dst == A_TOP)
-		{
-			if (!cmp(st->stack_a->top->value, st->stack_a->top->next->value))
-				st->sa(st, 1);
-		}
-		else if (dst == A_BOTTOM)
-		{
-			if (cmp(st->stack_a->top->value, st->stack_a->top->next->value))
-				st->sa(st, 1);
-			st->ra(st, 1);
-			st->ra(st, 1);
-		}
-		else if (dst == B_TOP)
-		{
-			st->pb(st, 1);
-			st->pb(st, 1);
-			if (!cmp(st->stack_b->top->value, st->stack_b->top->next->value))
-				st->sb(st, 1);
-		}
-		else if (dst == B_BOTTOM)
-		{
-			st->pb(st, 1);
-			st->pb(st, 1);
-			if (cmp(st->stack_b->top->value, st->stack_b->top->next->value))
-				st->sb(st, 1);
-			st->rb(st, 1);
-			st->rb(st, 1);
-		}
-		return ;
-	}
 	else if (total_size == 3)
 	{
 		if (dst == A_TOP)
@@ -317,7 +204,6 @@ void	adv_merge_sort(t_stack_ab *st, const int total_size, int (*cmp)(int, int),
 				rcmp, cmp, A_BOTTOM);
 			adv_merge_3way(st, (int [4]){0, total_size - total_size / 2,
 				total_size / 2, 0}, cmp, rcmp, dst);
-			return ;
 		}
 		else if (dst == A_BOTTOM)
 		{
@@ -325,7 +211,6 @@ void	adv_merge_sort(t_stack_ab *st, const int total_size, int (*cmp)(int, int),
 			adv_merge_sort(st, total_size - total_size / 2, rcmp, cmp, A_TOP);
 			adv_merge_3way(st, (int [4]){total_size - total_size / 2,
 				0, total_size / 2, 0}, cmp, rcmp, dst);
-			return ;
 		}
 		else if (dst == B_TOP)
 		{
@@ -334,7 +219,6 @@ void	adv_merge_sort(t_stack_ab *st, const int total_size, int (*cmp)(int, int),
 			adv_merge_sort(st, total_size / 2, rcmp, cmp, A_TOP);
 			adv_merge_3way(st, (int [4]){total_size / 2, 0,
 				0, total_size - total_size / 2}, cmp, rcmp, dst);
-			return ;
 		}
 		else if (dst == B_BOTTOM)
 		{
@@ -342,8 +226,8 @@ void	adv_merge_sort(t_stack_ab *st, const int total_size, int (*cmp)(int, int),
 			adv_merge_sort(st, total_size / 2, rcmp, cmp, A_TOP);
 			adv_merge_3way(st, (int [4]){total_size / 2,
 				0, total_size - total_size / 2, 0}, cmp, rcmp, dst);
-			return ;
 		}
+		return ;
 	}
 	if (dst == A_TOP || dst == B_TOP)
 		adv_merge_sort(st, sizes[B_BOTTOM], rcmp, cmp, B_BOTTOM);
