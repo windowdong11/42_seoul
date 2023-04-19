@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 17:14:56 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/13 15:03:52 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/14 08:04:31 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// 1 1 2 -> 9 or 10
-// void	manual_sort4(t_stack_ab *st, int (*cmp)(int, int))
-// {
-// 	const t_dbl_list	*top = st->stack_a->top;
-
-// 	if (cmp(top->value, top->next->value)
-// 		&& cmp(top->value, top->next->next->value)
-// 		&& cmp(top->value, top->next->next->next->value))
-// 	{
-// 		st->pa(st, 1);
-// 		manual_sort_a_top(st, cmp);
-// 		st->pb(st, 1);
-// 	}
-// 	else if (cmp(top->next->next->next->value, top->value)
-// 		&& cmp(top->next->next->next->value, top->next->value)
-// 		&& cmp(top->next->next->next->value, top->next->next->value))
-// 	{
-// 		st->pa(st, 1);
-// 		manual_sort_a_top(st, cmp);
-// 		st->pb(st, 1);
-// 	}
-// }
-
-// ! Warning : stderr or stdout
 void	handle_error(char *message, int exit_code)
 {
 	ft_printf(message);
@@ -258,8 +234,3 @@ int	main(int argc, char *argv[])
 	stack_ab->destructor(stack_ab);
 	return (0);
 }
-
-/*
-a: 2 3 4
-b: 5 1
-*/
