@@ -1,6 +1,6 @@
 #include <unistd.h>
 #include "../ft_printf/include/ft_printf.h"
-#include "../libft/libft.h"
+#include "../common.h"
 #include <signal.h>
 
 void printBit(char bit)
@@ -44,12 +44,14 @@ void sendMessage(int pid, char *message)
 
 int main(int argc, char *argv[])
 {
+	t_connection_status status;
 	if (argc != 3)
 	{
 		ft_printf("Usage: ./client [server PID] [message]\n");
 		return (0);
 	}
 	ft_printf("Client PID: %d\n", getpid());
+	status = stat_wait
 	sendMessage(ft_atoi(argv[1]), argv[2]);
 	return (0);
 }

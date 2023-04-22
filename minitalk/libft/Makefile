@@ -6,7 +6,7 @@
 #    By: dowon <dowon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/12 02:10:08 by dowon             #+#    #+#              #
-#    Updated: 2022/12/23 18:10:30 by dowon            ###   ########.fr        #
+#    Updated: 2023/04/22 21:21:34 by dowon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,16 +21,9 @@ SRC_OBJS = $(SRC:.c=.o)
 BONUS = ft_lstadd_back.c ft_lstadd_front.c ft_lstclear.c ft_lstdelone.c ft_lstiter.c ft_lstlast.c ft_lstmap.c ft_lstnew.c ft_lstsize.c
 BONUS_OBJS = $(BONUS:.c=.o)
 
-ifdef _BONUS_
 OBJS = $(SRC_OBJS) $(BONUS_OBJS)
-else
-OBJS = $(SRC_OBJS)
-endif
 
 all: $(NAME)
-
-bonus: $(NAME)
-	make _BONUS_=1 all
 
 %.o: %.c
 	$(CC) $(CFLAGS) $^ -o $@ -I $(CURDIR)
@@ -46,4 +39,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: re clean fclean all bonus
+.PHONY: re clean fclean all
