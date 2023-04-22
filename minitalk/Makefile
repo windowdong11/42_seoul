@@ -15,7 +15,7 @@ FILES_CLIENT = client.c
 SRC_CLIENT = $(addprefix $(SRC_CLIENT_DIR), $(FILES_CLIENT))
 OBJ_CLIENT = $(SRC_CLIENT:.c=.o)
 
-ARC_DIRS = ft_printf
+ARC_DIRS = ft_printf libft
 ARCS = $(foreach d,$(ARC_DIRS),$(d)/$(d:ft_%=libft%).a)
 
 all:
