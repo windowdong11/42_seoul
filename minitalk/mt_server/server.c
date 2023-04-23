@@ -21,7 +21,17 @@ write
 #include <stdarg.h>
 #include <signal.h>
 
-t_connections	g_conn;
+t_server_info	g_conn;
+
+int	mt_kill(pid_t pid, int signo)
+{
+	ft_printf("[Send] to %d ", pid);
+	if (signo == SIGUSR1)
+		ft_printf("[SIGUSR1]\n");
+	else
+		ft_printf("[SIGUSR2]\n");
+	return (kill(pid, signo));
+}
 
 t_list	*push_connection(int pid)
 {
@@ -52,16 +62,18 @@ void	end_connection()
 	int	pid;
 
 	pid = get_active_pid();
-	kill(pid, CONN_DISCONNECT);
+	mt_kill(pid, CONN_DISCONNECT);
 	ft_lstpop_front(&g_conn.lst, free);
 	pid = get_active_pid();
 	if (pid != -1)
 	{
-		kill(pid, CONN_START);
+		mt_kill(pid, CONN_CONNECT);
 		g_conn.length = 0;
 		g_conn.buffer = 0;
 		g_conn.status = stat_wait;
 	}
+	else
+		g_conn.status = stat_conn;
 }
 
 void	sig_usr(int signo, siginfo_t *info, void *context)
@@ -70,23 +82,31 @@ void	sig_usr(int signo, siginfo_t *info, void *context)
 	if (get_active_pid() != info->si_pid)
 	{
 		if (signo == SIGNAL_0)
-			kill(info->si_pid, SIGNAL_FAIL);
+			mt_kill(info->si_pid, SIGNAL_FAIL);
 		else if (signo == SIGNAL_1)
 		{
 			if (push_connection(info->si_pid) == NULL)
-				kill(info->si_pid, CONN_RETRY);
+				mt_kill(info->si_pid, CONN_RETRY);
 			else
-				kill(info->si_pid, CONN_CONNECT);
+			{
+				mt_kill(info->si_pid, CONN_WAIT);
+				if (g_conn.status == stat_conn)
+				{
+					usleep(10);
+					g_conn.status = stat_msg;
+					mt_kill(info->si_pid, CONN_MSG);
+				}
+			}
 		}
 	}
 	else if (g_conn.status == stat_wait)
 	{
 		if (signo == SIGNAL_0)
-			kill(info->si_pid, CONN_RETRY);
+			mt_kill(info->si_pid, CONN_RETRY);
 		else if (signo == SIGNAL_1)
 		{
 			g_conn.status = stat_msg;
-			kill(info->si_pid, CONN_DATA);
+			mt_kill(info->si_pid, CONN_MSG);
 		}
 	}
 	else if (g_conn.status == stat_msg)
@@ -95,18 +115,17 @@ void	sig_usr(int signo, siginfo_t *info, void *context)
 			end_connection();
 		else if (signo == SIGNAL_1)
 		{
-			kill(info->si_pid, SIGNAL_1);
+			mt_kill(info->si_pid, SIGNAL_1);
 			g_conn.status = stat_data;
 		}
 	}
 	else if (g_conn.status == stat_data)
 	{
-		// TODO : VERIFY DATA
 		g_conn.buffer = (g_conn.buffer << 1) + (signo & 1);
 		g_conn.length++;
 		if (g_conn.length == 8)
 		{
-			ft_printf("%c", g_conn.buffer);
+			ft_putchar_fd(g_conn.buffer, STDOUT_FILENO);
 			g_conn.buffer = 0;
 			g_conn.length = 0;
 		}
@@ -114,7 +133,17 @@ void	sig_usr(int signo, siginfo_t *info, void *context)
 	}
 	else if (g_conn.status == stat_verify)
 	{
-		g_conn.status = stat_wait;
+		if (signo == SIGNAL_FAIL)
+		{
+			g_conn.buffer >>= 1;
+			g_conn.status = stat_data;
+			mt_kill(info->si_pid, SIGNAL_FAIL);
+		}
+		else if (signo == SIGNAL_OK)
+		{
+			g_conn.status = stat_msg;
+			mt_kill(info->si_pid, SIGNAL_OK);
+		}
 	}
 }
 
@@ -124,8 +153,7 @@ int	main(void)
 
 	usrsig.sa_sigaction = sig_usr;
 	sigemptyset(&usrsig.sa_mask);
-	usrsig.sa_mask = SIGUSR1;
-	usrsig.sa_mask = SIGUSR2;
+	usrsig.sa_mask = SIGUSR1 | SIGUSR2;
 	usrsig.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGUSR1, &usrsig, 0) == -1)
 	{
@@ -140,12 +168,9 @@ int	main(void)
 	g_conn.lst = NULL;
 	g_conn.buffer = 0;
 	g_conn.length = 0;
-	g_conn.status = stat_wait;
+	g_conn.status = stat_conn;
 	ft_printf("PID : %d\n", getpid());
 	while (1)
-	{
-		usleep(10000000);
 		pause();
-	}
 	return (0);
 }

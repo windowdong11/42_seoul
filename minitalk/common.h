@@ -6,10 +6,13 @@
 # define SIGNAL_0 SIGUSR1
 # define SIGNAL_1 SIGUSR2
 # define CONN_CONNECT SIGNAL_1
-# define CONN_START SIGNAL_1
+# define CONN_WAIT SIGNAL_1
+# define CONN_MSG SIGNAL_1
 # define CONN_DATA SIGNAL_1
-# define CONN_DISCONNECT SIGNAL_0
-# define CONN_RETRY SIGNAL_0
+# define CONN_DISCONNECT	SIGNAL_0
+# define CONN_RETRY			SIGNAL_0
+# define VERIFY_OK			SIGNAL_1
+# define VERIFY_FAIL		SIGNAL_0
 
 typedef enum e_connection_status
 {
@@ -21,12 +24,22 @@ typedef enum e_connection_status
 	stat_verify
 }	t_connection_status;
 
-typedef struct s_connections
+typedef struct s_client_info
+{
+	int					pid;
+	char				last_bit;
+	size_t				message_idx;
+	char				bit_idx;
+	char				*message;
+	t_connection_status	status;
+}	t_client_info;
+
+typedef struct s_server_info
 {
 	t_list				*lst;
 	char				buffer;
 	char				length;
 	t_connection_status	status;
-}	t_connections;
+}	t_server_info;
 
 #endif
