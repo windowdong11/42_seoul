@@ -5,14 +5,16 @@ NAME = minitalk
 NAME_SERVER = server
 NAME_CLIENT = client
 
+SRC_COMMON = common.c
+
 SRC_SERVER_DIR = mt_server/
 FILES_SERVER = server.c
-SRC_SERVER = $(addprefix $(SRC_SERVER_DIR), $(FILES_SERVER))
+SRC_SERVER = $(SRC_COMMON) $(addprefix $(SRC_SERVER_DIR), $(FILES_SERVER))
 OBJ_SERVER = $(SRC_SERVER:.c=.o)
 
 SRC_CLIENT_DIR = mt_client/
 FILES_CLIENT = client.c
-SRC_CLIENT = $(addprefix $(SRC_CLIENT_DIR), $(FILES_CLIENT))
+SRC_CLIENT = $(SRC_COMMON) $(addprefix $(SRC_CLIENT_DIR), $(FILES_CLIENT))
 OBJ_CLIENT = $(SRC_CLIENT:.c=.o)
 
 ARC_DIRS = ft_printf libft

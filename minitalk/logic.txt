@@ -1,0 +1,51 @@
+(start)			server start								
+(wait)			server wait									
+(wait->conn_w)					<- 1	client try connect 	(conn->conn_w)
+(conn_w->msg_w)	server accept	-> 1						(conn_w->msg)
+(msg_w)																	<- 1	client try connect
+(msg_w)			server reject											-> 0
+(msg_w)																			client sleep
+(msg_w->msg)					<- 1	client send msg		(msg->msg_w)
+(msg->bit_w)	server accept	-> 1						(msg_w->bit)
+(bit_w->bit)					<- 0/1	client send bit		(bit->bit_w)
+(bit->msg_w)	server accept	-> 1						(bit_w->msg)
+(msg_w->msg)					<- 1	client send msg		(msg->bit)
+(msg->bit_w)	server accept	-> 1						(bit)
+(bit_w->bit)					<- 0/1	client send bit		(bit->msg)
+(bit->msg)		server accept	-> 1						(msg)
+(msg)							<- 0	client send msg		(msg->end)
+(msg->wait)		server accept	-> 1						(end)
+(wait)																	<- 1	client try connect
+(wait->msg)		server accept											-> 0
+...
+
+
+
+
+
+
+
+				<- b	client request something
+				-> x	(timeout)
+				<- b	client retry
+				-> b	response
+
+
+server response something	b ->
+(timeout)					x <-
+server retry				b ->
+response					b <-
+
+   _______    \\\\\\\\\\\    ________              _
+  /       \         |       |         \           / \
+ /         \        |       |          \         |   |
+|                   |       |          /        /     \
+|                   |       |         /        |       |
+ \                  |       |________/        /         \
+   ------           |       |--------         ____________
+          \         |       |         \       |          |
+		   \        |       |          \     /            \ 
+		    |       |       |          /    |              |
+ \    	    |       |       |         /    /                \
+  \________/   \\\\\\\\\\\\ |________/     |                 |
+asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;

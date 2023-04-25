@@ -23,14 +23,9 @@ write
 
 t_server_info	g_conn;
 
-int	mt_kill(pid_t pid, int signo)
+void printConn()
 {
-	ft_printf("[Send] to %d ", pid);
-	if (signo == SIGUSR1)
-		ft_printf("[SIGUSR1]\n");
-	else
-		ft_printf("[SIGUSR2]\n");
-	return (kill(pid, signo));
+	ft_printf("pid : %d, buff : %d, len : %d, stat : %d\n", g_conn.pid, g_conn.buffer, g_conn.length, g_conn.status);
 }
 
 t_list	*push_connection(int pid)
@@ -59,92 +54,51 @@ int	get_active_pid(void)
 
 void	end_connection()
 {
-	int	pid;
+	const pid_t	pid = g_conn.pid;
 
-	pid = get_active_pid();
-	mt_kill(pid, CONN_DISCONNECT);
-	ft_lstpop_front(&g_conn.lst, free);
-	pid = get_active_pid();
-	if (pid != -1)
-	{
-		mt_kill(pid, CONN_CONNECT);
-		g_conn.length = 0;
-		g_conn.buffer = 0;
-		g_conn.status = stat_wait;
-	}
-	else
-		g_conn.status = stat_conn;
+	g_conn.length = 0;
+	g_conn.buffer = 0;
+	g_conn.pid = -1;
+	g_conn.status = stat_end;
+	ft_printf("End connection\n");
+	printConn();
+	kill(pid, SIGNAL_1);
 }
 
 void	sig_usr(int signo, siginfo_t *info, void *context)
 {
 	(void)context;
-	ft_printf("[Recv] from %d ", info->si_pid);
-	if (signo == SIGUSR1)
-		ft_printf("[SIGUSR1]\n");
-	else
-		ft_printf("[SIGUSR2]\n");
-	if (get_active_pid() != info->si_pid)
+	ft_printf("recv");
+	if (g_conn.status == stat_wait)
 	{
-		if (signo == SIGNAL_0)
-			mt_kill(info->si_pid, SIGNAL_FAIL);
-		else if (signo == SIGNAL_1)
-		{
-			if (push_connection(info->si_pid) == NULL)
-				mt_kill(info->si_pid, CONN_RETRY);
-			else
-			{
-				mt_kill(info->si_pid, CONN_MSG);
-				g_conn.status = stat_msg;
-			}
-		}
+		g_conn.pid = info->si_pid;
+		g_conn.status = stat_msg_w;
+		ft_printf("Connection Requested\n");
 	}
-	else if (g_conn.status == stat_wait)
+	else if (g_conn.pid != info->si_pid)
 	{
-		if (signo == SIGNAL_0)
-			mt_kill(info->si_pid, CONN_RETRY);
-		else if (signo == SIGNAL_1)
-		{
-			g_conn.status = stat_msg;
-			mt_kill(info->si_pid, CONN_MSG);
-		}
+		ft_printf("\n[Reject] pid : %d\n", info->si_pid);
+		mt_kill(info->si_pid, SIGNAL_0, 1);
 	}
-	// else if (g_conn.status == stat_msg)
-	// {
-	// 	if (signo == SIGNAL_0)
-	// 		end_connection();
-	// 	else if (signo == SIGNAL_1)
-	// 	{
-	// 		mt_kill(info->si_pid, SIGNAL_1);
-	// 		g_conn.status = stat_data;
-	// 	}
-	// }
-	// else if (g_conn.status == stat_data)
-	// {
-	// 	g_conn.buffer = (g_conn.buffer << 1) + (signo & 1);
-	// 	g_conn.length++;
-	// 	if (g_conn.length == 8)
-	// 	{
-	// 		ft_putchar_fd(g_conn.buffer, STDOUT_FILENO);
-	// 		g_conn.buffer = 0;
-	// 		g_conn.length = 0;
-	// 	}
-	// 	g_conn.status = stat_verify;
-	// }
-	// else if (g_conn.status == stat_verify)
-	// {
-	// 	if (signo == SIGNAL_FAIL)
-	// 	{
-	// 		g_conn.buffer >>= 1;
-	// 		g_conn.status = stat_data;
-	// 		mt_kill(info->si_pid, SIGNAL_FAIL);
-	// 	}
-	// 	else if (signo == SIGNAL_OK)
-	// 	{
-	// 		g_conn.status = stat_msg;
-	// 		mt_kill(info->si_pid, SIGNAL_OK);
-	// 	}
-	// }
+	else if (g_conn.status == stat_msg_w)
+	{
+		if (signo & 1)
+			g_conn.status = stat_data_w;
+		else
+			end_connection();
+	}
+	else if (g_conn.status == stat_data_w)
+	{
+		g_conn.buffer = (g_conn.buffer << 1) + (signo & 1);
+		g_conn.length++;
+		if (g_conn.length == 8)
+		{
+			ft_putchar_fd(g_conn.buffer, STDOUT_FILENO);
+			g_conn.buffer = 0;
+			g_conn.length = 0;
+		}
+		g_conn.status = stat_msg_w;
+	}
 }
 
 int	main(void)
@@ -168,9 +122,32 @@ int	main(void)
 	g_conn.lst = NULL;
 	g_conn.buffer = 0;
 	g_conn.length = 0;
-	g_conn.status = stat_conn;
+	g_conn.pid = -1;
+	g_conn.status = stat_wait;
 	ft_printf("PID : %d\n", getpid());
 	while (1)
-		pause();
+	{
+		g_conn.status = stat_wait;
+		while (g_conn.status == stat_wait)
+			pause();
+		// req message
+		mt_kill(g_conn.pid, SIGNAL_1, 0);
+		// get message
+		if (g_conn.status == stat_msg_w)
+			pause();
+		while (g_conn.status != stat_end)
+		{
+			// req data
+			mt_kill(g_conn.pid, SIGNAL_1, 0);
+			// get data
+			if (g_conn.status == stat_data_w)
+				pause();
+			// req message
+			mt_kill(g_conn.pid, SIGNAL_1, 0);
+			// get message
+			if (g_conn.status == stat_msg_w)
+				pause();
+		}
+	}
 	return (0);
 }

@@ -16,12 +16,16 @@
 
 typedef enum e_connection_status
 {
-	stat_conn,
 	stat_wait,
+	stat_wait_w,
+	stat_conn,
+	stat_conn_w,
 	stat_msg,
+	stat_msg_w,
 	stat_data,
+	stat_data_w,
 	stat_end,
-	stat_verify
+	stat_end_w
 }	t_connection_status;
 
 typedef struct s_client_info
@@ -37,9 +41,12 @@ typedef struct s_client_info
 typedef struct s_server_info
 {
 	t_list				*lst;
+	pid_t				pid;
 	char				buffer;
 	char				length;
 	t_connection_status	status;
 }	t_server_info;
+
+int	mt_kill(pid_t pid, int signo, int print);
 
 #endif
