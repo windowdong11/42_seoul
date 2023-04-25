@@ -68,7 +68,7 @@ void	end_connection()
 void	sig_usr(int signo, siginfo_t *info, void *context)
 {
 	(void)context;
-	ft_printf("recv");
+	// ft_printf("recv");
 	if (g_conn.status == stat_wait)
 	{
 		g_conn.pid = info->si_pid;

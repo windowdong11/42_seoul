@@ -4,7 +4,7 @@
 
 int	mt_kill(pid_t pid, int signo, int print)
 {
-	if (print || 1)
+	if (print)
 	{
 		ft_printf("[Send] to %d ", pid);
 		if (signo == SIGUSR1)

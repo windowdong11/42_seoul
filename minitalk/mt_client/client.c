@@ -146,6 +146,7 @@ int main(int argc, char *argv[])
 		while (g_conn.status == stat_conn)
 		{
 			startConnection();
+			usleep(10000);
 			if (g_conn.status == stat_conn_w)
 				pause();
 			if (g_conn.status == stat_conn)
@@ -163,7 +164,8 @@ int main(int argc, char *argv[])
 				pause();
 			sendMsg();
 		}
-		pause();
+		if (g_conn.status == stat_end_w)
+			pause();
 	}
 	return (0);
 }
