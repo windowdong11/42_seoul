@@ -4,7 +4,6 @@
 #include <signal.h>
 
 t_client_info	g_conn;
-int				g_cmdidx = 0;
 
 void printBit(char bit)
 {
@@ -64,7 +63,6 @@ void	sendMsg()
 void	sig_usr(int signo, siginfo_t *info, void *context)
 {
 	(void)context;
-	ft_printf("recv");
 	if (info->si_pid != g_conn.pid)
 		return ;
 	if (g_conn.status == stat_conn_w)
@@ -72,7 +70,7 @@ void	sig_usr(int signo, siginfo_t *info, void *context)
 		if (signo == SIGNAL_1)
 			g_conn.status = stat_msg;
 		else
-			ft_printf("(Retry)\n");
+			g_conn.status = stat_conn;
 	}
 	else if (g_conn.status == stat_msg_w)
 	{
@@ -80,7 +78,7 @@ void	sig_usr(int signo, siginfo_t *info, void *context)
 			g_conn.status = stat_data;
 		else
 		{
-			ft_printf("(Retry)\n");
+			ft_putstr_fd("Retry in msg_w\n", STDOUT_FILENO);
 			g_conn.status = stat_conn;
 		}
 	}
@@ -90,20 +88,20 @@ void	sig_usr(int signo, siginfo_t *info, void *context)
 			g_conn.status = stat_msg;
 		else
 		{
-			ft_printf("Error.\n");
-			g_conn.status = stat_end;
+			ft_putstr_fd("Retry in data_w\n", STDOUT_FILENO);
+			g_conn.status = stat_data_w;
 		}
 	}
 	else if (g_conn.status == stat_end_w)
 	{
 		if (signo == SIGNAL_1)
 		{
-			ft_printf("End connection.\n");
+			ft_putstr_fd("End connection.\n", STDOUT_FILENO);
 			g_conn.status = stat_end;
 		}
 		else
 		{
-			ft_printf("Error.\n");
+			ft_putstr_fd("Error in end_w\n", STDOUT_FILENO);
 			g_conn.status = stat_end;
 		}
 	}
@@ -112,7 +110,7 @@ void	sig_usr(int signo, siginfo_t *info, void *context)
 void startConnection()
 {
 	g_conn.status = stat_conn_w;
-	ft_printf("[Request] Send start signal\n");
+	ft_putstr_fd("[Request] Send start signal\n", STDOUT_FILENO);
 	mt_kill(g_conn.pid, CONN_CONNECT, 1);
 }
 
@@ -143,27 +141,27 @@ int main(int argc, char *argv[])
 	g_conn.pid = ft_atoi(argv[1]);
 	while (!(g_conn.status == stat_end || g_conn.status == stat_end_w))
 	{
-		while (g_conn.status == stat_conn)
+		while (g_conn.status == stat_conn || g_conn.status == stat_conn_w)
 		{
 			startConnection();
-			usleep(10000);
-			if (g_conn.status == stat_conn_w)
-				pause();
+			usleep(100);
 			if (g_conn.status == stat_conn)
+			{
+				ft_putstr_fd("Rejected. Retry connection.\n", STDOUT_FILENO);
 				usleep(30000);
+			}
 		}
 		sendMsg();
 		while (!(g_conn.status == stat_end || g_conn.status == stat_end_w))
 		{
-			usleep(10000);
 			if (g_conn.status == stat_msg_w)
 				pause();
 			sendBit();
-			usleep(10000);
 			if (g_conn.status == stat_data_w)
 				pause();
 			sendMsg();
 		}
+		ft_putstr_fd("Wait for end connection.\n", STDOUT_FILENO);
 		if (g_conn.status == stat_end_w)
 			pause();
 	}

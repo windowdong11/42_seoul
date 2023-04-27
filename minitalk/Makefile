@@ -20,6 +20,8 @@ OBJ_CLIENT = $(SRC_CLIENT:.c=.o)
 ARC_DIRS = ft_printf libft
 ARCS = $(foreach d,$(ARC_DIRS),$(d)/$(d:ft_%=libft%).a)
 
+bonus: all
+
 all:
 	$(foreach d, $(ARC_DIRS), make -C $(d);)
 	$(foreach d, $(NAME), make $(d);)
@@ -48,4 +50,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: re clean fclean all
+.PHONY: re clean fclean all bonus

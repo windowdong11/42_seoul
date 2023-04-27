@@ -60,26 +60,24 @@ void	end_connection()
 	g_conn.buffer = 0;
 	g_conn.pid = -1;
 	g_conn.status = stat_end;
-	ft_printf("End connection\n");
-	printConn();
+	ft_putnbr_fd(pid, STDOUT_FILENO);
+	ft_putstr_fd(": End connection\n", STDOUT_FILENO);
 	kill(pid, SIGNAL_1);
 }
 
 void	sig_usr(int signo, siginfo_t *info, void *context)
 {
 	(void)context;
-	// ft_printf("recv");
+	if (info->si_pid < 100)
+		return ;
 	if (g_conn.status == stat_wait)
 	{
 		g_conn.pid = info->si_pid;
 		g_conn.status = stat_msg_w;
-		ft_printf("Connection Requested\n");
+		ft_putnbr_fd(g_conn.pid, STDOUT_FILENO);
 	}
 	else if (g_conn.pid != info->si_pid)
-	{
-		ft_printf("\n[Reject] pid : %d\n", info->si_pid);
-		mt_kill(info->si_pid, SIGNAL_0, 1);
-	}
+		return ;
 	else if (g_conn.status == stat_msg_w)
 	{
 		if (signo & 1)
@@ -128,8 +126,11 @@ int	main(void)
 	while (1)
 	{
 		g_conn.status = stat_wait;
+		ft_putstr_fd("Running\n", STDOUT_FILENO);
 		while (g_conn.status == stat_wait)
 			pause();
+		ft_putnbr_fd(g_conn.pid, STDOUT_FILENO);
+		ft_putstr_fd(" : Connection Established\n", STDOUT_FILENO);
 		// req message
 		mt_kill(g_conn.pid, SIGNAL_1, 0);
 		// get message

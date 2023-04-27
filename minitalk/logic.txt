@@ -1,3 +1,5 @@
+동시에 request 날리면, 뭔가 안됨
+
 (start)			server start								
 (wait)			server wait									
 (wait->conn_w)					<- 1	client try connect 	(conn->conn_w)
@@ -6,21 +8,18 @@
 (msg_w)			server reject											-> 0
 (msg_w)																			client sleep
 (msg_w->msg)					<- 1	client send msg		(msg->msg_w)
-(msg->bit_w)	server accept	-> 1						(msg_w->bit)
-(bit_w->bit)					<- 0/1	client send bit		(bit->bit_w)
-(bit->msg_w)	server accept	-> 1						(bit_w->msg)
-(msg_w->msg)					<- 1	client send msg		(msg->bit)
-(msg->bit_w)	server accept	-> 1						(bit)
-(bit_w->bit)					<- 0/1	client send bit		(bit->msg)
-(bit->msg)		server accept	-> 1						(msg)
+(msg->data_w)	server accept	-> 1						(msg_w->data)
+(data_w->data)					<- 0/1	client send data		(data->data_w)
+(data->msg_w)	server accept	-> 1						(data_w->msg)
+(msg_w->msg)					<- 1	client send msg		(msg->data)
+(msg->data_w)	server accept	-> 1						(data)
+(data_w->data)					<- 0/1	client send data		(data->msg)
+(data->msg)		server accept	-> 1						(msg)
 (msg)							<- 0	client send msg		(msg->end)
 (msg->wait)		server accept	-> 1						(end)
 (wait)																	<- 1	client try connect
 (wait->msg)		server accept											-> 0
 ...
-
-
-
 
 
 
@@ -36,6 +35,40 @@ server response something	b ->
 server retry				b ->
 response					b <-
 
+(start)			server start								
+(wait)			server wait									
+(wait->conn_w)					<- 1	client try connect 	(conn->conn_w)
+(conn_w->msg_w)	server accept	-> 1						(conn_w->msg)
+-------------------------------------------------------------------------- conn : 60
+(msg_w->msg)					<- 1	client send msg		(msg->msg_w)
+(msg->data_w)	server accept	-> 1						(msg_w->data)
+-------------------------------------------------------------------------- msg : 60
+(data_w->data)					<- 0/1	client send data	(data->data_w)
+(data->msg_w)	server accept	-> 1						(data_w->msg)
+-------------------------------------------------------------------------- data (data) : 60
+(msg_w->msg)					<- 1	client send msg		(msg->msg_w)
+(msg->data_w)	server accept	-> 1						(msg_w->data)
+-------------------------------------------------------------------------- msg : 60
+(data_w->data)					<- 0/1	client send data	(data->data_w)
+(data->msg_w)	server accept	-> 1						(data_w->msg)
+-------------------------------------------------------------------------- data (data) : 60
+(msg_w->msg)					<- 0	client send msg		(msg->msg_w)
+(msg->wait)		server accept	-> 1						(msg_w->end)
+-------------------------------------------------------------------------- msg : 60
+
+conn + n * (msg + data)
+= 2t + n * 4t
+t = 30
+=> 60 + n * 240
+
+n = 100
+2t + 100 * 4t < 1,000,000 (us)
+402t < 1,000,000
+t < 2487.56
+
+t = 30, n = 100
+60 + 100 * 240 = 24060
+
    _______    \\\\\\\\\\\    ________              _
   /       \         |       |         \           / \
  /         \        |       |          \         |   |
@@ -48,4 +81,7 @@ response					b <-
 		    |       |       |          /    |              |
  \    	    |       |       |         /    /                \
   \________/   \\\\\\\\\\\\ |________/     |                 |
+100
+asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asd
+1000
 asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;asdfjkl;
