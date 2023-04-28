@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   common.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/28 18:22:56 by dowon             #+#    #+#             */
+/*   Updated: 2023/04/28 18:22:57 by dowon            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef COMMON_H
 # define COMMON_H
 # include "./libft/libft.h"
@@ -31,7 +43,7 @@ typedef enum e_connection_status
 typedef struct s_client_info
 {
 	int					pid;
-	char				last_bit;
+	int					last_bit;
 	size_t				message_idx;
 	char				bit_idx;
 	char				*message;
@@ -40,13 +52,12 @@ typedef struct s_client_info
 
 typedef struct s_server_info
 {
-	t_list				*lst;
 	pid_t				pid;
 	char				buffer;
 	char				length;
 	t_connection_status	status;
 }	t_server_info;
 
-int	mt_kill(pid_t pid, int signo, int print);
+void	mt_kill(pid_t pid, int signo);
 
 #endif

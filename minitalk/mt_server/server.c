@@ -1,19 +1,14 @@
-/*
-write
-◦ ft_printf and any equivalent YOU coded
-◦ signal
-◦ sigemptyset
-◦ sigaddset
-◦ sigaction
-◦ kill
-◦ getpid
-◦ malloc
-◦ free
-◦ pause
-◦ sleep
-◦ usleep
-◦ exit
-*/
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/28 17:11:01 by dowon             #+#    #+#             */
+/*   Updated: 2023/04/28 18:24:03 by dowon            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <unistd.h>
 #include "../ft_printf/include/ft_printf.h"
@@ -23,36 +18,7 @@ write
 
 t_server_info	g_conn;
 
-void printConn()
-{
-	ft_printf("pid : %d, buff : %d, len : %d, stat : %d\n", g_conn.pid, g_conn.buffer, g_conn.length, g_conn.status);
-}
-
-t_list	*push_connection(int pid)
-{
-	int*const		new_content = malloc(sizeof(int));
-	t_list*const	new_node = ft_lstnew(NULL);
-
-	if (new_content == NULL || new_node == NULL)
-	{
-		free(new_content);
-		free(new_node);
-		return (NULL);
-	}
-	*new_content = pid;
-	new_node->content = new_content;
-	ft_lstadd_back(&g_conn.lst, new_node);
-	return (new_node);
-}
-
-int	get_active_pid(void)
-{
-	if (g_conn.lst == NULL)
-		return (-1);
-	return (*(int *)g_conn.lst->content);
-}
-
-void	end_connection()
+void	end_connection(void)
 {
 	const pid_t	pid = g_conn.pid;
 
@@ -60,9 +26,29 @@ void	end_connection()
 	g_conn.buffer = 0;
 	g_conn.pid = -1;
 	g_conn.status = stat_end;
+	ft_putchar_fd('\n', STDOUT_FILENO);
 	ft_putnbr_fd(pid, STDOUT_FILENO);
 	ft_putstr_fd(": End connection\n", STDOUT_FILENO);
-	kill(pid, SIGNAL_1);
+	if (kill(pid, SIGNAL_1) == -1)
+	{
+		ft_putstr_fd("Failed to send [end_conn] signal. pid : ", STDOUT_FILENO);
+		ft_putnbr_fd(pid, STDOUT_FILENO);
+		ft_putstr_fd(" signal : ", STDOUT_FILENO);
+		ft_putnbr_fd(SIGNAL_1, STDOUT_FILENO);
+		ft_putchar_fd('\n', STDOUT_FILENO);
+	}
+}
+
+void	handle_data(int signo)
+{
+	g_conn.buffer = (g_conn.buffer << 1) + (signo & 1);
+	g_conn.length++;
+	if (g_conn.length == 8)
+	{
+		ft_putchar_fd(g_conn.buffer, STDOUT_FILENO);
+		g_conn.buffer = 0;
+		g_conn.length = 0;
+	}
 }
 
 void	sig_usr(int signo, siginfo_t *info, void *context)
@@ -74,7 +60,7 @@ void	sig_usr(int signo, siginfo_t *info, void *context)
 	{
 		g_conn.pid = info->si_pid;
 		g_conn.status = stat_msg_w;
-		ft_putnbr_fd(g_conn.pid, STDOUT_FILENO);
+		mt_kill(g_conn.pid, SIGNAL_1);
 	}
 	else if (g_conn.pid != info->si_pid)
 		return ;
@@ -87,15 +73,30 @@ void	sig_usr(int signo, siginfo_t *info, void *context)
 	}
 	else if (g_conn.status == stat_data_w)
 	{
-		g_conn.buffer = (g_conn.buffer << 1) + (signo & 1);
-		g_conn.length++;
-		if (g_conn.length == 8)
-		{
-			ft_putchar_fd(g_conn.buffer, STDOUT_FILENO);
-			g_conn.buffer = 0;
-			g_conn.length = 0;
-		}
+		handle_data(signo);
 		g_conn.status = stat_msg_w;
+	}
+}
+
+void	start(void)
+{
+	g_conn.status = stat_wait;
+	ft_putstr_fd("Running\n", STDOUT_FILENO);
+	while (g_conn.status == stat_wait)
+		pause();
+	ft_putnbr_fd(g_conn.pid, STDOUT_FILENO);
+	ft_putstr_fd(" : Connection Established\n", STDOUT_FILENO);
+	mt_kill(g_conn.pid, SIGNAL_1);
+	if (g_conn.status == stat_msg_w)
+		pause();
+	while (g_conn.status != stat_end)
+	{
+		mt_kill(g_conn.pid, SIGNAL_1);
+		if (g_conn.status == stat_data_w)
+			pause();
+		mt_kill(g_conn.pid, SIGNAL_1);
+		if (g_conn.status == stat_msg_w)
+			pause();
 	}
 }
 
@@ -107,48 +108,18 @@ int	main(void)
 	sigemptyset(&usrsig.sa_mask);
 	usrsig.sa_mask = SIGUSR1 | SIGUSR2;
 	usrsig.sa_flags = SA_SIGINFO;
-	if (sigaction(SIGUSR1, &usrsig, 0) == -1)
+	if (sigaction(SIGUSR1, &usrsig, 0) == -1
+		|| sigaction(SIGUSR2, &usrsig, 0) == -1)
 	{
-		ft_printf("signal(SIGUSR1) error");
+		ft_putstr_fd("sigaction error\n", STDOUT_FILENO);
 		return (-1);
 	}
-	if (sigaction(SIGUSR2, &usrsig, 0) == -1)
-	{
-		ft_printf("signal(SIGUSR2) error");
-		return (-1);
-	}
-	g_conn.lst = NULL;
 	g_conn.buffer = 0;
 	g_conn.length = 0;
 	g_conn.pid = -1;
 	g_conn.status = stat_wait;
 	ft_printf("PID : %d\n", getpid());
 	while (1)
-	{
-		g_conn.status = stat_wait;
-		ft_putstr_fd("Running\n", STDOUT_FILENO);
-		while (g_conn.status == stat_wait)
-			pause();
-		ft_putnbr_fd(g_conn.pid, STDOUT_FILENO);
-		ft_putstr_fd(" : Connection Established\n", STDOUT_FILENO);
-		// req message
-		mt_kill(g_conn.pid, SIGNAL_1, 0);
-		// get message
-		if (g_conn.status == stat_msg_w)
-			pause();
-		while (g_conn.status != stat_end)
-		{
-			// req data
-			mt_kill(g_conn.pid, SIGNAL_1, 0);
-			// get data
-			if (g_conn.status == stat_data_w)
-				pause();
-			// req message
-			mt_kill(g_conn.pid, SIGNAL_1, 0);
-			// get message
-			if (g_conn.status == stat_msg_w)
-				pause();
-		}
-	}
+		start();
 	return (0);
 }

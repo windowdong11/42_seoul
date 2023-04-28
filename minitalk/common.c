@@ -1,26 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   common.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/28 17:10:53 by dowon             #+#    #+#             */
+/*   Updated: 2023/04/28 17:30:12 by dowon            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "common.h"
 #include "ft_printf/include/ft_printf.h"
 #include <signal.h>
 
-int	mt_kill(pid_t pid, int signo, int print)
+void	mt_kill(pid_t pid, int signo)
 {
-	if (print && 0)
+	usleep(30);
+	if (kill(pid, signo) == -1)
 	{
-		ft_printf("[Send] to %d ", pid);
-		if (signo == SIGUSR1)
-			ft_printf("[SIGUSR1]\n");
-		else
-			ft_printf("[SIGUSR2]\n");
+		ft_putstr_fd("Failed to send signal. pid : ", STDOUT_FILENO);
+		ft_putnbr_fd(pid, STDOUT_FILENO);
+		ft_putstr_fd(" signal : ", STDOUT_FILENO);
+		ft_putnbr_fd(signo, STDOUT_FILENO);
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		exit(1);
 	}
-	if (pid < 100)
-		return (0);
-	usleep(100);
-	return (kill(pid, signo));
 }
-
-// void printStat(e_connection_status stat)
-// {
-// 	if (stat == stat_conn)
-// 		ft_putstr_fd("stat: conn");
-// 	else if (stat == stat)
-// }
