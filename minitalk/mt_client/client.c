@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 18:22:21 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/28 18:22:22 by dowon            ###   ########.fr       */
+/*   Updated: 2023/04/28 18:41:37 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ void	send_bit(void)
 		ft_putstr_fd("[Error] status is not data!\n", STDOUT_FILENO);
 		exit(1);
 	}
-	g_conn.last_bit = 30
-		| (g_conn.message[g_conn.message_idx] >> g_conn.bit_idx & 1);
+	g_conn.last_bit = g_conn.message[g_conn.message_idx] >> g_conn.bit_idx & 1;
 	if (g_conn.bit_idx == 0)
 	{
 		g_conn.bit_idx = (sizeof(char) << 3) - 1;
@@ -34,7 +33,10 @@ void	send_bit(void)
 	else
 		--g_conn.bit_idx;
 	g_conn.status = stat_data_w;
-	mt_kill(g_conn.pid, g_conn.last_bit);
+	if (g_conn.last_bit)
+		mt_kill(g_conn.pid, SIGNAL_1);
+	else
+		mt_kill(g_conn.pid, SIGNAL_0);
 }
 
 void	send_msg(void)
