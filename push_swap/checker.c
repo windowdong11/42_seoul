@@ -1,14 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/23 17:14:56 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/01 18:12:20 by dowon            ###   ########.fr       */
+/*   Created: 2023/04/29 17:08:57 by dowon             #+#    #+#             */
+/*   Updated: 2023/04/29 17:09:03 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "ft_printf/include/ft_printf.h"
 #include "libft/libft.h"
@@ -18,7 +19,7 @@
 
 void	handle_error(char *message, int exit_code)
 {
-	ft_putstr_fd(message, STDERR_FILENO);
+	ft_printf(message);
 	exit(exit_code);
 }
 
@@ -141,9 +142,8 @@ void	adv_merge_sort(t_stack_ab *st, const int total_size, int (*cmp)(int, int),
 	const int	sizes[4] = {0, total_size / 3,
 		total_size - total_size / 3 * 2, total_size / 3};
 
-	if (total_size <= 0 || handle_sorted(st, total_size, cmp, rcmp, dst))
-		return ;
-	if ((total_size == 1 && merge_sort_single(st, dst))
+	if (total_size <= 0 || handle_sorted(st, total_size, cmp, rcmp, dst)
+		|| (total_size == 1 && merge_sort_single(st, dst))
 		|| (total_size == 2 && merge_sort_double(st, cmp, dst)))
 		return ;
 	else if (total_size == 3)
@@ -156,6 +156,40 @@ void	adv_merge_sort(t_stack_ab *st, const int total_size, int (*cmp)(int, int),
 			manual_sort_b_top(st, cmp);
 		else if (dst == B_BOTTOM)
 			manual_sort_b_bottom(st, cmp);
+		return ;
+	}
+	else if (total_size <= 8)
+	{
+		if (dst == A_TOP)
+		{
+			adv_merge_sort(st, total_size / 2, rcmp, cmp, B_TOP);
+			adv_merge_sort(st, total_size - total_size / 2,
+				rcmp, cmp, A_BOTTOM);
+			adv_merge_3way(st, (int [4]){0, total_size - total_size / 2,
+				total_size / 2, 0}, cmp, rcmp, dst);
+		}
+		else if (dst == A_BOTTOM)
+		{
+			adv_merge_sort(st, total_size / 2, rcmp, cmp, B_TOP);
+			adv_merge_sort(st, total_size - total_size / 2, rcmp, cmp, A_TOP);
+			adv_merge_3way(st, (int [4]){total_size - total_size / 2,
+				0, total_size / 2, 0}, cmp, rcmp, dst);
+		}
+		else if (dst == B_TOP)
+		{
+			adv_merge_sort(st, total_size - total_size / 2,
+				rcmp, cmp, B_BOTTOM);
+			adv_merge_sort(st, total_size / 2, rcmp, cmp, A_TOP);
+			adv_merge_3way(st, (int [4]){total_size / 2, 0,
+				0, total_size - total_size / 2}, cmp, rcmp, dst);
+		}
+		else if (dst == B_BOTTOM)
+		{
+			adv_merge_sort(st, total_size - total_size / 2, rcmp, cmp, B_TOP);
+			adv_merge_sort(st, total_size / 2, rcmp, cmp, A_TOP);
+			adv_merge_3way(st, (int [4]){total_size / 2,
+				0, total_size - total_size / 2, 0}, cmp, rcmp, dst);
+		}
 		return ;
 	}
 	if (dst == A_TOP || dst == B_TOP)
@@ -179,7 +213,18 @@ int	main(int argc, char *argv[])
 	t_dbl_list	*cmd;
 
 	stack_ab = new_t_stack_ab(parse_args(argc, argv), new_t_stack());
-	adv_merge_sort(stack_ab, stack_ab->stack_a->size, smaller, greater, A_TOP);
+	if (3 < stack_ab->stack_a->size && stack_ab->stack_a->size <= 8)
+	{
+		adv_merge_sort(stack_ab, stack_ab->stack_a->size / 2,
+			greater, smaller, B_TOP);
+		adv_merge_sort(stack_ab, stack_ab->stack_a->size,
+			smaller, greater, A_TOP);
+		adv_merge_3way(stack_ab, (int [4]){0, stack_ab->stack_a->size,
+			stack_ab->stack_b->size, 0}, smaller, greater, A_TOP);
+	}
+	else
+		adv_merge_sort(stack_ab, stack_ab->stack_a->size,
+			smaller, greater, A_TOP);
 	cmd = stack_ab->command->bottom;
 	while (cmd)
 	{
