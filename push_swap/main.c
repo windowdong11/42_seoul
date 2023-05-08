@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 17:14:56 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/08 15:40:45 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/08 21:02:09 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,13 +178,14 @@ void	merge_to_dst(t_stack_ab *st, int sizes[4],
 {
 	const t_compare	cmp = get_rcmp(order);
 	t_position		src;
-	int				size;
 
-	size = sizes[A_BOTTOM] + sizes[B_TOP] + sizes[B_BOTTOM];
-	while (size-- > 0)
+	while (sizes[A_TOP] + sizes[A_BOTTOM] + sizes[B_TOP] + sizes[B_BOTTOM] > 0)
 	{
 		src = POS_NULL;
-		if (sizes[A_BOTTOM] && src == POS_NULL)
+		if (sizes[A_TOP] && src == POS_NULL)
+			src = A_TOP;
+		if (sizes[A_BOTTOM] && (src == POS_NULL
+				|| cmp(get_value(st, A_BOTTOM), get_value(st, src))))
 			src = A_BOTTOM;
 		if (sizes[B_TOP]
 			&& (src == POS_NULL
@@ -202,9 +203,8 @@ void	merge_to_dst(t_stack_ab *st, int sizes[4],
 void	merge_sort(t_stack_ab *st, const int size,
 	const t_order order, t_position dst)
 {
-	const int	sizes[4] = {0, size / 3, size / 3, size - size / 3 * 2};
+	int	sizes[4] = {size / 3, size / 3, size / 3, size - size / 3 * 2};
 
-	// ft_printf("tot: %d\n", size);
 	if (size <= 0 //|| handle_sorted(st, size, get_cmp(order), get_cmp(!order), dst)
 		|| (size == 1 && merge_sort_single(st, dst))
 		|| (size == 2 && merge_sort_double(st, get_cmp(order), dst)))
@@ -212,53 +212,81 @@ void	merge_sort(t_stack_ab *st, const int size,
 	else if (size == 3)
 	{
 		if (dst == B_BOTTOM || dst == B_TOP)
+		{
 			manual_sort_a_top(st, get_rcmp(order));
-		else
-			manual_sort_a_top(st, get_cmp(order));
-		if (dst == A_BOTTOM)
-		{
-			for(int i = 0; i < 3; i++)
-				st->ra(st, OPTIMIZE);
-		}
-		else if (dst == B_TOP)
-		{
-			for(int i = 0; i < 3; i++)
+			for(int i = 0; i < size; i++)
 				st->pb(st, OPTIMIZE);
-		}
-		else if (dst == B_BOTTOM)
-		{
-			for(int i = 0; i < 3; i++)
-				st->pb(st, OPTIMIZE);
-			// ft_printf("size : %d\n", st->stack_b->size);
-			if (st->stack_b->size != 3)
-				for(int i = 0; i < 3; i++)
+			if (dst == B_BOTTOM && st->stack_a->size != size)
+				for(int i = 0; i < size; i++)
 					st->rb(st, OPTIMIZE);
+		}
+		else
+		{
+			manual_sort_a_top(st, get_cmp(order));
+			if (dst == A_BOTTOM && st->stack_a->size != size)
+			{
+				for(int i = 0; i < size; i++)
+					st->ra(st, OPTIMIZE);
+			}
 		}
 		return ;
 	}
-	merge_sort(st, sizes[B_BOTTOM], order, B_BOTTOM);
-	merge_sort(st, sizes[A_BOTTOM], order, A_BOTTOM);
-	merge_sort(st, sizes[B_TOP], !order, B_TOP);
-	merge_to_dst(st, (int[4]){0, sizes[1], sizes[2], sizes[3]}, order, dst);
+	else {
+		if (dst == B_BOTTOM || dst == B_TOP)
+		{
+			merge_sort(st, sizes[B_BOTTOM], order, B_BOTTOM);
+			merge_sort(st, sizes[A_BOTTOM], order, A_BOTTOM);
+			merge_sort(st, sizes[A_TOP], !order, A_TOP);
+			merge_to_dst(st, (int[4]){sizes[0], sizes[1], 0, sizes[3]}, order, B_TOP);
+			if (dst == B_BOTTOM)
+			{
+				if (st->stack_b->size != size)
+					for(int i = 0; i < size; i++)
+						st->rb(st, OPTIMIZE);
+			}
+		}
+		else
+		{
+			merge_sort(st, sizes[B_BOTTOM], order, B_BOTTOM);
+			merge_sort(st, sizes[B_TOP], !order, B_TOP);
+			merge_sort(st, sizes[A_BOTTOM], order, A_BOTTOM);
+			merge_to_dst(st, (int[4]){0, sizes[1], sizes[2], sizes[3]}, order, A_TOP);
+			if (dst == A_BOTTOM)
+			{
+				if (st->stack_a->size != size)
+					for(int i = 0; i < size; i++)
+						st->ra(st, OPTIMIZE);
+			}
+		}
+	}
 }
 
 int	main(int argc, char *argv[])
 {
-	t_stack_ab	*stack_ab;
+	t_stack_ab	*st;
 	t_dbl_list	*cmd;
 
-	stack_ab = new_t_stack_ab(parse_args(argc, argv), new_t_stack());
-	// merge_sort(stack_ab, stack_ab->stack_a->size, DESC, A_TOP);
-	merge_sort(stack_ab, 3, DESC, B_BOTTOM);
-	merge_sort(stack_ab, 3, DESC, A_BOTTOM);
-	merge_sort(stack_ab, 3, !DESC, B_TOP);
-	merge_to_dst(stack_ab, (int[4]){0, 3, 3, 3}, DESC, B_TOP);
-	cmd = stack_ab->command->bottom;
+	st = new_t_stack_ab(parse_args(argc, argv), new_t_stack());
+	merge_sort(st, st->stack_a->size, DESC, A_TOP);
+	// merge_sort(st, 3, DESC, B_BOTTOM);
+	// merge_sort(st, 3, DESC, A_BOTTOM);
+	// merge_sort(st, 3, !DESC, A_TOP);
+	// merge_to_dst(st, (int[4]){3, 3, 0, 3}, DESC, B_TOP);
+	// merge_sort(st, 3, !DESC, B_BOTTOM);
+	// merge_sort(st, 3, !DESC, A_BOTTOM);
+	// merge_sort(st, 3, DESC, A_TOP);
+	// merge_to_dst(st, (int[4]){3, 3, 0, 3}, !DESC, B_TOP);
+	// merge_sort(st, 3, DESC, B_BOTTOM);
+	// merge_sort(st, 3, !DESC, B_TOP);
+	// merge_sort(st, 3, DESC, A_BOTTOM);
+	// merge_to_dst(st, (int[4]){0, 3, 3, 3}, DESC, A_TOP);
+	// merge_to_dst(st, (int[4]){0, 9, 9, 9}, DESC, A_TOP);
+	cmd = st->command->bottom;
 	while (cmd)
 	{
 		print_command(cmd->value);
 		cmd = cmd->prev;
 	}
-	stack_ab->destructor(stack_ab);
+	st->destructor(st);
 	return (0);
 }

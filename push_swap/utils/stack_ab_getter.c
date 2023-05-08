@@ -24,7 +24,5 @@ int	get_value(t_stack_ab *this, t_position pos)
 {
 	const t_getter	func[4] = {a_top, a_bottom, b_top, b_bottom};
 
-	if (pos == POS_NULL)
-		return (-1);
 	return (func[pos](this));
 }

@@ -4,12 +4,16 @@
 void	merge_a_top(t_stack_ab *st, t_position src)
 {
 	if (src == A_BOTTOM)
-		st->rra(st, OPTIMIZE);
+	{
+		if (st->stack_a->size > 1)
+			st->rra(st, OPTIMIZE);
+	}
 	else if (src == B_TOP)
 		st->pa(st, OPTIMIZE);
 	else if (src == B_BOTTOM)
 	{
-		st->rrb(st, OPTIMIZE);
+		if (st->stack_b->size != 1)
+			st->rrb(st, OPTIMIZE);
 		st->pa(st, OPTIMIZE);
 	}
 }
@@ -17,7 +21,10 @@ void	merge_a_top(t_stack_ab *st, t_position src)
 void	merge_a_bottom(t_stack_ab *st, t_position src)
 {
 	if (src == A_TOP)
-		st->ra(st, OPTIMIZE);
+	{
+		if (st->stack_a->size > 1)
+			st->ra(st, OPTIMIZE);
+	}
 	else if (src == B_TOP)
 	{
 		st->pa(st, OPTIMIZE);
