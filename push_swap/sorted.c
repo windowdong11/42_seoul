@@ -25,10 +25,10 @@ static int	handle_sorted_b_bottom(t_stack_ab *st, const int total_size,
 	{
 		idx = 0;
 		while (idx++ < total_size)
-			st->pb(st, 1);
+			st->pb(st, OPTIMIZE);
 		idx = 0;
 		while (idx++ < total_size)
-			st->rb(st, 1);
+			st->rb(st, OPTIMIZE);
 		return (1);
 	}
 	else if (is_sorted(st, rcmp, total_size))
@@ -36,8 +36,8 @@ static int	handle_sorted_b_bottom(t_stack_ab *st, const int total_size,
 		idx = 0;
 		while (idx++ < total_size)
 		{
-			st->pb(st, 1);
-			st->rb(st, 1);
+			st->pb(st, OPTIMIZE);
+			st->rb(st, OPTIMIZE);
 		}
 		return (1);
 	}
@@ -55,14 +55,14 @@ int	handle_sorted(t_stack_ab *st, const int total_size, int (*cmp)(int, int),
 	{
 		idx = 0;
 		while (idx++ < total_size)
-			st->ra(st, 1);
+			st->ra(st, OPTIMIZE);
 		return (1);
 	}
 	else if (dst == B_TOP && is_sorted(st, rcmp, total_size))
 	{
 		idx = 0;
 		while (idx++ < total_size)
-			st->pb(st, 1);
+			st->pb(st, OPTIMIZE);
 		return (1);
 	}
 	else if (dst == B_BOTTOM)

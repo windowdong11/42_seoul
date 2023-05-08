@@ -4,61 +4,68 @@
 void	merge_a_top(t_stack_ab *st, t_position src)
 {
 	if (src == A_BOTTOM)
-		st->rra(st, 1);
+		st->rra(st, OPTIMIZE);
 	else if (src == B_TOP)
-		st->pa(st, 1);
+		st->pa(st, OPTIMIZE);
 	else if (src == B_BOTTOM)
 	{
-		st->rrb(st, 1);
-		st->pa(st, 1);
+		st->rrb(st, OPTIMIZE);
+		st->pa(st, OPTIMIZE);
 	}
 }
 
 void	merge_a_bottom(t_stack_ab *st, t_position src)
 {
 	if (src == A_TOP)
-		st->ra(st, 1);
+		st->ra(st, OPTIMIZE);
 	else if (src == B_TOP)
 	{
-		st->pa(st, 1);
-		st->ra(st, 1);
+		st->pa(st, OPTIMIZE);
+		st->ra(st, OPTIMIZE);
 	}
 	else if (src == B_BOTTOM)
 	{
-		st->rrb(st, 1);
-		st->pa(st, 1);
-		st->ra(st, 1);
+		st->rrb(st, OPTIMIZE);
+		st->pa(st, OPTIMIZE);
+		st->ra(st, OPTIMIZE);
 	}
 }
 
 void	merge_b_top(t_stack_ab *st, t_position src)
 {
 	if (src == A_TOP)
-		st->pb(st, 1);
+		st->pb(st, OPTIMIZE);
 	else if (src == A_BOTTOM)
 	{
-		st->rra(st, 1);
-		st->pb(st, 1);
+		st->rra(st, OPTIMIZE);
+		st->pb(st, OPTIMIZE);
 	}
 	else if (src == B_BOTTOM)
-		st->rrb(st, 1);
+		st->rrb(st, OPTIMIZE);
 }
 
 void	merge_b_bottom(t_stack_ab *st, t_position src)
 {
 	if (src == A_TOP)
 	{
-		st->pb(st, 1);
-		st->rb(st, 1);
+		st->pb(st, OPTIMIZE);
+		st->rb(st, OPTIMIZE);
 	}
 	else if (src == A_BOTTOM)
 	{
-		st->rra(st, 1);
-		st->pb(st, 1);
-		st->rb(st, 1);
+		st->rra(st, OPTIMIZE);
+		st->pb(st, OPTIMIZE);
+		st->rb(st, OPTIMIZE);
 	}
 	else if (src == B_TOP)
-		st->rb(st, 1);
+		st->rb(st, OPTIMIZE);
+}
+
+t_merger	merger_to(t_position dst)
+{
+	const t_merger	mergefunc[4] = {merge_a_top, merge_a_bottom, merge_b_top, merge_b_bottom};
+
+	return (mergefunc[dst]);
 }
 
 void	adv_merge_3way(t_stack_ab *st, const int sizes[4],

@@ -6,14 +6,14 @@ static void	merge_sort_double_a(t_stack_ab *st,
 	if (dst == A_TOP)
 	{
 		if (!cmp(st->stack_a->top->value, st->stack_a->top->next->value))
-			st->sa(st, 1);
+			st->sa(st, OPTIMIZE);
 	}
 	else if (dst == A_BOTTOM)
 	{
 		if (cmp(st->stack_a->top->value, st->stack_a->top->next->value))
-			st->sa(st, 1);
-		st->ra(st, 1);
-		st->ra(st, 1);
+			st->sa(st, OPTIMIZE);
+		st->ra(st, OPTIMIZE);
+		st->ra(st, OPTIMIZE);
 	}
 }
 
@@ -22,19 +22,19 @@ static void	merge_sort_double_b(t_stack_ab *st,
 {
 	if (dst == B_TOP)
 	{
-		st->pb(st, 1);
-		st->pb(st, 1);
+		st->pb(st, OPTIMIZE);
+		st->pb(st, OPTIMIZE);
 		if (!cmp(st->stack_b->top->value, st->stack_b->top->next->value))
 			st->sb(st, 1);
 	}
 	else if (dst == B_BOTTOM)
 	{
-		st->pb(st, 1);
-		st->pb(st, 1);
+		st->pb(st, OPTIMIZE);
+		st->pb(st, OPTIMIZE);
 		if (cmp(st->stack_b->top->value, st->stack_b->top->next->value))
 			st->sb(st, 1);
-		st->rb(st, 1);
-		st->rb(st, 1);
+		st->rb(st, OPTIMIZE);
+		st->rb(st, OPTIMIZE);
 	}
 }
 

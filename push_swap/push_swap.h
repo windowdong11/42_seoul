@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 23:13:53 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/13 14:57:52 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/07 17:05:40 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define PUSH_SWAP_H
 
 # include "utils/stack_ab.h"
+
+typedef void	(*t_merger)(t_stack_ab*, t_position);
 
 typedef struct s_merge_data
 {
@@ -52,5 +54,6 @@ int				handle_sorted(t_stack_ab *st, const int total_size,
 					int (*cmp)(int, int), int (*rcmp)(int, int),
 					t_position dst);
 int				is_sorted(t_stack_ab *st, int (*cmp)(int, int), int count);
+t_merger		merger_to(t_position dst);
 
 #endif

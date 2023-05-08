@@ -4,27 +4,27 @@ static void	sort_a_bottom_order(t_stack_ab *st, int order)
 {
 	if (order == 123)
 	{
-		st->pb(st, 1);
+		st->pb(st, OPTIMIZE);
 		st->sa(st, 1);
-		st->ra(st, 1);
-		st->ra(st, 1);
-		st->pa(st, 1);
-		st->ra(st, 1);
+		st->ra(st, OPTIMIZE);
+		st->ra(st, OPTIMIZE);
+		st->pa(st, OPTIMIZE);
+		st->ra(st, OPTIMIZE);
 	}
 	else if (order == 132)
 	{
 		st->sa(st, 1);
-		st->ra(st, 1);
+		st->ra(st, OPTIMIZE);
 		st->sa(st, 1);
-		st->ra(st, 1);
-		st->ra(st, 1);
+		st->ra(st, OPTIMIZE);
+		st->ra(st, OPTIMIZE);
 	}
 	else if (order == 231)
 	{
 		st->sa(st, 1);
-		st->ra(st, 1);
-		st->ra(st, 1);
-		st->ra(st, 1);
+		st->ra(st, OPTIMIZE);
+		st->ra(st, OPTIMIZE);
+		st->ra(st, OPTIMIZE);
 	}
 }
 
@@ -32,25 +32,25 @@ static void	sort_a_bottom_order2(t_stack_ab *st, int order)
 {
 	if (order == 213)
 	{
-		st->pb(st, 1);
+		st->pb(st, OPTIMIZE);
 		st->sa(st, 1);
-		st->ra(st, 1);
-		st->pa(st, 1);
-		st->ra(st, 1);
-		st->ra(st, 1);
+		st->ra(st, OPTIMIZE);
+		st->pa(st, OPTIMIZE);
+		st->ra(st, OPTIMIZE);
+		st->ra(st, OPTIMIZE);
 	}
 	else if (order == 312)
 	{
-		st->ra(st, 1);
+		st->ra(st, OPTIMIZE);
 		st->sa(st, 1);
-		st->ra(st, 1);
-		st->ra(st, 1);
+		st->ra(st, OPTIMIZE);
+		st->ra(st, OPTIMIZE);
 	}
 	else if (order == 321)
 	{
-		st->rb(st, 1);
-		st->rb(st, 1);
-		st->rb(st, 1);
+		st->rb(st, OPTIMIZE);
+		st->rb(st, OPTIMIZE);
+		st->rb(st, OPTIMIZE);
 	}
 }
 

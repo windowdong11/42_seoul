@@ -1,5 +1,5 @@
-#include "stack_ab.h"
 #include "../ft_printf/include/ft_printf.h"
+#include "stack_ab.h"
 #include <stdlib.h>
 
 t_dbl_list	*new_t_dbl_list(int value)
@@ -20,7 +20,7 @@ t_dbl_list	*new_t_dbl_list(int value)
 	return (node);
 }
 
-t_stack		*new_t_stack(void)
+t_stack	*new_t_stack(void)
 {
 	t_stack*const	stack = malloc(sizeof(t_stack));
 
@@ -41,7 +41,7 @@ t_stack		*new_t_stack(void)
 
 t_stack_ab	*new_t_stack_ab(t_stack *stack_a, t_stack *stack_b)
 {
-	t_stack_ab*const 	stack_ab = malloc(sizeof(t_stack_ab));
+	t_stack_ab*const	stack_ab = malloc(sizeof(t_stack_ab));
 
 	if (stack_ab == NULL)
 		return (NULL);
@@ -63,25 +63,23 @@ t_stack_ab	*new_t_stack_ab(t_stack *stack_a, t_stack *stack_b)
 	return (stack_ab);
 }
 
-void print_command(t_command command)
+void	print_command(t_command command)
 {
-	const char	*command_prefix[5] = {
+	const char *command_prefix[5] = {
 		"",
 		"s",
 		"r",
 		"rr",
-		"p"
-	};
-	const char	*command_postfix[3] = {
+		"p"};
+	const char *command_postfix[3] = {
 		"r",
 		"a",
-		"b"
-	};
-
+		"b"};
 	if (command / 10 == 1 && command % 10 == 0)
 		ft_printf("ss\n");
 	else
-		ft_printf("%s%s\n", command_prefix[command / 10], command_postfix[command % 10]);
+		ft_printf("%s%s\n", command_prefix[command / 10],
+				command_postfix[command % 10]);
 }
 
 int	is_a_command(t_command command)
@@ -105,16 +103,15 @@ int	is_b_command(t_command command)
 int	find_n_remove(t_stack_ab *this, t_command command, int view_history)
 {
 	const t_command	rev_commands[5][3] = {
-		{ NONE, NONE, NONE },
-		{ SS, SA, SB },
-		{ RRR, RRA, RRB },
-		{ RR, RA, RB },
-		{ NONE, PB, PA }
-	};
+	{NONE, NONE, NONE},
+	{SS, SA, SB},
+	{RRR, RRA, RRB},
+	{RR, RA, RB},
+	{NONE, PB, PA}};
 	const t_command rev_command = rev_commands[command / 10][command % 10];
-	t_dbl_list	*node;
-	t_dbl_list	*tmp;
-	int			(*is_command)(t_command);
+	t_dbl_list *node;
+	t_dbl_list *tmp;
+	int (*is_command)(t_command);
 
 	node = this->command->top;
 	if (is_a_command(command))

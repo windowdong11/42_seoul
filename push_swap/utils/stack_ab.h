@@ -6,12 +6,13 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 19:24:22 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/13 12:59:18 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/07 16:29:33 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STACK_AB_H
 # define STACK_AB_H
+# define OPTIMIZE 0 
 
 /*
 sa (swap a): Swap the first 2 elements at the top of stack a.
@@ -59,6 +60,7 @@ typedef enum e_position
 	A_BOTTOM,
 	B_TOP,
 	B_BOTTOM,
+	POS_NULL
 }	t_position;
 
 typedef struct s_dbl_list
@@ -150,5 +152,8 @@ void					rra(t_stack_ab *this, int optimize);
 void					rrb(t_stack_ab *this, int optimize);
 void					rrr(t_stack_ab *this, int optimize);
 
-void	visualize_ab(t_stack_ab *st, const char *prefix, int d);
+typedef int	(*t_getter)(t_stack_ab*);
+int						get_value(t_stack_ab *this, t_position pos);
+
+void					visualize_ab(t_stack_ab *st, const char *prefix, int d);
 #endif
