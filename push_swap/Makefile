@@ -6,7 +6,7 @@
 #    By: dowon <dowon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/23 17:04:03 by dowon             #+#    #+#              #
-#    Updated: 2023/05/08 15:29:13 by dowon            ###   ########.fr        #
+#    Updated: 2023/05/08 15:49:25 by dowon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,17 +22,18 @@ OBJS = $(SRC:.c=.o)
 ARC_DIRS = libft ft_printf
 ARCS = $(foreach d,$(ARC_DIRS),$(d)/$(d:ft_%=libft%).a)
 
-bonus:
-	$(CC) $(CFLAGS) $(OBJS) $(ARCS) -o $(NAME_BONUS)
-
 all:
 	$(foreach d, $(ARC_DIRS), make -C $(d);)
 	make $(NAME)
+
+bonus:
+	$(CC) $(CFLAGS) $(OBJS) $(ARCS) -o $(NAME_BONUS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $^ -o $@
 
 $(NAME): $(OBJS) $(ARCS)
+	@echo $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(ARCS) -o $(NAME)
 
 clean:

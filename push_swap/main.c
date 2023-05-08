@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 17:14:56 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/08 15:28:38 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/08 15:40:45 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,7 +252,7 @@ int	main(int argc, char *argv[])
 	merge_sort(stack_ab, 3, DESC, B_BOTTOM);
 	merge_sort(stack_ab, 3, DESC, A_BOTTOM);
 	merge_sort(stack_ab, 3, !DESC, B_TOP);
-	merge_to_dst(stack_ab, (int[4]){0, 3, 3, 3}, DESC, A_TOP);
+	merge_to_dst(stack_ab, (int[4]){0, 3, 3, 3}, DESC, B_TOP);
 	cmd = stack_ab->command->bottom;
 	while (cmd)
 	{

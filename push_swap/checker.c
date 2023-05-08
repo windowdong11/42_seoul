@@ -6,10 +6,9 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 17:08:57 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/29 17:09:03 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/08 15:33:26 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "ft_printf/include/ft_printf.h"
 #include "libft/libft.h"
@@ -213,24 +212,7 @@ int	main(int argc, char *argv[])
 	t_dbl_list	*cmd;
 
 	stack_ab = new_t_stack_ab(parse_args(argc, argv), new_t_stack());
-	if (3 < stack_ab->stack_a->size && stack_ab->stack_a->size <= 8)
-	{
-		adv_merge_sort(stack_ab, stack_ab->stack_a->size / 2,
-			greater, smaller, B_TOP);
-		adv_merge_sort(stack_ab, stack_ab->stack_a->size,
-			smaller, greater, A_TOP);
-		adv_merge_3way(stack_ab, (int [4]){0, stack_ab->stack_a->size,
-			stack_ab->stack_b->size, 0}, smaller, greater, A_TOP);
-	}
-	else
-		adv_merge_sort(stack_ab, stack_ab->stack_a->size,
-			smaller, greater, A_TOP);
-	cmd = stack_ab->command->bottom;
-	while (cmd)
-	{
-		print_command(cmd->value);
-		cmd = cmd->prev;
-	}
+	while (read(STDIN_FILENO, ))
 	stack_ab->destructor(stack_ab);
 	return (0);
 }
