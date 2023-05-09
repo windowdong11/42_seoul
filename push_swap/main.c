@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 17:14:56 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/09 16:50:30 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/09 19:57:27 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,9 @@ void	merge_to_dst(t_stack_ab *st, int sizes[4],
 void	merge_sort(t_stack_ab *st, const int size,
 	const t_order order, t_position dst)
 {
-	int	sizes[4] = {size / 3, size / 3, size / 3, (size - size / 3 * 2)};
+	// int	sizes[4] = {size / 3, (size - size / 3) / 2, size / 3, (size - size / 3) / 2 + (size - size / 3) % 2};
+	// int	sizes[4] = {size / 3, size / 3, size / 3, size - size / 3 * 2};
+	int	sizes[4] = {size - size / 3 * 2, size / 3, size - size / 3 * 2, size / 3};
 
 	if (size <= 0
 		|| (size == 1 && merge_sort_single(st, dst))
@@ -90,10 +92,8 @@ void	merge_sort(t_stack_ab *st, const int size,
 	{
 		if (dst == B_BOTTOM || dst == B_TOP)
 		{
-			manual_sort_a_top(st, get_rcmp(order));
-			for(int i = 0; i < size; i++)
-				st->pb(st, OPTIMIZE);
-			if (dst == B_BOTTOM && st->stack_a->size != size)
+			manual_sort_b_top(st, get_cmp(order));
+			if (dst == B_BOTTOM && st->stack_b->size != size)
 				for(int i = 0; i < size; i++)
 					st->rb(st, OPTIMIZE);
 		}
@@ -143,6 +143,9 @@ int	main(int argc, char *argv[])
 
 	st = new_t_stack_ab(parse_args(argc, argv), new_t_stack());
 	merge_sort(st, st->stack_a->size, DESC, A_TOP);
+	// merge_sort_single(st, B_TOP);
+	// merge_sort_single(st, B_BOTTOM);
+	// manual_sort_b_top(st, get_cmp(DESC));
 	cmd = st->command->bottom;
 	while (cmd)
 	{
