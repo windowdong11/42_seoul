@@ -2,7 +2,7 @@
 
 void	rra(t_stack_ab *this, int optimize)
 {
-	if (this->stack_a->size == 0)
+	if (this->stack_a->size <= 1)
 		return ;
 	this->stack_a->rrotate(this->stack_a);
 	if (optimize && find_n_remove(this, RRA, 1))
@@ -20,7 +20,7 @@ void	rra(t_stack_ab *this, int optimize)
 
 void	rrb(t_stack_ab *this, int optimize)
 {
-	if (this->stack_b->size == 0)
+	if (this->stack_b->size <= 1)
 		return ;
 	this->stack_b->rrotate(this->stack_b);
 	if (optimize && find_n_remove(this, RRB, 1))

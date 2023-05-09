@@ -4,6 +4,8 @@
 
 void	sa(t_stack_ab *this, int optimize)
 {
+	if (this->stack_a->size <= 1)
+		return ;
 	this->stack_a->swap(this->stack_a);
 	if (optimize && find_n_remove(this, SA, 1))
 		return ;
@@ -20,6 +22,8 @@ void	sa(t_stack_ab *this, int optimize)
 
 void	sb(t_stack_ab *this, int optimize)
 {
+	if (this->stack_b->size <= 1)
+		return ;
 	this->stack_b->swap(this->stack_b);
 	if (optimize && find_n_remove(this, SB, 1))
 		return ;

@@ -6,13 +6,13 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 19:24:22 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/07 16:29:33 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/09 16:49:45 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STACK_AB_H
 # define STACK_AB_H
-# define OPTIMIZE 0 
+# define OPTIMIZE 1
 
 /*
 sa (swap a): Swap the first 2 elements at the top of stack a.

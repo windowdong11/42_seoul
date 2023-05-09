@@ -2,7 +2,7 @@
 
 int	merge_sort_double(t_stack_ab *st, int (*cmp)(int, int), t_position dst)
 {
-	if (dst == A_BOTTOM)
+	if (dst == A_TOP)
 	{
 		if (!cmp(st->stack_a->top->value, st->stack_a->top->next->value))
 			st->sa(st, OPTIMIZE);
@@ -31,8 +31,8 @@ int	merge_sort_double(t_stack_ab *st, int (*cmp)(int, int), t_position dst)
 		st->pb(st, OPTIMIZE);
 		if (st->stack_b->size == 2)
 			return (1);
-		st->sb(st, OPTIMIZE);
-		st->sb(st, OPTIMIZE);
+		st->rb(st, OPTIMIZE);
+		st->rb(st, OPTIMIZE);
 	}
 	return (1);
 }
