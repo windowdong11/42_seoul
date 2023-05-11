@@ -1,6 +1,6 @@
 #include "utils/stack_ab.h"
 
-int	merge_sort_double(t_stack_ab *st, int (*cmp)(int, int), t_position dst)
+void	merge_sort_double(t_stack_ab *st, int (*cmp)(int, int), t_position dst)
 {
 	if (dst == A_TOP)
 	{
@@ -12,7 +12,7 @@ int	merge_sort_double(t_stack_ab *st, int (*cmp)(int, int), t_position dst)
 		if (!cmp(st->stack_a->top->value, st->stack_a->top->next->value))
 			st->sa(st, OPTIMIZE);
 		if (st->stack_b->size == 2)
-			return (1);
+			return ;
 		st->ra(st, OPTIMIZE);
 		st->ra(st, OPTIMIZE);
 	}
@@ -25,14 +25,18 @@ int	merge_sort_double(t_stack_ab *st, int (*cmp)(int, int), t_position dst)
 	}
 	else if (dst == B_BOTTOM)
 	{
-		if (cmp(st->stack_a->top->value, st->stack_a->top->next->value))
-			st->sa(st, OPTIMIZE);
 		st->pb(st, OPTIMIZE);
-		st->pb(st, OPTIMIZE);
-		if (st->stack_b->size == 2)
-			return (1);
-		st->rb(st, OPTIMIZE);
+		if (cmp(get_value(st, A_TOP), get_value(st, B_TOP)))
+		{
+			st->pb(st, OPTIMIZE);
+			st->rb(st, OPTIMIZE);
+		}
+		else
+		{
+			st->rb(st, OPTIMIZE);
+			st->pb(st, OPTIMIZE);
+		}
 		st->rb(st, OPTIMIZE);
 	}
-	return (1);
+	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 23:12:43 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/08 07:58:10 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/11 18:37:51 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,29 @@ static int	parse_int(char *str, int *result)
 	*result = str_int;
 	return (0);
 }
-// some arguments aren’t integers, some arguments are
-// bigger than an integer and/or there are duplicates
+
+static void	parse_each_word(char **words, t_stack *stack_a)
+{
+	int	num;
+
+	while (*words != NULL)
+	{
+		if (parse_int(*words, &num))
+		{
+			stack_a->destructor(stack_a);
+			handle_error("Error in parse_each_word\n", 0);
+		}
+		stack_a->push_back(stack_a, new_t_dbl_list(num));
+		free(*words);
+		words++;
+	}
+}
+
 t_stack	*parse_args(int argc, char *argv[])
 {
 	int				idx;
-	int				num;
 	t_stack*const	stack_a = new_t_stack();
 	char			**split;
-	size_t			word_idx;
 
 	if (argc < 2)
 		handle_error("Error\n", 0);
@@ -87,20 +101,9 @@ t_stack	*parse_args(int argc, char *argv[])
 		if (split == NULL)
 		{
 			stack_a->destructor(stack_a);
-			handle_error("sError\n", 0);
+			handle_error("Error in parse_args\n", EXIT_FAILURE);
 		}
-		word_idx = 0;
-		while (split[word_idx] != NULL)
-		{
-			if (parse_int(split[word_idx], &num))
-			{
-				stack_a->destructor(stack_a);
-				handle_error("pError\n", 0);
-			}
-			stack_a->push_back(stack_a, new_t_dbl_list(num));
-			free(split[word_idx]);
-			word_idx++;
-		}
+		parse_each_word(split, stack_a);
 		free(split);
 		idx++;
 	}

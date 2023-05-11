@@ -6,7 +6,7 @@
 #    By: dowon <dowon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/23 17:04:03 by dowon             #+#    #+#              #
-#    Updated: 2023/05/08 15:49:25 by dowon            ###   ########.fr        #
+#    Updated: 2023/05/11 17:02:13 by dowon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,6 @@ bonus:
 	$(CC) $(CFLAGS) -c $^ -o $@
 
 $(NAME): $(OBJS) $(ARCS)
-	@echo $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(ARCS) -o $(NAME)
 
 clean:
