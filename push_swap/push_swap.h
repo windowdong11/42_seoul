@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 23:13:53 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/12 21:11:22 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/12 22:49:24 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,20 @@
 # define PUSH_SWAP_H
 
 # include "utils/stack_ab.h"
+# include "utils/compare.h"
 
 typedef void	(*t_merger)(t_stack_ab*, t_position);
 
 
 void			handle_error(char *message, int exit_code);
 t_stack			*parse_args(int argc, char *argv[]);
-void			manual_sort_a_top_empty(t_stack_ab *st, int (*cmp)(int, int));
+void			merge_sort(
+					t_stack_ab *st, int size, t_order order, t_position dst);
+void			merge_to_dst(
+					t_stack_ab *st, int sizes[4], t_order order, t_position dst);
+void			manual_sort(
+					t_stack_ab *st, int size, t_order order, t_position dst);
+void			manual_sort_single(t_stack_ab *st, t_position dst);
 int				manual_sort_double(t_stack_ab *st,
 					int (*cmp)(int, int), t_position dst);
 void			manual_sort_triple(t_stack_ab *st, t_position dst,

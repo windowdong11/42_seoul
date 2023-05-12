@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sorted.c                                           :+:      :+:    :+:   */
+/*   manual_sort_single.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/12 22:40:06 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/12 22:40:31 by dowon            ###   ########.fr       */
+/*   Created: 2023/05/12 22:45:57 by dowon             #+#    #+#             */
+/*   Updated: 2023/05/12 22:45:59 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "./utils/stack_ab.h"
 
-int	is_sorted(t_stack_ab *st, int (*cmp)(int, int), int count)
+void	manual_sort_single(t_stack_ab *st, t_position dst)
 {
-	const t_dbl_list	*top = st->stack_a->top;
-	int					idx;
-
-	idx = 1;
-	while (idx < count)
+	if (dst == A_BOTTOM)
+		st->ra(st, OPTIMIZE);
+	else if (dst == B_TOP)
+		st->pb(st, OPTIMIZE);
+	else if (dst == B_BOTTOM)
 	{
-		if (!cmp(top->value, top->next->value))
-			return (0);
-		top = top->next;
-		idx++;
+		st->pb(st, OPTIMIZE);
+		st->rb(st, OPTIMIZE);
 	}
-	return (1);
 }
