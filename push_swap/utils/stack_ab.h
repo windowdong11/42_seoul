@@ -6,13 +6,13 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 19:24:22 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/11 16:40:33 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/12 22:22:10 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STACK_AB_H
 # define STACK_AB_H
-# define OPTIMIZE 0
+# define OPTIMIZE 1
 
 /*
 sa (swap a): Swap the first 2 elements at the top of stack a.
@@ -42,12 +42,10 @@ typedef enum e_command
 	SS = 10,
 	RR = 20,
 	RRR = 30,
-
 	SA = 11,
 	RA = 21,
 	RRA = 31,
 	PA = 41,
-
 	SB = 12,
 	RB = 22,
 	RRB = 32,
@@ -70,13 +68,13 @@ typedef struct s_dbl_list
 	int					value;
 	void				(*destructor)(struct s_dbl_list *this);
 	void				(*push_next)(struct s_dbl_list *this,
-						struct s_dbl_list *new_node);
+			struct s_dbl_list *new_node);
 	void				(*push_prev)(struct s_dbl_list *this,
-						struct s_dbl_list *new_node);
+			struct s_dbl_list *new_node);
 	struct s_dbl_list	*(*pop_prev)(struct s_dbl_list *this);
 	struct s_dbl_list	*(*pop_next)(struct s_dbl_list *this);
 	void				(*swap)(struct s_dbl_list *this,
-					struct s_dbl_list *node);
+			struct s_dbl_list *node);
 }						t_dbl_list;
 
 typedef struct s_stack
@@ -86,7 +84,8 @@ typedef struct s_stack
 	int					size;
 	void				(*destructor)(struct s_stack *this);
 	void				(*push)(struct s_stack *this, t_dbl_list *new_node);
-	void				(*push_back)(struct s_stack *this, t_dbl_list *new_node);
+	void				(*push_back)(struct s_stack *this,
+			t_dbl_list *new_node);
 	t_dbl_list			*(*pop)(struct s_stack *this);
 	void				(*swap)(struct s_stack *this);
 	void				(*rotate)(struct s_stack *this);
@@ -115,7 +114,8 @@ typedef struct s_stack_ab
 int						is_a_command(t_command command);
 int						is_b_command(t_command command);
 void					print_command(t_command command);
-int						find_n_remove(t_stack_ab *this, t_command command, int view_history);
+int						remove_rev_cmd(t_stack_ab *this, t_command command,
+							int view_history);
 
 t_dbl_list				*new_t_dbl_list(int value);
 t_stack					*new_t_stack(void);

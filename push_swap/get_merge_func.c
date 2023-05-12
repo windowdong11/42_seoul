@@ -1,7 +1,7 @@
 #include "utils/stack_ab.h"
 #include "push_swap.h"
 
-void	merge_a_top(t_stack_ab *st, t_position src)
+static void	merge_a_top(t_stack_ab *st, t_position src)
 {
 	if (src == A_BOTTOM)
 	{
@@ -18,7 +18,7 @@ void	merge_a_top(t_stack_ab *st, t_position src)
 	}
 }
 
-void	merge_a_bottom(t_stack_ab *st, t_position src)
+static void	merge_a_bottom(t_stack_ab *st, t_position src)
 {
 	if (src == A_TOP)
 	{
@@ -38,7 +38,7 @@ void	merge_a_bottom(t_stack_ab *st, t_position src)
 	}
 }
 
-void	merge_b_top(t_stack_ab *st, t_position src)
+static void	merge_b_top(t_stack_ab *st, t_position src)
 {
 	if (src == A_TOP)
 		st->pb(st, OPTIMIZE);
@@ -51,7 +51,7 @@ void	merge_b_top(t_stack_ab *st, t_position src)
 		st->rrb(st, OPTIMIZE);
 }
 
-void	merge_b_bottom(t_stack_ab *st, t_position src)
+static void	merge_b_bottom(t_stack_ab *st, t_position src)
 {
 	if (src == A_TOP)
 	{
@@ -68,9 +68,14 @@ void	merge_b_bottom(t_stack_ab *st, t_position src)
 		st->rb(st, OPTIMIZE);
 }
 
-t_merger	merger_to(t_position dst)
+t_merger	get_merge_func(t_position dst)
 {
-	const t_merger	mergefunc[4] = {merge_a_top, merge_a_bottom, merge_b_top, merge_b_bottom};
+	const t_merger	mergefunc[4] = {
+		merge_a_top,
+		merge_a_bottom,
+		merge_b_top,
+		merge_b_bottom
+	};
 
 	return (mergefunc[dst]);
 }

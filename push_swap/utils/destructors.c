@@ -1,5 +1,17 @@
-#include <stdlib.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   destructors.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/12 21:32:28 by dowon             #+#    #+#             */
+/*   Updated: 2023/05/12 21:38:47 by dowon            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "stack_ab.h"
+#include <stdlib.h>
 
 void	delete_t_dbl_list(t_dbl_list *this)
 {
@@ -8,11 +20,13 @@ void	delete_t_dbl_list(t_dbl_list *this)
 
 void	delete_t_stack(t_stack *this)
 {
-	t_dbl_list*	head;
-	t_dbl_list*	tmp;
+	t_dbl_list	*head;
+	t_dbl_list	*tmp;
 
+	if (this == NULL)
+		return ;
 	head = this->top;
-	while(head != NULL)
+	while (head != NULL)
 	{
 		tmp = head;
 		head = head->next;
@@ -23,6 +37,8 @@ void	delete_t_stack(t_stack *this)
 
 void	delete_t_stack_ab(t_stack_ab *this)
 {
+	if (this == NULL)
+		return ;
 	this->command->destructor(this->command);
 	this->stack_a->destructor(this->stack_a);
 	this->stack_b->destructor(this->stack_b);

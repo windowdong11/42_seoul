@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 23:12:43 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/11 18:37:51 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/12 21:10:48 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ t_stack	*parse_args(int argc, char *argv[])
 	t_stack*const	stack_a = new_t_stack();
 	char			**split;
 
-	if (argc < 2)
-		handle_error("Error\n", 0);
+	if (argc < 2 || stack_a == NULL)
+		handle_error("Error\n", EXIT_FAILURE);
 	idx = 1;
 	while (idx < argc)
 	{

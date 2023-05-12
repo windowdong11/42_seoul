@@ -1,4 +1,15 @@
-#include "../ft_printf/include/ft_printf.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   constructors.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/12 21:32:44 by dowon             #+#    #+#             */
+/*   Updated: 2023/05/12 22:07:48 by dowon            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "stack_ab.h"
 #include <stdlib.h>
 
@@ -47,6 +58,11 @@ t_stack_ab	*new_t_stack_ab(t_stack *stack_a, t_stack *stack_b)
 		return (NULL);
 	stack_ab->destructor = delete_t_stack_ab;
 	stack_ab->command = new_t_stack();
+	if (stack_ab->command == NULL)
+	{
+		free(stack_ab);
+		return (NULL);
+	}
 	stack_ab->stack_a = stack_a;
 	stack_ab->stack_b = stack_b;
 	stack_ab->sa = sa;
@@ -61,84 +77,4 @@ t_stack_ab	*new_t_stack_ab(t_stack *stack_a, t_stack *stack_b)
 	stack_ab->rrb = rrb;
 	stack_ab->rrr = rrr;
 	return (stack_ab);
-}
-
-void	print_command(t_command command)
-{
-	const char *command_prefix[5] = {
-		"",
-		"s",
-		"r",
-		"rr",
-		"p"};
-	const char *command_postfix[3] = {
-		"r",
-		"a",
-		"b"};
-	if (command / 10 == 1 && command % 10 == 0)
-		ft_printf("ss\n");
-	else
-		ft_printf("%s%s\n", command_prefix[command / 10],
-				command_postfix[command % 10]);
-}
-
-int	is_a_command(t_command command)
-{
-	if (command == PB)
-		return (1);
-	if (command % 10 == 0 || command % 10 == 1)
-		return (1);
-	return (0);
-}
-
-int	is_b_command(t_command command)
-{
-	if (command == PA)
-		return (1);
-	if (command % 10 == 0 || command % 10 == 2)
-		return (1);
-	return (0);
-}
-
-int	find_n_remove(t_stack_ab *this, t_command command, int view_history)
-{
-	const t_command	rev_commands[5][3] = {
-	{NONE, NONE, NONE},
-	{SS, SA, SB},
-	{RRR, RRA, RRB},
-	{RR, RA, RB},
-	{NONE, PB, PA}};
-	const t_command rev_command = rev_commands[command / 10][command % 10];
-	t_dbl_list *node;
-	t_dbl_list *tmp;
-	int (*is_command)(t_command);
-
-	node = this->command->top;
-	if (is_a_command(command))
-		is_command = is_a_command;
-	else
-		is_command = is_b_command;
-	if (node != NULL)
-	{
-		if ((t_command)node->value == rev_command)
-		{
-			this->command->pop(this->command);
-			return (1);
-		}
-		if (view_history == 0)
-			return (0);
-		while (node->next && !is_command(node->value))
-		{
-			if ((t_command)node->next->value == rev_command)
-			{
-				if (this->command->bottom == node->next)
-					this->command->bottom = node;
-				tmp = node->pop_next(node);
-				tmp->destructor(tmp);
-				return (1);
-			}
-			node = node->next;
-		}
-	}
-	return (0);
 }

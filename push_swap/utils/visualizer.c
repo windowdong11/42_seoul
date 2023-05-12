@@ -36,3 +36,18 @@ void	visualize_ab(t_stack_ab *st, const char *prefix, int d)
 	ft_printf("stack_b: ");
 	visualize(st->stack_b);
 }
+
+void	print_command(t_command command)
+{
+	const char*const	cmd_pre[5] = {
+		"", "s", "r", "rr", "p"
+	};
+	const char*const	cmd_post[3] = {
+		"r", "a", "b"
+	};
+
+	if (command / 10 == 1 && command % 10 == 0)
+		ft_printf("ss\n");
+	else
+		ft_printf("%s%s\n", cmd_pre[command / 10], cmd_post[command % 10]);
+}

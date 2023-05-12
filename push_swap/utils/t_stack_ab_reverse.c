@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   t_stack_ab_reverse.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/12 21:20:18 by dowon             #+#    #+#             */
+/*   Updated: 2023/05/12 22:22:10 by dowon            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "stack_ab.h"
 
 void	rra(t_stack_ab *this, int optimize)
@@ -5,12 +17,12 @@ void	rra(t_stack_ab *this, int optimize)
 	if (this->stack_a->size <= 1)
 		return ;
 	this->stack_a->rrotate(this->stack_a);
-	if (optimize && find_n_remove(this, RRA, 1))
+	if (optimize && remove_rev_cmd(this, RRA, 1))
 		return ;
 	else if (optimize && this->command->top && this->command->top->value == RRB)
 	{
 		this->command->pop(this->command);
-		if (optimize && find_n_remove(this, RRR, 0))
+		if (optimize && remove_rev_cmd(this, RRR, 0))
 			return ;
 		this->command->push(this->command, new_t_dbl_list(RRR));
 		return ;
@@ -23,12 +35,12 @@ void	rrb(t_stack_ab *this, int optimize)
 	if (this->stack_b->size <= 1)
 		return ;
 	this->stack_b->rrotate(this->stack_b);
-	if (optimize && find_n_remove(this, RRB, 1))
+	if (optimize && remove_rev_cmd(this, RRB, 1))
 		return ;
 	else if (optimize && this->command->top && this->command->top->value == RRA)
 	{
 		this->command->pop(this->command);
-		if (optimize && find_n_remove(this, RRR, 0))
+		if (optimize && remove_rev_cmd(this, RRR, 0))
 			return ;
 		this->command->push(this->command, new_t_dbl_list(RRR));
 		return ;
@@ -44,7 +56,7 @@ void	rrr(t_stack_ab *this, int optimize)
 	this->rrb(this, 0);
 	this->command->pop(this->command);
 	this->command->pop(this->command);
-	if (optimize && find_n_remove(this, RRR, 0))
+	if (optimize && remove_rev_cmd(this, RRR, 0))
 		return ;
 	this->command->push(this->command, new_t_dbl_list(RRR));
 }
