@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 20:31:59 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/08 19:32:24 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/12 13:35:30 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ void	t_stack_push_back(t_stack *this, t_dbl_list *new_node)
 	this->size++;
 }
 
-t_dbl_list*		t_stack_pop(t_stack *this)
+t_dbl_list	*t_stack_pop(t_stack *this)
 {
-	t_dbl_list*	node;
+	t_dbl_list	*node;
 
 	node = NULL;
 	if (this->size == 0)
@@ -92,7 +92,7 @@ void	t_stack_swap(t_stack *this)
 
 void	t_stack_rotate(t_stack *this)
 {
-	t_dbl_list*	node;
+	t_dbl_list	*node;
 
 	if (this->size <= 1)
 		return ;
@@ -109,7 +109,7 @@ void	t_stack_rotate(t_stack *this)
 
 void	t_stack_rrotate(t_stack *this)
 {
-	t_dbl_list*	node;
+	t_dbl_list	*node;
 
 	if (this->size <= 1)
 		return ;
