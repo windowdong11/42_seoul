@@ -1,37 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   compare.c                                          :+:      :+:    :+:   */
+/*   error_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/15 17:09:00 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/15 17:09:01 by dowon            ###   ########.fr       */
+/*   Created: 2023/05/15 17:07:28 by dowon             #+#    #+#             */
+/*   Updated: 2023/05/15 18:02:08 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "compare.h"
+#include <unistd.h>
+#include <stdlib.h>
+#include "libft/libft.h"
 
-static int	greater(int a, int b)
+void	handle_error(char *message, int exit_code)
 {
-	return (a > b);
-}
-
-static int	smaller(int a, int b)
-{
-	return (a < b);
-}
-
-t_compare	get_cmp(const t_order order)
-{
-	const t_compare	cmp[] = {smaller, greater};
-
-	return (cmp[order]);
-}
-
-t_compare	get_rcmp(const	t_order order)
-{
-	const t_compare	rcmp[] = {greater, smaller};
-
-	return (rcmp[order]);
+	ft_putstr_fd(message, STDERR_FILENO);
+	exit(exit_code);
 }

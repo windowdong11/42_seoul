@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 23:13:53 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/15 12:14:47 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/15 17:07:46 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include "utils/compare.h"
 
 typedef void	(*t_merger)(t_stack_ab*, t_position);
-
 
 void			handle_error(char *message, int exit_code);
 t_stack			*parse_args(int argc, char *argv[]);

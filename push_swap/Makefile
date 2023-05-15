@@ -6,17 +6,17 @@
 #    By: dowon <dowon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/23 17:04:03 by dowon             #+#    #+#              #
-#    Updated: 2023/05/15 12:20:06 by dowon            ###   ########.fr        #
+#    Updated: 2023/05/15 18:28:41 by dowon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 NAME = push_swap
-NAME_BONUS = checker
+BONUS_NAME = checker
 
-BASE_SRC = parse_args.c                    utils/t_dbl_list_swap.c \
+BASE_SRC = error_handler.c parse_args.c                    utils/t_dbl_list_swap.c \
 get_merge_func.c                sorted.c                        utils/t_stack_ab_push_swap.c \
 utils/compare.c                 utils/t_stack_ab_reverse.c \
 manual_sort_double.c            utils/constructors.c            utils/t_stack_ab_rotate.c \
@@ -29,22 +29,35 @@ OBJS = $(SRC:.c=.o)
 BONUS_SRC = $(BASE_SRC) checker.c
 BONUS_OBJS = $(BONUS_SRC:.c=.o)
 
-ARC_DIRS = libft ft_printf ft_get_next_line
+ARC_DIRS = libft ft_printf get_next_line
 ARCS = $(foreach d,$(ARC_DIRS),$(d)/$(d:ft_%=libft%).a)
+
+ifndef __DEP_ARCS_BUILDED__
 
 all:
 	$(foreach d, $(ARC_DIRS), make -C $(d);)
-	make $(NAME)
+	make all __DEP_ARCS_BUILDED__=1
 
 bonus:
 	$(foreach d, $(ARC_DIRS), make -C $(d);)
-	make $(NAME_BONUS)
+	make bonus __DEP_ARCS_BUILDED__=1
 
-$(NAME_BONUS): $(BONUS_OBJS)
-	$(CC) $(CFLAGS) $(BONUS_OBJS) $(ARCS) -o $(NAME_BONUS)
+else
+
+all:
+	make $(NAME)
+
+bonus:
+	make $(BONUS_NAME)
+
+endif
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $^ -o $@
+
+$(BONUS_NAME): $(BONUS_OBJS) $(ARCS)
+	$(CC) $(CFLAGS) $(BONUS_OBJS) $(ARCS) -o $(BONUS_NAME)
+
 
 $(NAME): $(OBJS) $(ARCS)
 	$(CC) $(CFLAGS) $(OBJS) $(ARCS) -o $(NAME)
@@ -54,8 +67,8 @@ clean:
 	rm -f $(OBJS) $(BONUS_OBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME) $(BONUS_NAME)
 
 re: fclean all
 
-.PHONY: re clean fclean all bonus $(NAME) $(NAME_BONUS)
+.PHONY: re clean fclean all bonus

@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 17:08:57 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/15 14:46:23 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/15 18:26:55 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,75 +14,86 @@
 #include "libft/libft.h"
 #include "push_swap.h"
 #include "utils/stack_ab.h"
-#include "ft_get_next_line/get_next_line.h"
+#include "get_next_line/get_next_line.h"
 #include <stdlib.h>
 
-void	handle_error(char *message, int exit_code)
+t_stack_ab_method	get_rotate_method(t_stack_ab *st, char *cmd)
 {
-	ft_putstr_fd(message, STDERR_FILENO);
-	exit(exit_code);
+	if (cmd[1] == 'a')
+		return (st->ra);
+	else if (cmd[1] == 'b')
+		return (st->rb);
+	else if (cmd[1] == 'r')
+	{
+		if (cmd[2] == '\n')
+			return (st->rr);
+		else if (cmd[2] == 'a')
+			return (st->rra);
+		else if (cmd[2] == 'b')
+			return (st->rrb);
+		else if (cmd[2] == 'r')
+			return (st->rrr);
+	}
+	return (NULL);
 }
 
-int	handle_cmd(char *str, t_stack_ab *st)
+t_stack_ab_method	get_swap_method(t_stack_ab *st, char *cmd)
 {
-	const int	len = ft_strlen(str);
+	if (cmd[1] == 'a')
+		return (st->sa);
+	else if (cmd[1] == 'b')
+		return (st->sb);
+	else if (cmd[1] == 's')
+		return (st->ss);
+	return (NULL);
+}
 
-	if (!((len == 3 || len == 4) && (str[len - 1] == '\n')))
+t_stack_ab_method	get_pop_method(t_stack_ab *st, char *cmd)
+{
+	if (cmd[1] == 'a')
+		return (st->pa);
+	else if (cmd[1] == 'b')
+		return (st->pb);
+	return (NULL);
+}
+
+int	handle_cmd(t_stack_ab *st, char *cmd)
+{
+	const int			len = ft_strlen(cmd);
+	t_stack_ab_method	method;
+
+	if (!((len == 3 || len == 4) && (cmd[len - 1] == '\n')))
 		return (0);
-	if (str[0] == 'p')
-	{
-		if (str[1] == 'a')
-			st->pa(st, 0);
-		else if (str[1] == 'b')
-			st->pb(st, 0);
-	}
-	else if (str[0] == 's')
-	{
-		if (str[1] == 'a')
-			st->sa(st, 0);
-		else if (str[1] == 'b')
-			st->sb(st, 0);
-		else if (str[1] == 's')
-			st->ss(st, 0);
-	}
-	else if (str[0] == 'r')
-	{
-		if (str[1] == 'a')
-			st->ra(st, 0);
-		else if (str[1] == 'b')
-			st->rb(st, 0);
-		else if (str[1] == 'r')
-		{
-			if (str[2] == '\n')
-				st->rr(st, 0);
-			else if (str[2] == 'a')
-				st->rra(st, 0);
-			else if (str[2] == 'b')
-				st->rrb(st, 0);
-			else if (str[2] == 'r')
-				st->rrr(st, 0);
-		}
-	}
+	method = NULL;
+	if (cmd[0] == 'p')
+		method = get_pop_method(st, cmd);
+	else if (cmd[0] == 's')
+		method = get_swap_method(st, cmd);
+	else if (cmd[0] == 'r')
+		method = get_rotate_method(st, cmd);
+	if (method == NULL)
+		return (0);
+	method(st, 0);
 	return (1);
 }
 
 int	main(int argc, char *argv[])
 {
 	t_stack_ab	*stack_ab;
-	char		*str;
+	char		*cmd;
 
 	stack_ab = new_t_stack_ab(parse_args(argc, argv), new_t_stack());
-	str = get_next_line(STDIN_FILENO);
-	while (str)
+	cmd = get_next_line(STDIN_FILENO);
+	while (cmd)
 	{
-		if (handle_cmd(str, stack_ab) == 0)
+		if (handle_cmd(stack_ab, cmd) == 0)
 		{
-			free(str);
+			free(cmd);
 			handle_error("Error\n", EXIT_FAILURE);
 			return (0);
 		}
-		free(str);
-		str = get_next_line(STDIN_FILENO);
+		free(cmd);
+		cmd = get_next_line(STDIN_FILENO);
 	}
 	if (is_sorted(stack_ab, get_cmp(DESC), stack_ab->stack_a->size))
 		ft_putstr_fd("OK\n", STDOUT_FILENO);

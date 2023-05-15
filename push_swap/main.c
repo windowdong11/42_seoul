@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 17:14:56 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/15 12:18:07 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/15 17:07:42 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,6 @@
 #include "push_swap.h"
 #include "utils/stack_ab.h"
 #include <stdlib.h>
-
-void	handle_error(char *message, int exit_code)
-{
-	ft_putstr_fd(message, STDERR_FILENO);
-	exit(exit_code);
-}
 
 int	main(int argc, char *argv[])
 {
