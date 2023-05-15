@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checker.c                                          :+:      :+:    :+:   */
+/*   checker_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 17:08:57 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/15 19:10:02 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/15 22:05:56 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,8 @@ int	main(int argc, char *argv[])
 		free(cmd);
 		cmd = get_next_line(STDIN_FILENO);
 	}
-	if (is_sorted(stack_ab, get_cmp(DESC), stack_ab->stack_a->size))
+	if (is_sorted(stack_ab->stack_a, get_cmp(DESC), stack_ab->stack_a->size)
+		&& stack_ab->stack_b->size == 0)
 		ft_putstr_fd("OK\n", STDOUT_FILENO);
 	else
 		ft_putstr_fd("KO\n", STDOUT_FILENO);

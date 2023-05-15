@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:08:49 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/15 17:08:50 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/15 22:12:19 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,12 @@ void	merge_sort_b(t_stack_ab *st, int size, t_order order, t_position dst)
 
 void	merge_sort(t_stack_ab *st, int size, t_order order, t_position dst)
 {
+	if (is_sorted(st->stack_a, get_cmp(order), size))
+	{
+		while (size-- > 0)
+			(get_merge_func(dst))(st, A_TOP);
+		return ;
+	}
 	if (size <= 8)
 		manual_sort(st, size, order, dst);
 	else if (dst == A_TOP || dst == A_BOTTOM)

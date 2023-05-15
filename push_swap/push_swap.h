@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 23:13:53 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/15 17:07:46 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/15 22:08:14 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void			manual_sort_triple(t_stack_ab *st, t_position dst,
 int				greater(int a, int b);
 int				smaller(int a, int b);
 
-int				is_sorted(t_stack_ab *st, int (*cmp)(int, int), int count);
+int				is_sorted(t_stack *st, int (*cmp)(int, int), int count);
 t_merger		get_merge_func(t_position dst);
 
 #endif
