@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 17:08:57 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/15 18:57:05 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/15 19:10:02 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,16 @@
 
 t_stack_ab_method	get_rotate_method(t_stack_ab *st, char *cmd)
 {
-	if (cmd[1] == 'a')
+	if (cmd[1] == 'a' && cmd[2] == '\n')
 		return (st->ra);
-	else if (cmd[1] == 'b')
+	else if (cmd[1] == 'b' && cmd[2] == '\n')
 		return (st->rb);
 	else if (cmd[1] == 'r')
 	{
 		if (cmd[2] == '\n')
 			return (st->rr);
+		else if (cmd[3] != '\n')
+			return (NULL);
 		else if (cmd[2] == 'a')
 			return (st->rra);
 		else if (cmd[2] == 'b')
@@ -39,6 +41,8 @@ t_stack_ab_method	get_rotate_method(t_stack_ab *st, char *cmd)
 
 t_stack_ab_method	get_swap_method(t_stack_ab *st, char *cmd)
 {
+	if (cmd[2] != '\n')
+		return (NULL);
 	if (cmd[1] == 'a')
 		return (st->sa);
 	else if (cmd[1] == 'b')
@@ -50,6 +54,8 @@ t_stack_ab_method	get_swap_method(t_stack_ab *st, char *cmd)
 
 t_stack_ab_method	get_pop_method(t_stack_ab *st, char *cmd)
 {
+	if (cmd[2] != '\n')
+		return (NULL);
 	if (cmd[1] == 'a')
 		return (st->pa);
 	else if (cmd[1] == 'b')
@@ -62,12 +68,10 @@ int	handle_cmd(t_stack_ab *st, char *cmd)
 	const int			len = ft_strlen(cmd);
 	t_stack_ab_method	method;
 
-	if (!((len == 3 || len == 4) && (cmd[len - 1] == '\n')))
-		return (0);
 	method = NULL;
-	if (cmd[0] == 'p')
+	if (len == 3 && cmd[0] == 'p')
 		method = get_pop_method(st, cmd);
-	else if (cmd[0] == 's')
+	else if (len == 3 && cmd[0] == 's')
 		method = get_swap_method(st, cmd);
 	else if (cmd[0] == 'r')
 		method = get_rotate_method(st, cmd);
