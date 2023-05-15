@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 17:08:57 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/15 18:26:55 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/15 18:57:05 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,11 @@ int	handle_cmd(t_stack_ab *st, char *cmd)
 
 int	main(int argc, char *argv[])
 {
-	t_stack_ab	*stack_ab;
-	char		*cmd;
+	t_stack_ab*const	stack_ab = new_t_stack_ab(argc, argv);
+	char				*cmd;
 
-	stack_ab = new_t_stack_ab(parse_args(argc, argv), new_t_stack());
+	if (stack_ab == NULL)
+		handle_error("Error\n", EXIT_FAILURE);
 	cmd = get_next_line(STDIN_FILENO);
 	while (cmd)
 	{

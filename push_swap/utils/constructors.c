@@ -6,11 +6,12 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 21:32:44 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/12 22:07:48 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/15 18:55:20 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stack_ab.h"
+#include "../push_swap.h"
 #include <stdlib.h>
 
 t_dbl_list	*new_t_dbl_list(int value)
@@ -50,21 +51,9 @@ t_stack	*new_t_stack(void)
 	return (stack);
 }
 
-t_stack_ab	*new_t_stack_ab(t_stack *stack_a, t_stack *stack_b)
+static void	bind_method_stack_ab(t_stack_ab *stack_ab)
 {
-	t_stack_ab*const	stack_ab = malloc(sizeof(t_stack_ab));
-
-	if (stack_ab == NULL)
-		return (NULL);
 	stack_ab->destructor = delete_t_stack_ab;
-	stack_ab->command = new_t_stack();
-	if (stack_ab->command == NULL)
-	{
-		free(stack_ab);
-		return (NULL);
-	}
-	stack_ab->stack_a = stack_a;
-	stack_ab->stack_b = stack_b;
 	stack_ab->sa = sa;
 	stack_ab->sb = sb;
 	stack_ab->ss = ss;
@@ -76,5 +65,30 @@ t_stack_ab	*new_t_stack_ab(t_stack *stack_a, t_stack *stack_b)
 	stack_ab->rra = rra;
 	stack_ab->rrb = rrb;
 	stack_ab->rrr = rrr;
+}
+
+t_stack_ab	*new_t_stack_ab(int argc, char *argv[])
+{
+	t_stack_ab*const	stack_ab = malloc(sizeof(t_stack_ab));
+
+	if (stack_ab == NULL)
+		return (NULL);
+	stack_ab->command = new_t_stack();
+	stack_ab->stack_a = parse_args(argc, argv);
+	stack_ab->stack_b = new_t_stack();
+	if (stack_ab->command == NULL
+		|| stack_ab->stack_a == NULL || stack_ab->stack_b == NULL)
+	{
+		if (stack_ab->stack_a != NULL)
+			stack_ab->stack_a->destructor(stack_ab->stack_a);
+		if (stack_ab->stack_b != NULL)
+			stack_ab->stack_b->destructor(stack_ab->stack_b);
+		if (stack_ab->command != NULL)
+			stack_ab->command->destructor(stack_ab->command);
+		if (stack_ab != NULL)
+			free(stack_ab);
+		return (NULL);
+	}
+	bind_method_stack_ab(stack_ab);
 	return (stack_ab);
 }

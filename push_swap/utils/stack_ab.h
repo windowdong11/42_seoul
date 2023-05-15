@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 19:24:22 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/15 18:03:17 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/15 18:49:08 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int						remove_rev_cmd(t_stack_ab *this,
 							t_command command, int view_history);
 t_dbl_list				*new_t_dbl_list(int value);
 t_stack					*new_t_stack(void);
-t_stack_ab				*new_t_stack_ab(t_stack *stack_a, t_stack *stack_b);
+t_stack_ab				*new_t_stack_ab(int argc, char *argv[]);
 void					delete_t_dbl_list(t_dbl_list *this);
 void					delete_t_stack(t_stack *this);
 void					delete_t_stack_ab(t_stack_ab *this);
