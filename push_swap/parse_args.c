@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 23:12:43 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/12 21:10:48 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/15 14:39:45 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,12 @@ static void	parse_each_word(char **words, t_stack *stack_a)
 		if (parse_int(*words, &num))
 		{
 			stack_a->destructor(stack_a);
-			handle_error("Error in parse_each_word\n", 0);
+			handle_error("Error\n", EXIT_FAILURE);
+		}
+		if (t_dbl_list_find(stack_a->top, num) != NULL)
+		{
+			stack_a->destructor(stack_a);
+			handle_error("Error\n", EXIT_FAILURE);
 		}
 		stack_a->push_back(stack_a, new_t_dbl_list(num));
 		free(*words);
@@ -98,10 +103,10 @@ t_stack	*parse_args(int argc, char *argv[])
 	while (idx < argc)
 	{
 		split = ft_split(argv[idx], ' ');
-		if (split == NULL)
+		if (split == NULL || *split == NULL)
 		{
 			stack_a->destructor(stack_a);
-			handle_error("Error in parse_args\n", EXIT_FAILURE);
+			handle_error("Error\n", EXIT_FAILURE);
 		}
 		parse_each_word(split, stack_a);
 		free(split);

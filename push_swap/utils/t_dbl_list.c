@@ -6,14 +6,14 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 20:37:12 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/12 21:29:06 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/15 14:38:52 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stack_ab.h"
 #include <stdlib.h>
 
-void	t_dbl_list_push_next(t_dbl_list*this, t_dbl_list *new_node)
+void	t_dbl_list_push_next(t_dbl_list *this, t_dbl_list *new_node)
 {
 	t_dbl_list*const	next_node = this->next;
 
@@ -24,7 +24,7 @@ void	t_dbl_list_push_next(t_dbl_list*this, t_dbl_list *new_node)
 	this->next = new_node;
 }
 
-void	t_dbl_list_push_prev(t_dbl_list*this, t_dbl_list *new_node)
+void	t_dbl_list_push_prev(t_dbl_list *this, t_dbl_list *new_node)
 {
 	t_dbl_list*const	prev_node = this->prev;
 
@@ -35,7 +35,7 @@ void	t_dbl_list_push_prev(t_dbl_list*this, t_dbl_list *new_node)
 	this->prev = new_node;
 }
 
-t_dbl_list	*t_dbl_list_pop_prev(t_dbl_list*this)
+t_dbl_list	*t_dbl_list_pop_prev(t_dbl_list *this)
 {
 	t_dbl_list*const	prev_node = this->prev;
 
@@ -49,7 +49,7 @@ t_dbl_list	*t_dbl_list_pop_prev(t_dbl_list*this)
 	return (prev_node);
 }
 
-t_dbl_list	*t_dbl_list_pop_next(t_dbl_list*this)
+t_dbl_list	*t_dbl_list_pop_next(t_dbl_list *this)
 {
 	t_dbl_list*const	next_node = this->next;
 
@@ -61,4 +61,18 @@ t_dbl_list	*t_dbl_list_pop_next(t_dbl_list*this)
 	next_node->prev = NULL;
 	next_node->next = NULL;
 	return (next_node);
+}
+
+t_dbl_list	*t_dbl_list_find(t_dbl_list *this, int value)
+{
+	t_dbl_list	*node;
+
+	node = this;
+	while (node != NULL)
+	{
+		if (node->value == value)
+			return (node);
+		node = node->next;
+	}
+	return (NULL);
 }

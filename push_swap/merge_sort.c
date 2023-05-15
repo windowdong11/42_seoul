@@ -4,6 +4,50 @@
 #include "utils/stack_ab.h"
 #include "utils/compare.h"
 
+void	merge_sort_a(t_stack_ab *st, int size, t_order order, t_position dst)
+{
+	int	sizes[4];
+
+	sizes[A_TOP] = 0;
+	sizes[A_BOTTOM] = size / 3;
+	sizes[B_BOTTOM] = size / 3;
+	sizes[B_TOP] = size - size / 3 * 2;
+	merge_sort(st, sizes[B_BOTTOM], order, B_BOTTOM);
+	merge_sort(st, sizes[B_TOP], !order, B_TOP);
+	merge_sort(st, sizes[A_BOTTOM], order, A_BOTTOM);
+	merge_to_dst(st, sizes, order, A_TOP);
+	if (dst == A_BOTTOM && st->stack_a->size != size)
+		while (size-- > 0)
+			st->ra(st, OPTIMIZE);
+}
+
+void	merge_sort_b(t_stack_ab *st, int size, t_order order, t_position dst)
+{
+	int	sizes[4];
+
+	sizes[B_TOP] = 0;
+	sizes[A_BOTTOM] = size / 3;
+	sizes[B_BOTTOM] = size / 3;
+	sizes[A_TOP] = size - size / 3 * 2;
+	merge_sort(st, sizes[A_BOTTOM], order, A_BOTTOM);
+	merge_sort(st, sizes[B_BOTTOM], order, B_BOTTOM);
+	merge_sort(st, sizes[A_TOP], !order, A_TOP);
+	merge_to_dst(st, sizes, order, B_TOP);
+	if (dst == B_BOTTOM && st->stack_b->size != size)
+		while (size-- > 0)
+			st->rb(st, OPTIMIZE);
+}
+
+void	merge_sort(t_stack_ab *st, int size, t_order order, t_position dst)
+{
+	if (size <= 8)
+		manual_sort(st, size, order, dst);
+	else if (dst == A_TOP || dst == A_BOTTOM)
+		merge_sort_a(st, size, order, dst);
+	else
+		merge_sort_b(st, size, order, dst);
+}
+
 void	merge_sort_2way(t_stack_ab *st, int size, t_order order, t_position dst)
 {
 	if (dst <= A_BOTTOM)
@@ -35,9 +79,7 @@ void	manual_sort(t_stack_ab *st, int size, t_order order, t_position dst)
 	else if (size == 2)
 		manual_sort_double(st, get_cmp(order), dst);
 	else if (size == 3)
-	{
 		manual_sort_triple(st, dst, get_cmp(order));
-	}
 	else
 		merge_sort_2way(st, size, order, dst);
 }

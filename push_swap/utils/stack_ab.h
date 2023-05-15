@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 19:24:22 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/12 22:22:10 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/15 14:39:12 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ void					t_dbl_list_push_prev(t_dbl_list *this,
 t_dbl_list				*t_dbl_list_pop_prev(t_dbl_list *this);
 t_dbl_list				*t_dbl_list_pop_next(t_dbl_list *this);
 void					t_dbl_list_swap(t_dbl_list *this, t_dbl_list *node);
+t_dbl_list				*t_dbl_list_find(t_dbl_list *this, int value);
 
 void					t_stack_push(t_stack *this, t_dbl_list *new_node);
 void					t_stack_push_back(t_stack *this, t_dbl_list *new_node);
