@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:08:20 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/15 17:08:21 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/17 17:30:27 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,13 @@ static void	merge_a_top(t_stack_ab *st, t_position src)
 {
 	if (src == A_BOTTOM)
 	{
-		if (st->stack_a->size > 1)
-			st->rra(st, OPTIMIZE);
+		st->rra(st, OPTIMIZE);
 	}
 	else if (src == B_TOP)
 		st->pa(st, OPTIMIZE);
 	else if (src == B_BOTTOM)
 	{
-		if (st->stack_b->size != 1)
-			st->rrb(st, OPTIMIZE);
+		st->rrb(st, OPTIMIZE);
 		st->pa(st, OPTIMIZE);
 	}
 }
@@ -34,8 +32,7 @@ static void	merge_a_bottom(t_stack_ab *st, t_position src)
 {
 	if (src == A_TOP)
 	{
-		if (st->stack_a->size > 1)
-			st->ra(st, OPTIMIZE);
+		st->ra(st, OPTIMIZE);
 	}
 	else if (src == B_TOP)
 	{
