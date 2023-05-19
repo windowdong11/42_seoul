@@ -6,7 +6,7 @@
 #    By: dowon <dowon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/23 17:04:03 by dowon             #+#    #+#              #
-#    Updated: 2023/05/15 18:28:41 by dowon            ###   ########.fr        #
+#    Updated: 2023/05/19 14:32:04 by dowon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ merge_sort.c                    utils/t_dbl_list.c \
 merge.c                         utils/stack_ab_getter.c         utils/visualizer.c
 SRC = $(BASE_SRC) main.c
 OBJS = $(SRC:.c=.o)
-BONUS_SRC = $(BASE_SRC) checker.c
+BONUS_SRC = $(BASE_SRC) checker_bonus.c
 BONUS_OBJS = $(BONUS_SRC:.c=.o)
 
 ARC_DIRS = libft ft_printf get_next_line
@@ -44,11 +44,9 @@ bonus:
 
 else
 
-all:
-	make $(NAME)
+all: $(NAME)
 
-bonus:
-	make $(BONUS_NAME)
+bonus: $(BONUS_NAME)
 
 endif
 
