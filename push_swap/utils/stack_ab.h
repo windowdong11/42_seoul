@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 19:24:22 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/17 14:01:35 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/22 21:48:59 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define STACK_AB_H
 # define OPTIMIZE 1
 
+int *alloc_counter();
+int *free_counter();
 typedef enum e_command
 {
 	NONE = 0,

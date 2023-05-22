@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:08:49 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/17 19:21:34 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/19 16:49:22 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	handle_sorted(t_stack_ab *st, int size, t_order order, t_position dst);
 
 void	merge_sort(t_stack_ab *st, int size, t_order order, t_position dst)
 {
-	if (handle_sorted(st, size, order, dst))
+	if (size > 3 && handle_sorted(st, size, order, dst))
 		return ;
 	if (size <= 8)
 		manual_sort(st, size, order, dst);

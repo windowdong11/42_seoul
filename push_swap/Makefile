@@ -6,12 +6,13 @@
 #    By: dowon <dowon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/23 17:04:03 by dowon             #+#    #+#              #
-#    Updated: 2023/05/19 14:32:04 by dowon            ###   ########.fr        #
+#    Updated: 2023/05/22 21:19:18 by dowon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror 
+# -fsanitize=address
 
 NAME = push_swap
 BONUS_NAME = checker

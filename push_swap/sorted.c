@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 22:40:06 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/17 19:21:11 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/19 17:02:35 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,14 @@ int	handle_sorted(t_stack_ab *st, int size, t_order order, t_position dst)
 
 	if (dst == A_TOP && is_sorted(st->stack_a, get_cmp(order), size))
 		return (1);
-	else if (((dst == A_BOTTOM || dst == B_BOTTOM)
-		&& is_sorted(st->stack_a, get_cmp(order), size) && st->stack_a->size != size)
-		|| (dst == B_TOP && is_sorted(st->stack_a, get_rcmp(order), size)))
+	else if (dst != B_TOP && is_sorted(st->stack_a, get_cmp(order), size))
 	{
 		idx = 0;
 		while (idx++ < size)
 			(get_merge_func(dst))(st, A_TOP);
 		return (1);
 	}
-	else if (dst == B_BOTTOM && is_sorted(st->stack_a, get_rcmp(order), size))
+	else if (dst >= B_TOP && is_sorted(st->stack_a, get_rcmp(order), size))
 	{
 		idx = 0;
 		while (idx++ < size)

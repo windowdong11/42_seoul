@@ -5,35 +5,35 @@
 #                                                     +:+ +:+         +:+      #
 #    By: dowon <dowon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/12/24 14:27:19 by dowon             #+#    #+#              #
-#    Updated: 2023/02/27 23:07:10 by dowon            ###   ########.fr        #
+#    Created: 2022/12/12 02:10:08 by dowon             #+#    #+#              #
+#    Updated: 2023/05/22 23:16:44 by dowon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -c
 
-NAME = libftprintf.a
+NAME = get_next_line.a
 
-INC_DIR = inc
-
-SRC_DIR = src
-SRC = ft_printf.c ft_put.c ft_putbase.c ft_str.c
-SRCS = $(addprefix $(SRC_DIR)/,$(SRC))
-SRCS_OBJS = $(SRCS:.c=.o)
-
-OBJS = $(SRCS_OBJS)
+SRC = get_next_line.c get_next_line_utils.c
+OBJS_DIR = ./obj
+OBJS = $(addprefix $(OBJS_DIR)/, $(SRC:.c=.o))
 
 all: $(NAME)
 
-%.o: %.c
-	$(CC) $(CFLAGS) $^ -o $@ -I$(INC_DIR)
+$(OBJS_DIR)/%.o: %.c
+	$(CC) $(CFLAGS) $^ -o $@ -I $(CURDIR)
+
+$(OBJS): | $(OBJS_DIR)
+
+$(OBJS_DIR):
+	mkdir -p $(OBJS_DIR)
 
 $(NAME): $(OBJS)
-	ar cr $@ $^
+	ar cr $@ $(OBJS)
 
 clean:
-	rm -f $(SRCS_OBJS)
+	rm -rf $(OBJS_DIR)
 
 fclean: clean
 	rm -f $(NAME)
