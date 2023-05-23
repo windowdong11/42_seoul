@@ -6,11 +6,11 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 17:52:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/20 21:13:23 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/23 18:28:12 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "MLX42/MLX42.h"
-#include "libft/libft.h"
+#include "libft.h"
 #include "mlx_utils.h"
 

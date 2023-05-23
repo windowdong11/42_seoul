@@ -6,7 +6,7 @@
 #    By: dowon <dowon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/12 02:10:08 by dowon             #+#    #+#              #
-#    Updated: 2023/05/22 23:16:44 by dowon            ###   ########.fr        #
+#    Updated: 2023/05/23 18:23:18 by dowon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,24 +16,30 @@ CFLAGS = -Wall -Wextra -Werror -c
 NAME = get_next_line.a
 
 SRC = get_next_line.c get_next_line_utils.c
-OBJS_DIR = ./obj
-OBJS = $(addprefix $(OBJS_DIR)/, $(SRC:.c=.o))
+
+INCLUDE_DIR = ./include
+SRC_DIR = ./src
+OBJ_DIR = ./obj
+
+INCLUDE = $(addprefix -I, $(INCLUDE_DIR))
+SRCS = $(addprefix $(SRC_DIR)/, $(SRC))
+OBJS = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
 all: $(NAME)
 
-$(OBJS_DIR)/%.o: %.c
-	$(CC) $(CFLAGS) $^ -o $@ -I $(CURDIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	$(CC) $(CFLAGS) $^ -o $@ $(INCLUDE)
 
-$(OBJS): | $(OBJS_DIR)
+$(OBJS): | $(OBJ_DIR)
 
-$(OBJS_DIR):
-	mkdir -p $(OBJS_DIR)
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
 
 $(NAME): $(OBJS)
 	ar cr $@ $(OBJS)
 
 clean:
-	rm -rf $(OBJS_DIR)
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
 	rm -f $(NAME)

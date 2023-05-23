@@ -6,25 +6,17 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 21:32:44 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/22 21:43:59 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/23 22:16:19 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stack_ab.h"
-#include "../push_swap.h"
+#include "push_swap.h"
 #include <stdlib.h>
-int *alloc_counter() {
-	static int	alloc_counter = 0;
-	return &alloc_counter;
-}
-int *free_counter() {
-	static int	free_counter = 0;
-	return &free_counter;
-}
+
 t_dbl_list	*new_t_dbl_list(int value)
 {
 	t_dbl_list*const	node = malloc(sizeof(t_dbl_list));
-	*alloc_counter() = *alloc_counter() + 1;
 
 	if (node == NULL)
 		return (NULL);
@@ -32,10 +24,10 @@ t_dbl_list	*new_t_dbl_list(int value)
 	node->next = NULL;
 	node->prev = NULL;
 	node->value = value;
-	node->push_next = t_dbl_list_push_next;
-	node->push_prev = t_dbl_list_push_prev;
-	node->pop_prev = t_dbl_list_pop_prev;
-	node->pop_next = t_dbl_list_pop_next;
+	node->push_next = dbl_list_push_next;
+	node->push_prev = dbl_list_push_prev;
+	node->pop_prev = dbl_list_pop_prev;
+	node->pop_next = dbl_list_pop_next;
 	node->swap = t_dbl_list_swap;
 	return (node);
 }
@@ -43,7 +35,6 @@ t_dbl_list	*new_t_dbl_list(int value)
 t_stack	*new_t_stack(void)
 {
 	t_stack*const	stack = malloc(sizeof(t_stack));
-	*alloc_counter() = *alloc_counter() + 1;
 
 	if (stack == NULL)
 		return (NULL);
@@ -79,7 +70,6 @@ static void	bind_method_stack_ab(t_stack_ab *stack_ab)
 t_stack_ab	*new_t_stack_ab(int argc, char *argv[])
 {
 	t_stack_ab*const	stack_ab = malloc(sizeof(t_stack_ab));
-	*alloc_counter() = *alloc_counter() + 1;
 
 	if (stack_ab == NULL)
 		return (NULL);

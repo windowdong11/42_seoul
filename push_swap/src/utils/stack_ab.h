@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 19:24:22 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/22 21:48:59 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/23 22:16:29 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define STACK_AB_H
 # define OPTIMIZE 1
 
-int *alloc_counter();
-int *free_counter();
 typedef enum e_command
 {
 	NONE = 0,
@@ -104,14 +102,14 @@ t_stack_ab				*new_t_stack_ab(int argc, char *argv[]);
 void					delete_t_dbl_list(t_dbl_list *this);
 void					delete_t_stack(t_stack *this);
 void					delete_t_stack_ab(t_stack_ab *this);
-void					t_dbl_list_push_next(
+void					dbl_list_push_next(
 							t_dbl_list *this, t_dbl_list *new_node);
-void					t_dbl_list_push_prev(
+void					dbl_list_push_prev(
 							t_dbl_list *this, t_dbl_list *new_node);
-t_dbl_list				*t_dbl_list_pop_prev(t_dbl_list *this);
-t_dbl_list				*t_dbl_list_pop_next(t_dbl_list *this);
+t_dbl_list				*dbl_list_pop_prev(t_dbl_list *this);
+t_dbl_list				*dbl_list_pop_next(t_dbl_list *this);
 void					t_dbl_list_swap(t_dbl_list *this, t_dbl_list *node);
-t_dbl_list				*t_dbl_list_find(t_dbl_list *this, int value);
+t_dbl_list				*dbl_list_find(t_dbl_list *this, int value);
 void					t_stack_push(t_stack *this, t_dbl_list *new_node);
 void					t_stack_push_back(t_stack *this, t_dbl_list *new_node);
 t_dbl_list				*t_stack_pop(t_stack *this);

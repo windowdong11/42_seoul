@@ -6,12 +6,12 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 17:14:56 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/22 21:48:47 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/23 18:33:42 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf/include/ft_printf.h"
-#include "libft/libft.h"
+#include "ft_printf.h"
+#include "libft.h"
 #include "push_swap.h"
 #include "utils/stack_ab.h"
 

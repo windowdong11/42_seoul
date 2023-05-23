@@ -6,12 +6,12 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:06:36 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/15 17:41:13 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/23 18:33:34 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stack_ab.h"
-#include "../ft_printf/include/ft_printf.h"
+#include "ft_printf.h"
 #include <stdlib.h>
 
 static void	visualize(t_stack *s)

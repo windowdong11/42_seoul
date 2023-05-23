@@ -6,12 +6,12 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 23:12:43 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/17 18:58:27 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/23 22:15:33 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
-#include "ft_printf/include/ft_printf.h"
+#include "libft.h"
+#include "ft_printf.h"
 #include "push_swap.h"
 
 static int	is_int_str_equal(int num, char *num_str)
@@ -80,7 +80,7 @@ static void	parse_each_word(char **words, t_stack *stack_a)
 			stack_a->destructor(stack_a);
 			handle_error("Error\n", EXIT_FAILURE);
 		}
-		if (t_dbl_list_find(stack_a->top, num) != NULL)
+		if (dbl_list_find(stack_a->top, num) != NULL)
 		{
 			stack_a->destructor(stack_a);
 			handle_error("Error\n", EXIT_FAILURE);

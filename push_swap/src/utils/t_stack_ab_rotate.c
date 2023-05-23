@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 21:20:14 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/12 22:22:10 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/23 19:38:27 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ra(t_stack_ab *this, int optimize)
 		return ;
 	else if (optimize && this->command->top && this->command->top->value == RB)
 	{
-		this->command->pop(this->command);
+		delete_t_dbl_list(this->command->pop(this->command));
 		if (optimize && remove_rev_cmd(this, RR, 0))
 			return ;
 		this->command->push(this->command, new_t_dbl_list(RR));
@@ -39,7 +39,7 @@ void	rb(t_stack_ab *this, int optimize)
 		return ;
 	else if (optimize && this->command->top && this->command->top->value == RA)
 	{
-		this->command->pop(this->command);
+		delete_t_dbl_list(this->command->pop(this->command));
 		if (optimize && remove_rev_cmd(this, RR, 0))
 			return ;
 		this->command->push(this->command, new_t_dbl_list(RR));
@@ -54,8 +54,8 @@ void	rr(t_stack_ab *this, int optimize)
 		return ;
 	this->ra(this, 0);
 	this->rb(this, 0);
-	this->command->pop(this->command);
-	this->command->pop(this->command);
+	delete_t_dbl_list(this->command->pop(this->command));
+	delete_t_dbl_list(this->command->pop(this->command));
 	if (optimize && remove_rev_cmd(this, RR, 0))
 		return ;
 	this->command->push(this->command, new_t_dbl_list(RR));

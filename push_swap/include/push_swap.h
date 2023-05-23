@@ -6,15 +6,15 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 23:13:53 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/22 21:39:00 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/23 18:29:43 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-# include "utils/stack_ab.h"
-# include "utils/compare.h"
+# include "../src/utils/stack_ab.h"
+# include "../src/utils/compare.h"
 
 typedef void	(*t_merger)(t_stack_ab*, t_position);
 
