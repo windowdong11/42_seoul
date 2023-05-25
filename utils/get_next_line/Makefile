@@ -6,27 +6,27 @@
 #    By: dowon <dowon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/12 02:10:08 by dowon             #+#    #+#              #
-#    Updated: 2023/05/23 22:12:57 by dowon            ###   ########.fr        #
+#    Updated: 2023/05/25 16:09:16 by dowon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -c
 
-NAME = dbl_list.a
+NAME = get_next_line.a
 
-SRC = dbl_list.c dbl_list_swap.c
+SRC = get_next_line.c get_next_line_utils.c
 
 SRC_DIR = ./src
 OBJ_DIR = ./obj
 
+SRCS = $(addprefix $(SRC_DIR)/, $(SRC))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
-
 
 all: $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) -c $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@
 
 $(OBJS): | $(OBJ_DIR)
 
@@ -44,4 +44,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: re clean fclean all test
+.PHONY: re clean fclean all

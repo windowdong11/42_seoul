@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:41:39 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/23 22:06:33 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/25 14:58:42 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	free_smartptr(t_smartptr *ptr_to_free)
 	free(ptr_to_free);
 }
 
-static void	free_restptr(t_smartptr_manager*const manager)
+void	smart_free_rest(t_smart_manager*const manager)
 {
 	t_smartptr					*iter_ptr;
 	t_smartptr					*ptr_to_free;
@@ -34,7 +34,7 @@ static void	free_restptr(t_smartptr_manager*const manager)
 }
 
 void	*smart_malloc(
-	t_smartptr_manager*const manager, size_t size, t_destructor destructor)
+	t_smart_manager*const manager, size_t size, t_destructor destructor)
 {
 	void*const	ptr = malloc(size);
 	t_smartptr	*last_smart_ptr;
@@ -56,7 +56,7 @@ void	*smart_malloc(
 	return (ptr);
 }
 
-void	smart_free(t_smartptr_manager*const manager, void *ptr_to_free)
+void	smart_free(t_smart_manager*const manager, void *ptr_to_free)
 {
 	t_smartptr	*prev_ptr;
 	t_smartptr	*iter_ptr;
@@ -76,8 +76,8 @@ void	smart_free(t_smartptr_manager*const manager, void *ptr_to_free)
 	}
 }
 
-void	smart_exit(t_smartptr_manager*const manager, int exit_code)
+void	smart_exit(t_smart_manager*const manager, int exit_code)
 {
-	free_restptr(manager);
+	smart_free_rest(manager);
 	exit(exit_code);
 }

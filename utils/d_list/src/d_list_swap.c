@@ -6,17 +6,17 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 21:28:35 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/23 22:14:13 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/25 13:42:28 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../dbl_list.h"
+#include "../d_list.h"
 
-static void	t_dbl_list_swap_next(t_dbl_list *this)
+static void	d_list_swap_next(t_d_list *this)
 {
-	t_dbl_list*const	node = this->next;
-	t_dbl_list*const	this_prev = this->prev;
-	t_dbl_list*const	node_next = node->next;
+	t_d_list*const	node = this->next;
+	t_d_list*const	this_prev = this->prev;
+	t_d_list*const	node_next = node->next;
 
 	this->prev = node;
 	this->next = node_next;
@@ -28,11 +28,11 @@ static void	t_dbl_list_swap_next(t_dbl_list *this)
 		this_prev->next = node;
 }
 
-static void	t_dbl_list_swap_prev(t_dbl_list *this)
+static void	d_list_swap_prev(t_d_list *this)
 {
-	t_dbl_list*const	node = this->prev;
-	t_dbl_list*const	this_next = this->next;
-	t_dbl_list*const	node_prev = node->prev;
+	t_d_list*const	node = this->prev;
+	t_d_list*const	this_next = this->next;
+	t_d_list*const	node_prev = node->prev;
 
 	this->next = node;
 	this->prev = node_prev;
@@ -44,17 +44,17 @@ static void	t_dbl_list_swap_prev(t_dbl_list *this)
 		node_prev->next = this;
 }
 
-void	t_dbl_list_swap(t_dbl_list *this, t_dbl_list *node)
+void	d_list_swap(t_d_list *this, t_d_list *node)
 {
-	t_dbl_list*const	this_next = this->next;
-	t_dbl_list*const	this_prev = this->prev;
-	t_dbl_list*const	node_next = node->next;
-	t_dbl_list*const	node_prev = node->prev;
+	t_d_list*const	this_next = this->next;
+	t_d_list*const	this_prev = this->prev;
+	t_d_list*const	node_next = node->next;
+	t_d_list*const	node_prev = node->prev;
 
 	if (this->next == node)
-		t_dbl_list_swap_next(this);
+		d_list_swap_next(this);
 	else if (this->prev == node)
-		t_dbl_list_swap_prev(this);
+		d_list_swap_prev(this);
 	else
 	{
 		this->next = node_next;

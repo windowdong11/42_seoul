@@ -1,43 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dbl_list.c                                         :+:      :+:    :+:   */
+/*   d_list_pop.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 20:37:12 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/23 22:15:33 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/25 16:49:45 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../dbl_list.h"
 #include <stdlib.h>
+#include "../d_list.h"
 
-void	dbl_list_push_next(t_dbl_list *this, t_dbl_list *new_node)
+t_d_list	*d_list_pop_head(t_d_list **this)
 {
-	t_dbl_list*const	next_node = this->next;
+	t_d_list	*head;
 
-	new_node->prev = this;
-	new_node->next = next_node;
-	if (next_node != NULL)
-		next_node->prev = new_node;
-	this->next = new_node;
+	if (*this == NULL)
+		return (NULL);
+	head = d_list_head(*this);
+	if (head->next == NULL)
+		*this = NULL;
+	else
+		d_list_pop_prev(head->next);
+	return (head);
 }
 
-void	dbl_list_push_prev(t_dbl_list *this, t_dbl_list *new_node)
+t_d_list	*d_list_pop_tail(t_d_list **this)
 {
-	t_dbl_list*const	prev_node = this->prev;
+	t_d_list	*tail;
 
-	new_node->prev = prev_node;
-	new_node->next = this;
-	if (prev_node != NULL)
-		prev_node->next = new_node;
-	this->prev = new_node;
+	if (*this == NULL)
+		return (NULL);
+	tail = d_list_tail(*this);
+	if (tail->prev == NULL)
+		*this = NULL;
+	else
+		d_list_pop_next(tail->prev);
+	return (tail);
 }
 
-t_dbl_list	*dbl_list_pop_prev(t_dbl_list *this)
+t_d_list	*d_list_pop_prev(t_d_list *this)
 {
-	t_dbl_list*const	prev_node = this->prev;
+	t_d_list*const	prev_node = this->prev;
 
 	if (prev_node == NULL)
 		return (NULL);
@@ -49,9 +55,9 @@ t_dbl_list	*dbl_list_pop_prev(t_dbl_list *this)
 	return (prev_node);
 }
 
-t_dbl_list	*dbl_list_pop_next(t_dbl_list *this)
+t_d_list	*d_list_pop_next(t_d_list *this)
 {
-	t_dbl_list*const	next_node = this->next;
+	t_d_list*const	next_node = this->next;
 
 	if (next_node == NULL)
 		return (NULL);
@@ -61,18 +67,4 @@ t_dbl_list	*dbl_list_pop_next(t_dbl_list *this)
 	next_node->prev = NULL;
 	next_node->next = NULL;
 	return (next_node);
-}
-
-t_dbl_list	*dbl_list_find(t_dbl_list *this, int value)
-{
-	t_dbl_list	*node;
-
-	node = this;
-	while (node != NULL)
-	{
-		if (node->value == value)
-			return (node);
-		node = node->next;
-	}
-	return (NULL);
 }
