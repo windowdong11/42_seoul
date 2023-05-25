@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 09:12:35 by dowon             #+#    #+#             */
-/*   Updated: 2023/02/08 17:10:03 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/25 16:08:50 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 4
+#  define BUFFER_SIZE 1024
 # endif
 
 typedef struct s_gnl_fd

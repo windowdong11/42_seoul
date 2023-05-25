@@ -6,11 +6,11 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 09:13:20 by dowon             #+#    #+#             */
-/*   Updated: 2023/02/08 17:11:01 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/25 16:08:32 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../get_next_line.h"
 #include <stdlib.h>
 
 char	*gnl_strcat(char *src, t_gnl_fd *gnl_fd, size_t src_len)
