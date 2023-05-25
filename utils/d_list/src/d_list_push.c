@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 20:37:12 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/25 17:02:04 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/25 17:21:05 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ t_d_list	*d_list_push_head(t_d_list *this, t_d_list *new_node)
 	d_list_push_prev(d_list_head(this), new_node);
 	return (new_node);
 }
-
 
 t_d_list	*d_list_push_tail(t_d_list *this, t_d_list *new_node)
 {
