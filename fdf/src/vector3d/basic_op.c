@@ -35,6 +35,6 @@ t_vector3d	cross3d(t_vector3d a, t_vector3d b)
 t_vector3d	dot3d(t_vector3d a, t_vector3d b)
 {
 	return ((t_vector3d){
-
+		a.x + b.
 	});
 }
