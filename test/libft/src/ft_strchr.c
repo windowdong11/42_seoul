@@ -1,16 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/20 17:52:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/27 19:53:12 by dowon            ###   ########.fr       */
+/*   Created: 2022/11/17 19:02:34 by dowon             #+#    #+#             */
+/*   Updated: 2022/12/12 02:09:33 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <MLX42/MLX42.h>
-#include "libft.h"
-#include "mlx_utils.h"
+#include <stdlib.h>
 
+char	*ft_strchr(const char *str, int ch)
+{
+	while (1)
+	{
+		if (*str == (char)ch)
+			return ((char *)str);
+		if (!*str)
+			return (NULL);
+		str++;
+	}
+}

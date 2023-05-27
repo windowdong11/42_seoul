@@ -1,16 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/20 17:52:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/27 19:53:12 by dowon            ###   ########.fr       */
+/*   Created: 2022/11/17 19:02:42 by dowon             #+#    #+#             */
+/*   Updated: 2022/12/09 15:46:07 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <MLX42/MLX42.h>
 #include "libft.h"
-#include "mlx_utils.h"
 
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+{
+	size_t	src_len;
+
+	src_len = ft_strlen(src);
+	if (dstsize != 0)
+	{
+		dstsize--;
+		while (dstsize-- && *src)
+		{
+			*dst = *src;
+			dst++;
+			src++;
+		}
+		*dst = '\0';
+	}
+	return (src_len);
+}

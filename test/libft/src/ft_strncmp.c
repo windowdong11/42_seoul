@@ -1,16 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/20 17:52:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/27 19:53:12 by dowon            ###   ########.fr       */
+/*   Created: 2022/11/17 19:02:46 by dowon             #+#    #+#             */
+/*   Updated: 2022/12/15 19:21:29 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <MLX42/MLX42.h>
-#include "libft.h"
-#include "mlx_utils.h"
-
+int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
+{
+	while (*s1 == *s2 && n)
+	{
+		if (*s1 == '\0')
+			return (0);
+		s1++;
+		s2++;
+		n--;
+	}
+	if (!n)
+		return (0);
+	return ((unsigned char)*s1 - (unsigned char)*s2);
+}

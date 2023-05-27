@@ -1,16 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/20 17:52:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/27 19:53:12 by dowon            ###   ########.fr       */
+/*   Created: 2022/11/17 19:02:14 by dowon             #+#    #+#             */
+/*   Updated: 2022/12/09 20:59:32 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <MLX42/MLX42.h>
 #include "libft.h"
-#include "mlx_utils.h"
 
+t_list	*ft_lstnew(void *content)
+{
+	t_list	*ptr;
+
+	ptr = (t_list *)malloc(sizeof(t_list));
+	if (!ptr)
+		return (NULL);
+	ptr->content = content;
+	ptr->next = NULL;
+	return (ptr);
+}

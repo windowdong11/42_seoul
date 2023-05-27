@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/20 17:52:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/27 19:53:12 by dowon            ###   ########.fr       */
+/*   Created: 2022/11/17 19:02:22 by dowon             #+#    #+#             */
+/*   Updated: 2023/04/01 07:06:16 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <MLX42/MLX42.h>
-#include "libft.h"
-#include "mlx_utils.h"
+#include <unistd.h>
 
+ssize_t	ft_putchar_fd(char c, int fd)
+{
+	return (write(fd, &c, 1));
+}

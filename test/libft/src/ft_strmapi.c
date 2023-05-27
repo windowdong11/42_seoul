@@ -1,16 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/20 17:52:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/27 19:53:12 by dowon            ###   ########.fr       */
+/*   Created: 2022/11/17 19:02:45 by dowon             #+#    #+#             */
+/*   Updated: 2022/12/09 16:58:11 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <MLX42/MLX42.h>
 #include "libft.h"
-#include "mlx_utils.h"
 
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+{
+	char			*ptr;
+	size_t			str_len;
+	unsigned int	idx;
+
+	str_len = ft_strlen(s);
+	ptr = (char *)malloc(sizeof(char) * (str_len + 1));
+	if (!ptr)
+		return (NULL);
+	idx = 0;
+	while (s[idx])
+	{
+		ptr[idx] = f(idx, s[idx]);
+		idx++;
+	}
+	ptr[idx] = '\0';
+	return (ptr);
+}

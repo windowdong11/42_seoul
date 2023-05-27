@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:56:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/25 20:20:02 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/27 22:41:13 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,53 +33,68 @@ mlx_get_color_value
 mlx_xpm_to_image
  */
 
-
 void	my_mlx_pixel_put(mlx_image_t *img, int x, int y, unsigned int color)
 {
 	char	*dst;
 
 	dst = (char *)img->pixels;
 	dst += x + y;
-	*((unsigned int*)dst) = color;
+	*((unsigned int *)dst) = color;
 }
 
 // Exit the program as failure.
-// static void ft_error(void)
-// {
-// 	fprintf(stderr, "%s", mlx_strerror(mlx_errno));
-// 	exit(EXIT_FAILURE);
-// }
+static void	ft_error(void)
+{
+	fprintf(stderr, "%s", mlx_strerror(mlx_errno));
+	exit(EXIT_FAILURE);
+}
 
 // Print the window width and height.
-// static void ft_hook(void* param)
-// {
-// 	const mlx_t* mlx = param;
+static void	ft_hook(void *param)
+{
+	const mlx_t *mlx = param;
 
-// 	printf("WIDTH: %d | HEIGHT: %d\n", mlx->width, mlx->height);
-// }
+	printf("WIDTH: %d | HEIGHT: %d\n", mlx->width, mlx->height);
+}
 
 typedef struct s_vector3d
 {
-	int x;
-	int y;
-	int z;
+	int	x;
+	int	y;
+	int	z;
 }	t_vector3d;
 
-t_vector3d	transform3d(t_vector3d trans[3], t_vector3d v)
+void	cross3d(t_vector3d *a, t_vector3d *b)
 {
-	t_vector3d	result;
+	a->x = a->y * b->z - a->z * b->y;
+	a->y = a->z * b->x - a->x * b->z;
+	a->z = a->x * b->y - a->y * b->x;
+}
 
-	result.x = trans[0].x * v.x + trans[0].y * v.x + trans[0].z * v.x;
-	result.y = trans[1].x * v.y + trans[1].y * v.y + trans[1].z * v.y;
-	result.z = trans[2].x * v.z + trans[2].y * v.z + trans[2].z * v.z;
-	return (result);
+void	pow3d(t_vector3d *v, int n)
+{
+	v->x *= n;
+	v->y *= n;
+	v->z *= n;
+}
+
+void	translate3d(t_vector3d *v, t_vector3d *d)
+{
+	v->x += d->x;
+	v->y += d->y;
+	v->z += d->z;
+}
+
+void	transform3d(t_vector3d trans[3], t_vector3d *v)
+{
+	v->x *= trans[0].x + trans[0].y + trans[0].z;
+	v->y *= trans[1].x + trans[1].y + trans[1].z;
+	v->z *= trans[2].x + trans[2].y + trans[2].z;
 }
 
 int	main(void)
 {
-	// MLX allows you to define its core behaviour before startup.
-	// mlx_set_setting(MLX_MAXIMIZED, true);
-	/* mlx_t* mlx = mlx_init(1920, 1080, "fdf", true);
+	mlx_t* mlx = mlx_init(1920, 1080, "fdf", true);
 	if (!mlx)
 		ft_error();
 
@@ -95,14 +110,6 @@ int	main(void)
 
 	mlx_loop_hook(mlx, ft_hook, mlx);
 	mlx_loop(mlx);
-	mlx_terminate(mlx); */
-	t_vector3d tr[3] = {
-		{1, 0, 0},
-		{0, 1, 0},
-		{0, 0, 1},
-	};
-	t_vector3d v = {19, 7, 32};
-	t_vector3d tf = transform3d(tr, v);
-	printf("x: %d, y: %d, z:%d\n", tf.x, tf.y, tf.z);
+	mlx_terminate(mlx);
 	return (EXIT_SUCCESS);
 }
