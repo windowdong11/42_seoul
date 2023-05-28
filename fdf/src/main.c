@@ -6,13 +6,14 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:56:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/27 22:41:13 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/28 21:28:15 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "./utils/colors.h"
 #include "./mlx_utils/mlx_utils.h"
+#include "./vector3d/vector3d.h"
 #include "MLX42/MLX42.h"
 #include <math.h>
 #include <stdlib.h>
@@ -57,41 +58,24 @@ static void	ft_hook(void *param)
 	printf("WIDTH: %d | HEIGHT: %d\n", mlx->width, mlx->height);
 }
 
-typedef struct s_vector3d
+typedef struct s_point2d {
+	int x;
+	int y;
+}	t_point2d;
+/*
+y = (y2 - y1)/(x2-x1) * (x - x1) + y1
+*/
+void	draw_line(t_point2d p1, t_point2d p2)
 {
-	int	x;
-	int	y;
-	int	z;
-}	t_vector3d;
-
-void	cross3d(t_vector3d *a, t_vector3d *b)
-{
-	a->x = a->y * b->z - a->z * b->y;
-	a->y = a->z * b->x - a->x * b->z;
-	a->z = a->x * b->y - a->y * b->x;
 }
 
-void	pow3d(t_vector3d *v, int n)
-{
-	v->x *= n;
-	v->y *= n;
-	v->z *= n;
-}
-
-void	translate3d(t_vector3d *v, t_vector3d *d)
-{
-	v->x += d->x;
-	v->y += d->y;
-	v->z += d->z;
-}
-
-void	transform3d(t_vector3d trans[3], t_vector3d *v)
-{
-	v->x *= trans[0].x + trans[0].y + trans[0].z;
-	v->y *= trans[1].x + trans[1].y + trans[1].z;
-	v->z *= trans[2].x + trans[2].y + trans[2].z;
-}
-
+/* 
+정점들 입력 &
+간선들에 대한 정보
+(0, 1)
+(0, 2)
+(0, 3)
+*/
 int	main(void)
 {
 	mlx_t* mlx = mlx_init(1920, 1080, "fdf", true);
@@ -103,6 +87,7 @@ int	main(void)
 	if (!img || (mlx_image_to_window(mlx, img, 0, 0) < 0))
 		ft_error();
 
+	mlx_put_pixel(img, 150, 150, my_mlx_rgba(255, 0, 0, 100));
 	mlx_put_pixel(img, 100, 100, my_mlx_rgba(0, 0, 0, 100));
 	mlx_put_pixel(img, 200, 200, my_mlx_rgba(0, 0, 0, 100));
 	mlx_put_pixel(img, 100, 200, my_mlx_rgba(0, 0, 0, 100));
