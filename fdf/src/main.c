@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:56:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/28 21:28:15 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/29 20:45:24 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,24 @@ static void	ft_hook(void *param)
 }
 
 typedef struct s_point2d {
-	int x;
-	int y;
+	int	x;
+	int	y;
 }	t_point2d;
 /*
 y = (y2 - y1)/(x2-x1) * (x - x1) + y1
+1) (p1.x == p2.x) => (p1.y - p2.y)/(p1.x - p2.x) == INF (vertical)
+2) (p1.y == p2.y) => (p1.y - p2.y)/(p1.x - p2.x) == 0 (horizontal)
+3) 0 < (p1.y - p2.y)/(p1.x - p2.x) > 0
+	3-1) (p1.y - p2.y)/(p1.x - p2.x) < 1
+	3-2) 1 < (p1.y - p2.y)/(p1.x - p2.x)
+4) (p1.y - p2.y)/(p1.x - p2.x) < 0
 */
 void	draw_line(t_point2d p1, t_point2d p2)
 {
+	int			*start_point;
+	int			*end_point;
+	int			*vertical_point;
+	const int	slope = (p1.y - p2.y)/(p1.x - p2.x)
 }
 
 /* 

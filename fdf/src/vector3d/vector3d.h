@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 22:42:09 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/28 21:23:22 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/29 19:40:15 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ typedef struct s_vector3d
 }	t_vector3d;
 
 typedef t_vector3d	t_point3d;
+
+typedef struct s_edge3d
+{
+	t_point3d	v1;
+	t_point3d	v2;
+}	t_edge3d;
 
 /* structor */
 t_vector3d	vector3d(double x, double y, double z);
