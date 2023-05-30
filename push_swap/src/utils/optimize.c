@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 22:28:36 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/12 22:37:32 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/30 16:43:45 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	is_a_command(t_command command)
 {
-	if (command == PB)
+	if (command == cmd_pb)
 		return (1);
 	if (command % 10 == 0 || command % 10 == 1)
 		return (1);
@@ -24,7 +24,7 @@ int	is_a_command(t_command command)
 
 int	is_b_command(t_command command)
 {
-	if (command == PA)
+	if (command == cmd_pa)
 		return (1);
 	if (command % 10 == 0 || command % 10 == 2)
 		return (1);
@@ -62,8 +62,9 @@ static int	find_n_remove_revcmd_from_history(
 
 int	remove_rev_cmd(t_stack_ab *this, t_command command, int view_history)
 {
-	const t_command		rev_commands[5][3] = {{NONE, NONE, NONE}, {SS, SA, SB},
-	{RRR, RRA, RRB}, {RR, RA, RB}, {NONE, PB, PA}};
+	const t_command		rev_commands[5][3] = {{cmd_none, cmd_none, cmd_none},
+	{cmd_ss, cmd_sa, cmd_sb}, {cmd_rrr, cmd_rra, cmd_rrb},
+	{cmd_rr, cmd_ra, cmd_rb}, {cmd_none, cmd_pb, cmd_pa}};
 	const t_command		rev_command = rev_commands[command / 10][command % 10];
 	const t_dbl_list	*node = this->command->top;
 	t_dbl_list			*tmp;

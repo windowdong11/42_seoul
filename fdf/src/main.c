@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:56:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/29 20:45:24 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/30 20:47:40 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,21 +62,61 @@ typedef struct s_point2d {
 	int	x;
 	int	y;
 }	t_point2d;
-/*
-y = (y2 - y1)/(x2-x1) * (x - x1) + y1
-1) (p1.x == p2.x) => (p1.y - p2.y)/(p1.x - p2.x) == INF (vertical)
-2) (p1.y == p2.y) => (p1.y - p2.y)/(p1.x - p2.x) == 0 (horizontal)
-3) 0 < (p1.y - p2.y)/(p1.x - p2.x) > 0
-	3-1) (p1.y - p2.y)/(p1.x - p2.x) < 1
-	3-2) 1 < (p1.y - p2.y)/(p1.x - p2.x)
-4) (p1.y - p2.y)/(p1.x - p2.x) < 0
-*/
-void	draw_line(t_point2d p1, t_point2d p2)
+
+void	draw_line(mlx_image_t *img, t_point2d p1, t_point2d p2)
 {
-	int			*start_point;
-	int			*end_point;
-	int			*vertical_point;
-	const int	slope = (p1.y - p2.y)/(p1.x - p2.x)
+	t_point2d	delta;
+	t_point2d	point;
+
+	delta.x = (p2.x - p1.x);
+	delta.y = (p2.y - p1.y);
+	point = p1;
+	if (abs(delta.x) >= abs(delta.y))
+	{
+		if (p1.x > p2.x) {
+			t_point2d p = p1;
+			p1 = p2;
+			p2 = p;
+		}
+		delta.x = (p2.x - p1.x);
+		delta.y = (p2.y - p1.y);
+		point = p1;
+		while (point.x <= p2.x)
+		{
+			if (abs(2 * (delta.y * (point.x - p1.x) + delta.x * (p1.y - point.y))) > delta.x)
+			{
+				if (p1.y < p2.y)
+					point.y++;
+				else
+					point.y--;
+			}
+			mlx_put_pixel(img, point.x, point.y, my_mlx_rgba(255, 0, 0, 100));
+			point.x++;
+		}
+	}
+	else
+	{
+		if (p1.y > p2.y) {
+			t_point2d p = p1;
+			p1 = p2;
+			p2 = p;
+		}
+		delta.x = (p2.x - p1.x);
+		delta.y = (p2.y - p1.y);
+		point = p1;
+		while (point.y <= p2.y)
+		{
+			if (abs(2 * (delta.x * (point.y - p1.y) + delta.y * (p1.x - point.x))) > delta.y)
+			{
+				if (p1.x < p2.x)
+					point.x++;
+				else
+					point.x--;
+			}
+			mlx_put_pixel(img, point.x, point.y, my_mlx_rgba(0, 255, 0, 100));
+			point.y++;
+		}
+	}
 }
 
 /* 
@@ -88,20 +128,14 @@ void	draw_line(t_point2d p1, t_point2d p2)
 */
 int	main(void)
 {
-	mlx_t* mlx = mlx_init(1920, 1080, "fdf", true);
+	mlx_t	*mlx = mlx_init(1920, 1080, "fdf", true);
 	if (!mlx)
 		ft_error();
 
-	mlx_image_t* img = mlx_new_image(mlx, 256, 256);
+	mlx_image_t	*img = mlx_new_image(mlx, 1920, 1080);
     ft_memset(img->pixels, 255, img->width * img->height * sizeof(int));
 	if (!img || (mlx_image_to_window(mlx, img, 0, 0) < 0))
 		ft_error();
-
-	mlx_put_pixel(img, 150, 150, my_mlx_rgba(255, 0, 0, 100));
-	mlx_put_pixel(img, 100, 100, my_mlx_rgba(0, 0, 0, 100));
-	mlx_put_pixel(img, 200, 200, my_mlx_rgba(0, 0, 0, 100));
-	mlx_put_pixel(img, 100, 200, my_mlx_rgba(0, 0, 0, 100));
-	mlx_put_pixel(img, 200, 100, my_mlx_rgba(0, 0, 0, 100));
 
 	mlx_loop_hook(mlx, ft_hook, mlx);
 	mlx_loop(mlx);

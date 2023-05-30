@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 23:13:53 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/23 18:29:43 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/30 16:34:35 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int				greater(int a, int b);
 int				smaller(int a, int b);
 
 int				is_sorted(t_stack *st, int (*cmp)(int, int), int count);
+int				handle_sorted(
+					t_stack_ab *st, int size, t_order order, t_position dst);
 t_merger		get_merge_func(t_position dst);
 
 #endif

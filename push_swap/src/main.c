@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 17:14:56 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/25 11:30:16 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/30 14:06:27 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,6 @@
 #include "utils/stack_ab.h"
 
 #include <stdio.h>
-
-void	ft_exit(void)
-{
-	system("leaks --list -- push_swap");
-}
 
 int	main(int argc, char *argv[])
 {
@@ -37,6 +32,5 @@ int	main(int argc, char *argv[])
 		cmd = cmd->prev;
 	}
 	st->destructor(st);
-	atexit(ft_exit);
 	return (0);
 }

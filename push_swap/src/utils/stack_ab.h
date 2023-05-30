@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 19:24:22 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/25 11:28:28 by dowon            ###   ########.fr       */
+/*   Updated: 2023/05/30 18:30:57 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,18 @@
 
 typedef enum e_command
 {
-	NONE = 0,
-	SS = 10,
-	SA = 11,
-	SB = 12,
-
-	RR = 20,
-	RA = 21,
-	RB = 22,
-
-	RRR = 30,
-	RRA = 31,
-	RRB = 32,
-
-	PA = 41,
-	PB = 42,
+	cmd_none = 0,
+	cmd_ss = 10,
+	cmd_sa = 11,
+	cmd_sb = 12,
+	cmd_rr = 20,
+	cmd_ra = 21,
+	cmd_rb = 22,
+	cmd_rrr = 30,
+	cmd_rra = 31,
+	cmd_rrb = 32,
+	cmd_pa = 41,
+	cmd_pb = 42,
 }						t_command;
 
 typedef enum e_position
