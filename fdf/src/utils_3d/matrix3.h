@@ -1,24 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arithmetic_op.c                                    :+:      :+:    :+:   */
+/*   matrix3.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/28 20:04:55 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/28 20:07:23 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/05 21:30:59 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/05 21:32:21 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector3d.h"
-#include <math.h>
+#ifndef MATRIX3_H
+# define MATRIX3_H
 
-t_vector3d	pow3d(t_vector3d v, double n)
+typedef struct s_matrix3
 {
-	return (vector3d(v.x * n, v.y * n, v.z * n));
-}
+	union
+	{
+		struct
+		{
+			float	_11;
+			float	_12;
+			float	_13;
+			float	_21;
+			float	_22;
+			float	_23;
+			float	_31;
+			float	_32;
+			float	_33;
+		};
+		float	m[3][3];
+	};
+}	t_matrix3;
 
-t_vector3d	div3d(t_vector3d v, double n)
-{
-	return (vector3d(v.x / n, v.y / n, v.z / n));
-}
+#endif

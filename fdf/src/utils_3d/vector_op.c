@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 20:07:35 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/02 19:29:50 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/05 20:24:18 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,21 @@ t_vector3d	transform3d(t_vector3d trans[3], t_vector3d v)
 	));
 }
 
-t_vector3d	cross3d(t_vector3d a, t_vector3d b)
+t_vector3d*	cross3d(t_vector3d *pOut, const t_vector3d *p1, const t_vector3d *p2)
 {
-	return (vector3d(
-		a.y * b.z - a.z * b.y,
-		a.z * b.x - a.x * b.z,
-		a.x * b.y - a.y * b.x
-	));
+	t_vector3d	result;
+
+	result.x = p1->y * p2->z - p1->z * p2->y;
+	result.y = p1->z * p2->x - p1->x * p2->z;
+	result.z = p1->x * p2->y - p1->y * p2->x;
+	pOut->x = result.x;
+	pOut->y = result.y;
+	pOut->z = result.z;
+	return (pOut);
 }
 
 /* dot product (inner product) */
-double	dot3d(t_vector3d a, t_vector3d b)
+float	dot3d(const t_vector3d *p1, const t_vector3d *p2)
 {
-	return (a.x * b.x + a.y * b.y + a.y * b.y);
+	return (p1->x * p2->x + p1->y * p2->y + p1->y * p2->y);
 }

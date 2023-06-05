@@ -2,6 +2,7 @@
 # define FDF_H
 
 # include "MLX42/MLX42.h"
+# include "utils/colors.h"
 typedef struct s_point2d {
 	int	x;
 	int	y;
