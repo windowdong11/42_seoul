@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:56:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/30 20:47:40 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/05 13:41:30 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 #include "./utils/colors.h"
 #include "./mlx_utils/mlx_utils.h"
 #include "./vector3d/vector3d.h"
+#include "fdf_obj/fdf_obj.h"
+#include <smart_ptr.h>
 #include "MLX42/MLX42.h"
+#include "fdf.h"
 #include <math.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -51,72 +54,159 @@ static void	ft_error(void)
 }
 
 // Print the window width and height.
-static void	ft_hook(void *param)
-{
-	const mlx_t *mlx = param;
+// static void	ft_hook(void *param)
+// {
+// 	const mlx_t *mlx = param;
 
-	printf("WIDTH: %d | HEIGHT: %d\n", mlx->width, mlx->height);
+// 	printf("WIDTH: %d | HEIGHT: %d\n", mlx->width, mlx->height);
+// }
+
+typedef struct s_point2d_ptr
+{
+	int	*axis;
+	int	*v_axis;
+}	t_point2d_ptr;
+
+void	swap_ptr(void **p1, void **p2)
+{
+	void	*tmp;
+
+	tmp = *p1;
+	*p1 = *p2;
+	*p2 = tmp;
 }
 
-typedef struct s_point2d {
-	int	x;
-	int	y;
-}	t_point2d;
-
-void	draw_line(mlx_image_t *img, t_point2d p1, t_point2d p2)
+void	draw_line(mlx_image_t *img, int p1[2], int p2[2], t_rgba color)
 {
-	t_point2d	delta;
-	t_point2d	point;
+	const int	axis = abs(p2[0] - p1[0]) < abs(p2[1] - p1[1]);
+	int			delta[2];
+	int			unit[2];
+	int			point[2];
+	int			tmp;
 
-	delta.x = (p2.x - p1.x);
-	delta.y = (p2.y - p1.y);
-	point = p1;
-	if (abs(delta.x) >= abs(delta.y))
+	delta[0] = p2[0] - p1[0];
+	delta[1] = p2[1] - p1[1];
+	if (p1[axis] > p2[axis])
 	{
-		if (p1.x > p2.x) {
-			t_point2d p = p1;
-			p1 = p2;
-			p2 = p;
-		}
-		delta.x = (p2.x - p1.x);
-		delta.y = (p2.y - p1.y);
-		point = p1;
-		while (point.x <= p2.x)
-		{
-			if (abs(2 * (delta.y * (point.x - p1.x) + delta.x * (p1.y - point.y))) > delta.x)
-			{
-				if (p1.y < p2.y)
-					point.y++;
-				else
-					point.y--;
-			}
-			mlx_put_pixel(img, point.x, point.y, my_mlx_rgba(255, 0, 0, 100));
-			point.x++;
-		}
+		tmp = p1[0];
+		p1[0] = p2[0];
+		p2[0] = tmp;
+		tmp = p1[1];
+		p1[1] = p2[1];
+		p2[1] = tmp;
+		delta[axis] = -delta[axis];
+		delta[!axis] = -delta[!axis];
 	}
-	else
+	point[0] = p1[0];
+	point[1] = p1[1];
+	unit[axis] = 1;
+	unit[!axis] = 1 - 2 * (delta[!axis] < 0);
+	while (point[axis] <= p2[axis])
 	{
-		if (p1.y > p2.y) {
-			t_point2d p = p1;
-			p1 = p2;
-			p2 = p;
-		}
-		delta.x = (p2.x - p1.x);
-		delta.y = (p2.y - p1.y);
-		point = p1;
-		while (point.y <= p2.y)
-		{
-			if (abs(2 * (delta.x * (point.y - p1.y) + delta.y * (p1.x - point.x))) > delta.y)
-			{
-				if (p1.x < p2.x)
-					point.x++;
-				else
-					point.x--;
-			}
-			mlx_put_pixel(img, point.x, point.y, my_mlx_rgba(0, 255, 0, 100));
-			point.y++;
-		}
+		if (point[axis] < 0 || point[axis] > 500 || point[!axis] < 0 || point[!axis] > 500)
+			return ;
+		mlx_put_pixel(img, point[0], point[1], color);
+		if (2 * abs(delta[!axis] * (point[axis] - p1[axis]) + delta[axis] * (p1[!axis] - point[!axis])) > delta[axis])
+			point[!axis] += unit[!axis];
+		point[axis] += unit[axis];
 	}
+}
+
+t_smart_manager*	obj_manager()
+{
+	static t_smart_manager	manager;
+	return &manager;
+}
+
+void		delete_obj(void *ptr)
+{
+	t_fdf_obj*const	obj = ptr;
+
+	if (obj == NULL)
+		return ;
+	smart_free(obj_manager(), obj->edge);
+	smart_free(obj_manager(), obj->point);
+	smart_free(obj_manager(), obj);
+}
+
+t_fdf_obj	*new_obj(size_t points, size_t edges)
+{
+	t_fdf_obj*const	obj
+		= smart_malloc(obj_manager(), sizeof(t_fdf_obj), delete_obj);
+	size_t			idx;
+
+	if (obj == NULL)
+		smart_exit(obj_manager(), EXIT_FAILURE);
+	obj->point = smart_malloc(obj_manager(), sizeof(t_point3d) * points, free);
+	obj->edge = smart_malloc(obj_manager(), sizeof(t_point3d **) * edges, free);
+	if (obj->point == NULL || obj->edge == NULL)
+		smart_exit(obj_manager(), EXIT_FAILURE);
+	obj->cnt_point = points;
+	obj->cnt_edge = edges;
+	idx = 0;
+	while (idx < edges)
+	{
+		obj->edge[idx]
+			= smart_malloc(obj_manager(), sizeof(t_point3d *) * 2, free);
+		if (obj->edge[idx] == NULL)
+			smart_exit(obj_manager(), EXIT_FAILURE);
+		obj->edge[idx][0] = NULL;
+		obj->edge[idx][1] = NULL;
+		++idx;
+	}
+	return (obj);
+}
+
+void draw_point3d(mlx_image_t *img, t_point3d p, t_rgba color)
+{
+	mlx_put_pixel(img, (uint32_t)p.x, (uint32_t)p.y, color);
+}
+
+void draw_line3d(mlx_image_t *img, t_point3d p1, t_point3d p2, t_rgba color)
+{
+	draw_line(img, (int [2]){p1.x, p1.y}, (int [2]){p2.x, p2.y}, color);
+}
+
+void rotateX(t_fdf_obj *obj, double rad)
+{
+	t_vector3d transformer[3] = {
+		{1, 0, 0},
+		{0, cos(rad), sin(rad)},
+		{0, -sin(rad), cos(rad)},
+	};
+
+	for (size_t i = 0; i < obj->cnt_point; i++)
+		obj->point[i] = transform3d(transformer, obj->point[i]);
+}
+
+void rotateY(t_fdf_obj *obj, double rad)
+{
+	t_vector3d transformer[3] = {
+		{cos(rad), 0, sin(rad)},
+		{0, 1, 0},
+		{-sin(rad), 0, cos(rad)},
+	};
+
+	for (size_t i = 0; i < obj->cnt_point; i++)
+		obj->point[i] = transform3d(transformer, obj->point[i]);
+}
+
+void rotateZ(t_fdf_obj *obj, double rad)
+{
+	t_vector3d transformer[3] = {
+		{cos(rad), sin(rad), 0},
+		{-sin(rad), cos(rad), 0},
+		{0, 0, 1},
+	};
+
+	for (size_t i = 0; i < obj->cnt_point; i++)
+		obj->point[i] = transform3d(transformer, obj->point[i]);
+}
+
+void draw_obj(mlx_image_t *img, t_fdf_obj *obj)
+{
+	for(size_t i = 0; i < obj->cnt_edge; i++)
+		draw_line3d(img, *obj->edge[i][0], *obj->edge[i][1], my_mlx_rgba(0, 0, 255, 255));
 }
 
 /* 
@@ -133,11 +223,81 @@ int	main(void)
 		ft_error();
 
 	mlx_image_t	*img = mlx_new_image(mlx, 1920, 1080);
-    ft_memset(img->pixels, 255, img->width * img->height * sizeof(int));
+    ft_memset(img->pixels, 0, img->width * img->height * sizeof(int));
 	if (!img || (mlx_image_to_window(mlx, img, 0, 0) < 0))
 		ft_error();
 
-	mlx_loop_hook(mlx, ft_hook, mlx);
+	t_fdf_obj	*axis = new_obj(4, 3);
+	axis->point[0] = (t_point3d){100, 100, 100};
+	axis->point[1] = (t_point3d){200, 100, 100};
+	axis->point[2] = (t_point3d){100, 200, 100};
+	axis->point[3] = (t_point3d){100, 100, 200};
+	axis->edge[0][0] = &axis->point[0];
+	axis->edge[0][1] = &axis->point[1];
+	axis->edge[1][0] = &axis->point[0];
+	axis->edge[1][1] = &axis->point[2];
+	axis->edge[2][0] = &axis->point[0];
+	axis->edge[2][1] = &axis->point[3];
+	t_fdf_obj	*obj = new_obj(8, 12);
+	obj->point[0] = (t_point3d){0, 0, 0};
+	obj->point[1] = (t_point3d){350, 0, 0};
+	obj->point[2] = (t_point3d){350, 350, 0};
+	obj->point[3] = (t_point3d){0, 350, 0};
+	obj->point[4] = (t_point3d){0, 0, 350};
+	obj->point[5] = (t_point3d){350, 0, 350};
+	obj->point[6] = (t_point3d){350, 350, 350};
+	obj->point[7] = (t_point3d){0, 350, 350};
+	obj->edge[0][0] = &obj->point[0];
+	obj->edge[0][1] = &obj->point[1];
+	obj->edge[1][0] = &obj->point[1];
+	obj->edge[1][1] = &obj->point[2];
+	obj->edge[2][0] = &obj->point[2];
+	obj->edge[2][1] = &obj->point[3];
+	obj->edge[3][0] = &obj->point[3];
+	obj->edge[3][1] = &obj->point[0];
+	obj->edge[4][0] = &obj->point[4];
+	obj->edge[4][1] = &obj->point[5];
+	obj->edge[5][0] = &obj->point[5];
+	obj->edge[5][1] = &obj->point[6];
+	obj->edge[6][0] = &obj->point[6];
+	obj->edge[6][1] = &obj->point[7];
+	obj->edge[7][0] = &obj->point[7];
+	obj->edge[7][1] = &obj->point[4];
+	obj->edge[8][0] = &obj->point[0];
+	obj->edge[8][1] = &obj->point[4];
+	obj->edge[9][0] = &obj->point[1];
+	obj->edge[9][1] = &obj->point[5];
+	obj->edge[10][0] = &obj->point[2];
+	obj->edge[10][1] = &obj->point[6];
+	obj->edge[11][0] = &obj->point[3];
+	obj->edge[11][1] = &obj->point[7];
+	// draw8way(img);
+	// mlx_loop_hook(mlx, ft_hook, mlx);
+	draw_line3d(img, *axis->edge[0][0], *axis->edge[0][1], my_mlx_rgba(255, 0, 0, 255));
+	draw_line3d(img, *axis->edge[1][0], *axis->edge[1][1], my_mlx_rgba(0, 255, 0, 255));
+	draw_line3d(img, *axis->edge[2][0], *axis->edge[2][1], my_mlx_rgba(0, 0, 255, 255));
+	rotateX(axis, 0.5);
+	draw_line3d(img, *axis->edge[0][0], *axis->edge[0][1], my_mlx_rgba(255, 0, 0, 255));
+	draw_line3d(img, *axis->edge[1][0], *axis->edge[1][1], my_mlx_rgba(0, 255, 0, 255));
+	draw_line3d(img, *axis->edge[2][0], *axis->edge[2][1], my_mlx_rgba(0, 0, 255, 255));
+	rotateY(axis, 0.5);
+	draw_line3d(img, *axis->edge[0][0], *axis->edge[0][1], my_mlx_rgba(255, 0, 0, 255));
+	draw_line3d(img, *axis->edge[1][0], *axis->edge[1][1], my_mlx_rgba(0, 255, 0, 255));
+	draw_line3d(img, *axis->edge[2][0], *axis->edge[2][1], my_mlx_rgba(0, 0, 255, 255));
+	rotateZ(axis, 0.5);
+	draw_line3d(img, *axis->edge[0][0], *axis->edge[0][1], my_mlx_rgba(255, 0, 0, 255));
+	draw_line3d(img, *axis->edge[1][0], *axis->edge[1][1], my_mlx_rgba(0, 255, 0, 255));
+	draw_line3d(img, *axis->edge[2][0], *axis->edge[2][1], my_mlx_rgba(0, 0, 255, 255));
+	draw_obj(img, obj);
+	rotateX(obj, 0.5);
+	draw_obj(img, obj);
+	rotateY(obj, 0.5);
+	draw_obj(img, obj);
+	rotateZ(obj, 0.5);
+	draw_obj(img, obj);
+	// R: x-axis
+	// G: y-axis
+	// B: z-axis
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
 	return (EXIT_SUCCESS);

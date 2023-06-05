@@ -6,11 +6,12 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 20:06:40 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/28 20:06:51 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/02 15:46:39 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector3d.h"
+#include <math.h>
 
 double	len3d_sq(t_vector3d v)
 {
