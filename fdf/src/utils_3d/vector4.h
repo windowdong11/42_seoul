@@ -1,34 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector3.h                                          :+:      :+:    :+:   */
+/*   vector4.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/27 22:42:09 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/06 23:02:20 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/06 14:51:30 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/06 14:51:32 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VECTOR3_H
-# define VECTOR3_H
+#ifndef VECTOR4_H
+# define VECTOR4_H
 
-# include "matrix3.h"
-# include "matrix4.h"
-
-typedef struct s_vector3
+typedef struct s_vector4
 {
 	float	x;
 	float	y;
 	float	z;
-}	t_vector3;
-
-typedef t_vector3	t_point3d;
-
-typedef struct s_edge3d
-{
-	t_point3d	v1;
-	t_point3d	v2;
-}	t_edge3d;
+	float	w;
+}	t_vector4;
 
 #endif
