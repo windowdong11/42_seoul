@@ -1,31 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf_obj.h                                          :+:      :+:    :+:   */
+/*   m3_init.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/29 19:37:04 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/08 22:21:47 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/08 20:41:53 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/08 21:13:29 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FDF_OBJ_H
-# define FDF_OBJ_H
+#include "utils_3d.h"
 
-# include "../utils_3d/utils_3d.h"
-# include <stdlib.h>
-
-typedef struct s_fdf_obj
+t_matrix3	*m3_zero(t_matrix3 *out)
 {
-	t_point3d	*point;
-	t_point3d	***edge;
-	size_t		cnt_point;
-	size_t		cnt_edge;
-}	t_fdf_obj;
+	int	idx;
 
-t_fdf_obj	*fdf_rotate_x(t_fdf_obj	*obj, float angle);
-t_fdf_obj	*fdf_rotate_y(t_fdf_obj	*obj, float angle);
-t_fdf_obj	*fdf_rotate_z(t_fdf_obj	*obj, float angle);
+	idx = 0;
+	while (idx < 3)
+	{
+		out->m[idx][0] = 0;
+		out->m[idx][1] = 0;
+		out->m[idx][2] = 0;
+		idx++;
+	}
+	return (out);
+}
 
-#endif
+t_matrix3	*m3_identity(t_matrix3 *out)
+{
+	out->_12 = 0;
+	out->_13 = 0;
+	out->_21 = 0;
+	out->_23 = 0;
+	out->_31 = 0;
+	out->_32 = 0;
+	return (out);
+}

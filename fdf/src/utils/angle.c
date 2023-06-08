@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf_obj.h                                          :+:      :+:    :+:   */
+/*   angle.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/29 19:37:04 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/08 22:21:47 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/08 22:24:56 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/08 22:27:00 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FDF_OBJ_H
-# define FDF_OBJ_H
+#include <math.h>
 
-# include "../utils_3d/utils_3d.h"
-# include <stdlib.h>
-
-typedef struct s_fdf_obj
+float	radf(float angle)
 {
-	t_point3d	*point;
-	t_point3d	***edge;
-	size_t		cnt_point;
-	size_t		cnt_edge;
-}	t_fdf_obj;
+	return (angle * (M_PI / 180.0f));
+}
 
-t_fdf_obj	*fdf_rotate_x(t_fdf_obj	*obj, float angle);
-t_fdf_obj	*fdf_rotate_y(t_fdf_obj	*obj, float angle);
-t_fdf_obj	*fdf_rotate_z(t_fdf_obj	*obj, float angle);
-
-#endif
+float	anglef(float rad)
+{
+	return (rad * (180.0 / M_PI));
+}

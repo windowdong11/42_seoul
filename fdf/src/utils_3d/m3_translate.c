@@ -1,24 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   len_op.c                                           :+:      :+:    :+:   */
+/*   m3_translate.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/28 20:06:40 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/02 15:46:39 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/08 20:43:01 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/08 20:43:42 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector3d.h"
-#include <math.h>
+#include "utils_3d.h"
 
-double	len3d_sq(t_vector3d v)
+t_matrix3	*m3_translation(t_matrix3 *out, float x, float y, float z)
 {
-	return (v.x * v.x + v.y * v.y + v.z * v.z);
-}
-
-double	len3d(t_vector3d v)
-{
-	return (sqrt(len3d_sq(v)));
+	m3_identity(out);
+	out->_11 = x;
+	out->_21 = y;
+	out->_31 = z;
+	return (out);
 }

@@ -6,14 +6,15 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:56:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/05 19:23:52 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/08 22:35:18 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "./utils/colors.h"
 #include "./mlx_utils/mlx_utils.h"
-#include "./vector3d/vector3d.h"
+#include "utils/angle.h"
+#include "utils_3d/utils_3d.h"
 #include "fdf_obj/fdf_obj.h"
 #include <smart_ptr.h>
 #include "MLX42/MLX42.h"
@@ -38,6 +39,24 @@ mlx_put_image_to_window
 mlx_get_color_value
 mlx_xpm_to_image
  */
+
+t_smart_manager	*obj_manager(void)
+{
+	static t_smart_manager	manager;
+
+	return (&manager);
+}
+
+void	delete_obj(void *ptr)
+{
+	t_fdf_obj*const	obj = ptr;
+
+	if (obj == NULL)
+		return ;
+	smart_free(obj_manager(), obj->edge);
+	smart_free(obj_manager(), obj->point);
+	smart_free(obj_manager(), obj);
+}
 
 t_fdf_obj	*new_obj(size_t points, size_t edges)
 {
@@ -134,23 +153,6 @@ void	draw_line(mlx_image_t *img, int p1[2], int p2[2], t_rgba color)
 	}
 }
 
-t_smart_manager*	obj_manager()
-{
-	static t_smart_manager	manager;
-	return &manager;
-}
-
-void		delete_obj(void *ptr)
-{
-	t_fdf_obj*const	obj = ptr;
-
-	if (obj == NULL)
-		return ;
-	smart_free(obj_manager(), obj->edge);
-	smart_free(obj_manager(), obj->point);
-	smart_free(obj_manager(), obj);
-}
-
 void draw_point3d(mlx_image_t *img, t_point3d p, t_rgba color)
 {
 	mlx_put_pixel(img, (uint32_t)p.x, (uint32_t)p.y, color);
@@ -161,9 +163,9 @@ void draw_line3d(mlx_image_t *img, t_point3d p1, t_point3d p2, t_rgba color)
 	draw_line(img, (int [2]){p1.x, p1.y}, (int [2]){p2.x, p2.y}, color);
 }
 
-void rotateX(t_fdf_obj *obj, double rad)
+/* void rotateX(t_fdf_obj *obj, double rad)
 {
-	t_vector3d transformer[3] = {
+	t_matrix3 transformer[3] = {
 		{1, 0, 0},
 		{0, cos(rad), sin(rad)},
 		{0, -sin(rad), cos(rad)},
@@ -195,7 +197,7 @@ void rotateZ(t_fdf_obj *obj, double rad)
 
 	for (size_t i = 0; i < obj->cnt_point; i++)
 		obj->point[i] = transform3d(transformer, obj->point[i]);
-}
+} */
 
 void draw_obj(mlx_image_t *img, t_fdf_obj *obj)
 {
@@ -207,13 +209,25 @@ void draw_obj(mlx_image_t *img, t_fdf_obj *obj)
 t_fdf_obj	*obj;
 static void	ft_hook(void *param)
 {
-	const mlx_image_t	*img = param;
-
-	for (size_t i = 0; i < obj->cnt_point; i++)
-		obj->point[i] = translate3d((t_vector3d){400, 400, 0}, obj->point[i]);
-	draw_obj(img, obj);
+	// const mlx_image_t	*img = param;
+	(void)param;
+	// for (size_t i = 0; i < obj->cnt_point; i++)
+	// 	obj->point[i] = v3_translate((t_vector3){400, 400, 0}, obj->point[i]);
+	// draw_obj(img, obj);
 	// printf("WIDTH: %d | HEIGHT: %d\n", mlx->width, mlx->height);
 }
+
+// t_fdf_obj	cube()
+// {
+// 	obj->point[0] = (t_point3d){-25, -25, -25};
+// 	obj->point[1] = (t_point3d){25, -25, -25};
+// 	obj->point[2] = (t_point3d){25, 25, -25};
+// 	obj->point[3] = (t_point3d){-25, 25, -25};
+// 	obj->point[4] = (t_point3d){-25, -25, 25};
+// 	obj->point[5] = (t_point3d){25, -25, 25};
+// 	obj->point[6] = (t_point3d){25, 25, 25};
+// 	obj->point[7] = (t_point3d){-25, 25, 25};
+// }
 
 /* 
 정점들 입력 &
@@ -245,6 +259,7 @@ int	main(void)
 	axis->edge[2][0] = &axis->point[0];
 	axis->edge[2][1] = &axis->point[3];
 
+	obj = new_obj(8, 12);
 	obj->point[0] = (t_point3d){-25, -25, -25};
 	obj->point[1] = (t_point3d){25, -25, -25};
 	obj->point[2] = (t_point3d){25, 25, -25};
@@ -253,7 +268,6 @@ int	main(void)
 	obj->point[5] = (t_point3d){25, -25, 25};
 	obj->point[6] = (t_point3d){25, 25, 25};
 	obj->point[7] = (t_point3d){-25, 25, 25};
-	obj = new_obj(8, 12);
 	obj->edge[0][0] = &obj->point[0];
 	obj->edge[0][1] = &obj->point[1];
 	obj->edge[1][0] = &obj->point[1];
@@ -278,44 +292,24 @@ int	main(void)
 	obj->edge[10][1] = &obj->point[6];
 	obj->edge[11][0] = &obj->point[3];
 	obj->edge[11][1] = &obj->point[7];
-	// draw8way(img);
-	// mlx_loop_hook(mlx, ft_hook, mlx);
+	draw8way(img);
+	mlx_loop_hook(mlx, ft_hook, mlx);
 	for (size_t i = 0; i < axis->cnt_point; i++)
-		axis->point[i] = translate3d((t_vector3d){300, 300, 0}, axis->point[i]);
+		v3_translate(&axis->point[i], &axis->point[i], &(t_vector3){300, 300, 0});
 	for (size_t i = 0; i < axis->cnt_point; i++)
-		axis->point[i] = translate3d((t_vector3d){-300, -300, 0}, axis->point[i]);
-	rotateY(axis, 30.0 * M_PI / 180.0);
+		v3_translate(&axis->point[i], &axis->point[i], &(t_vector3){-300, -300, 0});
+	fdf_rotate_y(axis, radf(30.0));
 	for (size_t i = 0; i < axis->cnt_point; i++)
-		axis->point[i] = translate3d((t_vector3d){300, 300, 0}, axis->point[i]);
+		v3_translate(&axis->point[i], &axis->point[i], &(t_vector3){300, 300, 0});
 	for (size_t i = 0; i < axis->cnt_point; i++)
-		axis->point[i] = translate3d((t_vector3d){-300, -300, 0}, axis->point[i]);
-	rotateX(axis, 30.0 * M_PI / 180.0);
+		v3_translate(&axis->point[i], &axis->point[i], &(t_vector3){-300, -300, 0});
+	fdf_rotate_x(axis, radf(30.0));
 	for (size_t i = 0; i < axis->cnt_point; i++)
-		axis->point[i] = translate3d((t_vector3d){300, 300, 0}, axis->point[i]);
+		v3_translate(&axis->point[i], &axis->point[i], &(t_vector3){300, 300, 0});
 	draw_line3d(img, *axis->edge[0][0], *axis->edge[0][1], my_mlx_rgba(255, 0, 0, 255));
 	draw_line3d(img, *axis->edge[1][0], *axis->edge[1][1], my_mlx_rgba(0, 255, 0, 255));
 	draw_line3d(img, *axis->edge[2][0], *axis->edge[2][1], my_mlx_rgba(0, 0, 255, 255));
-	// for (size_t i = 0; i < obj->cnt_point; i++)
-	// 	obj->point[i] = translate3d((t_vector3d){400, 400, 0}, obj->point[i]);
-	// draw_obj(img, obj);
-	// for (size_t i = 0; i < obj->cnt_point; i++)
-	// 	obj->point[i] = translate3d((t_vector3d){-400, -400, 0}, obj->point[i]);
-	// rotateX(obj, 45.0 * M_PI / 180.0);
-	// for (size_t i = 0; i < obj->cnt_point; i++)
-	// 	obj->point[i] = translate3d((t_vector3d){400, 400, 0}, obj->point[i]);
-	// // draw_obj(img, obj);
-	// for (size_t i = 0; i < obj->cnt_point; i++)
-	// 	obj->point[i] = translate3d((t_vector3d){-400, -400, 0}, obj->point[i]);
-	// rotateY(obj, 45.0 * M_PI / 180.0);
-	// for (size_t i = 0; i < obj->cnt_point; i++)
-	// 	obj->point[i] = translate3d((t_vector3d){400, 400, 0}, obj->point[i]);
-	// // draw_obj(img, obj);
-	// for (size_t i = 0; i < obj->cnt_point; i++)
-	// 	obj->point[i] = translate3d((t_vector3d){-400, -400, 0}, obj->point[i]);
-	// rotateZ(obj, 45.0 * M_PI / 180.0);
-	// for (size_t i = 0; i < obj->cnt_point; i++)
-	// 	obj->point[i] = translate3d((t_vector3d){400, 400, 0}, obj->point[i]);
-	// draw_obj(img, obj);
+	draw_obj(img, obj);
 	// R: x-axis
 	// G: y-axis
 	// B: z-axis

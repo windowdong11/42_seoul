@@ -1,0 +1,2 @@
+SHELL_SRCS := $(shell find $(SETTING_SRC_DIR) -name '*.c')
+SETTING_SRCS = $(SHELL_SRCS:./src/%=%)

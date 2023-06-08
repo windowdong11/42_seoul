@@ -1,24 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scalar_op.c                                        :+:      :+:    :+:   */
+/*   v3_translate.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/28 20:04:55 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/05 20:14:52 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/08 21:20:31 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/08 22:03:35 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector3d.h"
-#include <math.h>
+#include "utils_3d.h"
 
-t_vector3d	pow3d(t_vector3d v, float n)
+t_vector3	*v3_translate(t_vector3 *out,
+				const t_vector3 *v1, const t_vector3 *v2)
 {
-	return (vector3d(v.x * n, v.y * n, v.z * n));
-}
-
-t_vector3d	div3d(t_vector3d v, float n)
-{
-	return (vector3d(v.x / n, v.y / n, v.z / n));
+	return (vector3(out, v1->x + v2->x, v1->y + v2->y, v1->z + v2->z));
 }

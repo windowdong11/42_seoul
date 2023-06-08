@@ -1,18 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unit_op.c                                          :+:      :+:    :+:   */
+/*   v3_transform.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/28 20:18:07 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/28 20:29:18 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/08 21:23:52 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/08 22:03:13 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector3d.h"
+#include "utils_3d.h"
 
-t_vector3d	unit3d(t_vector3d v)
+t_vector3	*v3_transform(t_vector3 *out,
+				const t_vector3 *v, const t_matrix3 *m)
 {
-	return (div3d(v, len3d(v)));
+	return (vector3(
+			out,
+			m->_11 * v->x + m->_21 * v->y + m->_31 * v->z,
+			m->_12 * v->x + m->_22 * v->y + m->_32 * v->z,
+			m->_13 * v->x + m->_23 * v->y + m->_33 * v->z
+		));
 }
