@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:56:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/08 22:35:18 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/10 23:29:29 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,305 +16,213 @@
 #include "utils/angle.h"
 #include "utils_3d/utils_3d.h"
 #include "fdf_obj/fdf_obj.h"
+#include "test/test.h"
 #include <smart_ptr.h>
 #include "MLX42/MLX42.h"
-#include "fdf.h"
 #include <math.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
 
-
-
-/*
-mlx_pixel_put
-mlx_new_image
-mlx_key_hook
-mlx_mouse_hook
-mlx_expose_hook // window should be re-drawn (this is called an "expose" event
-mlx_loop_hook
-mlx_new_image
-mlx_get_data_addr
-mlx_put_image_to_window
-mlx_get_color_value
-mlx_xpm_to_image
- */
-
-t_smart_manager	*obj_manager(void)
+typedef	struct s_fdf
 {
-	static t_smart_manager	manager;
-
-	return (&manager);
-}
-
-void	delete_obj(void *ptr)
-{
-	t_fdf_obj*const	obj = ptr;
-
-	if (obj == NULL)
-		return ;
-	smart_free(obj_manager(), obj->edge);
-	smart_free(obj_manager(), obj->point);
-	smart_free(obj_manager(), obj);
-}
-
-t_fdf_obj	*new_obj(size_t points, size_t edges)
-{
-	t_fdf_obj*const	obj
-		= smart_malloc(obj_manager(), sizeof(t_fdf_obj), delete_obj);
-	size_t			idx;
-
-	if (obj == NULL)
-		smart_exit(obj_manager(), EXIT_FAILURE);
-	obj->point = smart_malloc(obj_manager(), sizeof(t_point3d) * points, free);
-	obj->edge = smart_malloc(obj_manager(), sizeof(t_point3d **) * edges, free);
-	if (obj->point == NULL || obj->edge == NULL)
-		smart_exit(obj_manager(), EXIT_FAILURE);
-	obj->cnt_point = points;
-	obj->cnt_edge = edges;
-	idx = 0;
-	while (idx < edges)
-	{
-		obj->edge[idx]
-			= smart_malloc(obj_manager(), sizeof(t_point3d *) * 2, free);
-		if (obj->edge[idx] == NULL)
-			smart_exit(obj_manager(), EXIT_FAILURE);
-		obj->edge[idx][0] = NULL;
-		obj->edge[idx][1] = NULL;
-		++idx;
-	}
-	return (obj);
-}
-
-void	my_mlx_pixel_put(mlx_image_t *img, int x, int y, unsigned int color)
-{
-	char	*dst;
-
-	dst = (char *)img->pixels;
-	dst += x + y;
-	*((unsigned int *)dst) = color;
-}
+	int			is_updated;
+	mlx_t		*mlx;
+	mlx_image_t	*img;
+	t_fdf_obj	*obj;
+	t_vector3	position;
+	t_vector3	d_pos;
+	t_vector3	d_rad;
+	t_vector3	max_dpos;
+	t_vector3	max_drad;
+}	t_fdf;
 
 // Exit the program as failure.
 static void	ft_error(void)
 {
 	fprintf(stderr, "%s", mlx_strerror(mlx_errno));
-	exit(EXIT_FAILURE);
-}
-
-typedef struct s_point2d_ptr
-{
-	int	*axis;
-	int	*v_axis;
-}	t_point2d_ptr;
-
-void	swap_ptr(void **p1, void **p2)
-{
-	void	*tmp;
-
-	tmp = *p1;
-	*p1 = *p2;
-	*p2 = tmp;
-}
-
-void	draw_line(mlx_image_t *img, int p1[2], int p2[2], t_rgba color)
-{
-	const int	axis = abs(p2[0] - p1[0]) < abs(p2[1] - p1[1]);
-	int			delta[2];
-	int			unit[2];
-	int			point[2];
-	int			tmp;
-
-	delta[0] = p2[0] - p1[0];
-	delta[1] = p2[1] - p1[1];
-	if (p1[axis] > p2[axis])
-	{
-		tmp = p1[0];
-		p1[0] = p2[0];
-		p2[0] = tmp;
-		tmp = p1[1];
-		p1[1] = p2[1];
-		p2[1] = tmp;
-		delta[axis] = -delta[axis];
-		delta[!axis] = -delta[!axis];
-	}
-	point[0] = p1[0];
-	point[1] = p1[1];
-	unit[axis] = 1;
-	unit[!axis] = 1 - 2 * (delta[!axis] < 0);
-	while (point[axis] <= p2[axis])
-	{
-		if (point[axis] < 0 || point[axis] > 500 || point[!axis] < 0 || point[!axis] > 500)
-			return ;
-		mlx_put_pixel(img, point[0], point[1], color);
-		if (2 * abs(delta[!axis] * (point[axis] - p1[axis]) + delta[axis] * (p1[!axis] - point[!axis])) > delta[axis])
-			point[!axis] += unit[!axis];
-		point[axis] += unit[axis];
-	}
-}
-
-void draw_point3d(mlx_image_t *img, t_point3d p, t_rgba color)
-{
-	mlx_put_pixel(img, (uint32_t)p.x, (uint32_t)p.y, color);
-}
-
-void draw_line3d(mlx_image_t *img, t_point3d p1, t_point3d p2, t_rgba color)
-{
-	draw_line(img, (int [2]){p1.x, p1.y}, (int [2]){p2.x, p2.y}, color);
-}
-
-/* void rotateX(t_fdf_obj *obj, double rad)
-{
-	t_matrix3 transformer[3] = {
-		{1, 0, 0},
-		{0, cos(rad), sin(rad)},
-		{0, -sin(rad), cos(rad)},
-	};
-
-	for (size_t i = 0; i < obj->cnt_point; i++)
-		obj->point[i] = transform3d(transformer, obj->point[i]);
-}
-
-void rotateY(t_fdf_obj *obj, double rad)
-{
-	t_vector3d transformer[3] = {
-		{cos(rad), 0, sin(rad)},
-		{0, 1, 0},
-		{-sin(rad), 0, cos(rad)},
-	};
-
-	for (size_t i = 0; i < obj->cnt_point; i++)
-		obj->point[i] = transform3d(transformer, obj->point[i]);
-}
-
-void rotateZ(t_fdf_obj *obj, double rad)
-{
-	t_vector3d transformer[3] = {
-		{cos(rad), sin(rad), 0},
-		{-sin(rad), cos(rad), 0},
-		{0, 0, 1},
-	};
-
-	for (size_t i = 0; i < obj->cnt_point; i++)
-		obj->point[i] = transform3d(transformer, obj->point[i]);
-} */
-
-void draw_obj(mlx_image_t *img, t_fdf_obj *obj)
-{
-	for(size_t i = 0; i < obj->cnt_edge; i++)
-		draw_line3d(img, *obj->edge[i][0], *obj->edge[i][1], my_mlx_rgba(0, 0, 255, 255));
+	smart_exit(fdf_obj_manager(), EXIT_FAILURE);
 }
 
 // Print the window width and height.
-t_fdf_obj	*obj;
 static void	ft_hook(void *param)
 {
-	// const mlx_image_t	*img = param;
-	(void)param;
-	// for (size_t i = 0; i < obj->cnt_point; i++)
-	// 	obj->point[i] = v3_translate((t_vector3){400, 400, 0}, obj->point[i]);
-	// draw_obj(img, obj);
-	// printf("WIDTH: %d | HEIGHT: %d\n", mlx->width, mlx->height);
+	t_fdf*const	fdf = param;
+
+	if (fdf->is_updated == 0)
+		return ;
+	// draw(fdf->img);
+	fdf_rotate_x(fdf->obj, fdf->d_rad.x);
+	fdf_rotate_y(fdf->obj, fdf->d_rad.y);
+	fdf_rotate_z(fdf->obj, fdf->d_rad.z);
+	v3_add(&fdf->position, &fdf->position, &fdf->d_pos);
+	ft_memset(fdf->img->pixels, 0,
+		fdf->img->width * fdf->img->height * sizeof(int));
+	fdf_draw_at(fdf->img, fdf->obj, fdf->position);
+	// mlx_image_to_window(fdf->mlx, fdf->img, 0, 0);
+	fdf->is_updated = 0;
 }
 
-// t_fdf_obj	cube()
-// {
-// 	obj->point[0] = (t_point3d){-25, -25, -25};
-// 	obj->point[1] = (t_point3d){25, -25, -25};
-// 	obj->point[2] = (t_point3d){25, 25, -25};
-// 	obj->point[3] = (t_point3d){-25, 25, -25};
-// 	obj->point[4] = (t_point3d){-25, -25, 25};
-// 	obj->point[5] = (t_point3d){25, -25, 25};
-// 	obj->point[6] = (t_point3d){25, 25, 25};
-// 	obj->point[7] = (t_point3d){-25, 25, 25};
-// }
+void	delete_fdf(void *ptr)
+{
+	t_fdf*const	fdf = ptr;
 
-/* 
-정점들 입력 &
-간선들에 대한 정보
-(0, 1)
-(0, 2)
-(0, 3)
-*/
+	if (fdf->img)
+		smart_free(fdf_obj_manager(), fdf->img);
+	if (fdf->mlx)
+		smart_free(fdf_obj_manager(), fdf->mlx);
+	if (fdf->obj)
+		smart_free(fdf_obj_manager(), fdf->obj);
+	free(ptr);
+}
+
+t_fdf_obj	*cube()
+{
+	t_fdf_obj*const obj = new_obj(8, 12);
+	if (obj == NULL)
+		return (NULL);
+	obj->node[0].point = (t_point3d){-25, -25, -25};
+	obj->node[1].point = (t_point3d){25, -25, -25};
+	obj->node[2].point = (t_point3d){25, 25, -25};
+	obj->node[3].point = (t_point3d){-25, 25, -25};
+	obj->node[4].point = (t_point3d){-25, -25, 25};
+	obj->node[5].point = (t_point3d){25, -25, 25};
+	obj->node[6].point = (t_point3d){25, 25, 25};
+	obj->node[7].point = (t_point3d){-25, 25, 25};
+	obj->edge[0][0] = &obj->node[0];
+	obj->edge[0][1] = &obj->node[1];
+	obj->edge[1][0] = &obj->node[1];
+	obj->edge[1][1] = &obj->node[2];
+	obj->edge[2][0] = &obj->node[2];
+	obj->edge[2][1] = &obj->node[3];
+	obj->edge[3][0] = &obj->node[3];
+	obj->edge[3][1] = &obj->node[0];
+	obj->edge[4][0] = &obj->node[4];
+	obj->edge[4][1] = &obj->node[5];
+	obj->edge[5][0] = &obj->node[5];
+	obj->edge[5][1] = &obj->node[6];
+	obj->edge[6][0] = &obj->node[6];
+	obj->edge[6][1] = &obj->node[7];
+	obj->edge[7][0] = &obj->node[7];
+	obj->edge[7][1] = &obj->node[4];
+	obj->edge[8][0] = &obj->node[0];
+	obj->edge[8][1] = &obj->node[4];
+	obj->edge[9][0] = &obj->node[1];
+	obj->edge[9][1] = &obj->node[5];
+	obj->edge[10][0] = &obj->node[2];
+	obj->edge[10][1] = &obj->node[6];
+	obj->edge[11][0] = &obj->node[3];
+	obj->edge[11][1] = &obj->node[7];
+	return (obj);
+}
+
+t_fdf	*fdf_init(int32_t w, int32_t h, const char *title, bool resize)
+{
+	t_fdf*const	fdf = smart_malloc(fdf_obj_manager(), sizeof(t_fdf),
+			delete_fdf);
+
+	fdf->mlx = mlx_init(w, h, title, resize);
+	if (!fdf->mlx)
+		ft_error();
+	fdf->img = mlx_new_image(fdf->mlx, w, h);
+	ft_memset(fdf->img->pixels, 0,
+		fdf->img->width * fdf->img->height * sizeof(int));
+	if (!fdf->img || (mlx_image_to_window(fdf->mlx, fdf->img, 0, 0) < 0))
+		ft_error();
+	fdf->obj = cube();
+	vector3(&fdf->max_drad, radf(2.0), radf(2.0), radf(2.0));
+	vector3(&fdf->max_dpos, 10.0, 10.0, 10.0);
+	vector3(&fdf->position, 0, 0, 0);
+	fdf->is_updated = 0;
+	return (fdf);
+}
+
+float	max(float n1, float n2)
+{
+	if (n1 < n2)
+		return (n2);
+	return (n1);
+}
+float	min(float n1, float n2)
+{
+	if (n1 > n2)
+		return (n2);
+	return (n1);
+}
+
+void my_keyhook(mlx_key_data_t keydata, void* param)
+{
+	t_fdf*const	fdf = param;
+
+	if (keydata.action == MLX_PRESS)
+	{
+		if (keydata.key == MLX_KEY_W)
+			fdf->d_rad.x = -radf(1.0);
+		else if (keydata.key == MLX_KEY_S)
+			fdf->d_rad.x = radf(1.0);
+		else if (keydata.key == MLX_KEY_A)
+			fdf->d_rad.y = -radf(1.0);
+		else if (keydata.key == MLX_KEY_D)
+			fdf->d_rad.y = radf(1.0);
+		else if (keydata.key == MLX_KEY_Q)
+			fdf->d_rad.z = -radf(1.0);
+		else if (keydata.key == MLX_KEY_E)
+			fdf->d_rad.z = radf(1.0);
+		else if (keydata.key == MLX_KEY_LEFT)
+			fdf->d_pos.x = -1.0;
+		else if (keydata.key == MLX_KEY_RIGHT)
+			fdf->d_pos.x = 1.0;
+		else if (keydata.key == MLX_KEY_UP)
+			fdf->d_pos.y = -1.0;
+		else if (keydata.key == MLX_KEY_DOWN)
+			fdf->d_pos.y = 1.0;
+	}
+	else if (keydata.action == MLX_RELEASE)
+	{
+		if (keydata.key == MLX_KEY_W || keydata.key == MLX_KEY_S)
+			fdf->d_rad.x = 0.0;
+		else if (keydata.key == MLX_KEY_A || keydata.key == MLX_KEY_D)
+			fdf->d_rad.y = 0.0;
+		else if (keydata.key == MLX_KEY_Q || keydata.key == MLX_KEY_E)
+			fdf->d_rad.z = 0.0;
+		else if (keydata.key == MLX_KEY_LEFT || keydata.key == MLX_KEY_RIGHT)
+			fdf->d_pos.x = 0.0;
+		else if (keydata.key == MLX_KEY_UP || keydata.key == MLX_KEY_DOWN)
+			fdf->d_pos.y = 0.0;
+	}
+	else if (keydata.action == MLX_REPEAT)
+	{
+		if (keydata.key == MLX_KEY_W)
+			fdf->d_rad.x = min(-fdf->max_drad.x, fdf->d_rad.x - radf(0.1));
+		else if (keydata.key == MLX_KEY_S)
+			fdf->d_rad.x = max(fdf->max_drad.x, fdf->d_rad.x + radf(0.1));
+		else if (keydata.key == MLX_KEY_A)
+			fdf->d_rad.y = min(-fdf->max_drad.y, fdf->d_rad.y - radf(0.1));
+		else if (keydata.key == MLX_KEY_D)
+			fdf->d_rad.y = max(fdf->max_drad.y, fdf->d_rad.y + radf(0.1));
+		else if (keydata.key == MLX_KEY_Q)
+			fdf->d_rad.z = min(-fdf->max_drad.z, fdf->d_rad.z - radf(0.1));
+		else if (keydata.key == MLX_KEY_E)
+			fdf->d_rad.z = max(fdf->max_drad.z, fdf->d_rad.z + radf(0.1));
+		else if (keydata.key == MLX_KEY_LEFT)
+			fdf->d_pos.x = min(-fdf->max_dpos.x, fdf->d_pos.x - 1.0);
+		else if (keydata.key == MLX_KEY_RIGHT)
+			fdf->d_pos.x = max(fdf->max_dpos.x, fdf->d_pos.x + 1.0);
+		else if (keydata.key == MLX_KEY_UP)
+			fdf->d_pos.y = min(-fdf->max_dpos.y, fdf->d_pos.y - 1.0);
+		else if (keydata.key == MLX_KEY_DOWN)
+			fdf->d_pos.y = max(fdf->max_dpos.y, fdf->d_pos.y + 1.0);
+	}
+	fdf->is_updated = 1;
+}
+
 int	main(void)
 {
-	mlx_t	*mlx = mlx_init(1920, 1080, "fdf", true);
-	if (!mlx)
-		ft_error();
+	t_fdf*const	fdf = fdf_init(1920, 1080, "fdf", true);
 
-	mlx_image_t	*img = mlx_new_image(mlx, 1920, 1080);
-    ft_memset(img->pixels, 0, img->width * img->height * sizeof(int));
-	if (!img || (mlx_image_to_window(mlx, img, 0, 0) < 0))
-		ft_error();
-
-	t_fdf_obj	*axis = new_obj(4, 3);
-	axis->point[0] = (t_point3d){0, 0, 0};
-	axis->point[1] = (t_point3d){100, 0, 0};
-	axis->point[2] = (t_point3d){0, 100, 0};
-	axis->point[3] = (t_point3d){0, 0, 100};
-	axis->edge[0][0] = &axis->point[0];
-	axis->edge[0][1] = &axis->point[1];
-	axis->edge[1][0] = &axis->point[0];
-	axis->edge[1][1] = &axis->point[2];
-	axis->edge[2][0] = &axis->point[0];
-	axis->edge[2][1] = &axis->point[3];
-
-	obj = new_obj(8, 12);
-	obj->point[0] = (t_point3d){-25, -25, -25};
-	obj->point[1] = (t_point3d){25, -25, -25};
-	obj->point[2] = (t_point3d){25, 25, -25};
-	obj->point[3] = (t_point3d){-25, 25, -25};
-	obj->point[4] = (t_point3d){-25, -25, 25};
-	obj->point[5] = (t_point3d){25, -25, 25};
-	obj->point[6] = (t_point3d){25, 25, 25};
-	obj->point[7] = (t_point3d){-25, 25, 25};
-	obj->edge[0][0] = &obj->point[0];
-	obj->edge[0][1] = &obj->point[1];
-	obj->edge[1][0] = &obj->point[1];
-	obj->edge[1][1] = &obj->point[2];
-	obj->edge[2][0] = &obj->point[2];
-	obj->edge[2][1] = &obj->point[3];
-	obj->edge[3][0] = &obj->point[3];
-	obj->edge[3][1] = &obj->point[0];
-	obj->edge[4][0] = &obj->point[4];
-	obj->edge[4][1] = &obj->point[5];
-	obj->edge[5][0] = &obj->point[5];
-	obj->edge[5][1] = &obj->point[6];
-	obj->edge[6][0] = &obj->point[6];
-	obj->edge[6][1] = &obj->point[7];
-	obj->edge[7][0] = &obj->point[7];
-	obj->edge[7][1] = &obj->point[4];
-	obj->edge[8][0] = &obj->point[0];
-	obj->edge[8][1] = &obj->point[4];
-	obj->edge[9][0] = &obj->point[1];
-	obj->edge[9][1] = &obj->point[5];
-	obj->edge[10][0] = &obj->point[2];
-	obj->edge[10][1] = &obj->point[6];
-	obj->edge[11][0] = &obj->point[3];
-	obj->edge[11][1] = &obj->point[7];
-	draw8way(img);
-	mlx_loop_hook(mlx, ft_hook, mlx);
-	for (size_t i = 0; i < axis->cnt_point; i++)
-		v3_translate(&axis->point[i], &axis->point[i], &(t_vector3){300, 300, 0});
-	for (size_t i = 0; i < axis->cnt_point; i++)
-		v3_translate(&axis->point[i], &axis->point[i], &(t_vector3){-300, -300, 0});
-	fdf_rotate_y(axis, radf(30.0));
-	for (size_t i = 0; i < axis->cnt_point; i++)
-		v3_translate(&axis->point[i], &axis->point[i], &(t_vector3){300, 300, 0});
-	for (size_t i = 0; i < axis->cnt_point; i++)
-		v3_translate(&axis->point[i], &axis->point[i], &(t_vector3){-300, -300, 0});
-	fdf_rotate_x(axis, radf(30.0));
-	for (size_t i = 0; i < axis->cnt_point; i++)
-		v3_translate(&axis->point[i], &axis->point[i], &(t_vector3){300, 300, 0});
-	draw_line3d(img, *axis->edge[0][0], *axis->edge[0][1], my_mlx_rgba(255, 0, 0, 255));
-	draw_line3d(img, *axis->edge[1][0], *axis->edge[1][1], my_mlx_rgba(0, 255, 0, 255));
-	draw_line3d(img, *axis->edge[2][0], *axis->edge[2][1], my_mlx_rgba(0, 0, 255, 255));
-	draw_obj(img, obj);
-	// R: x-axis
-	// G: y-axis
-	// B: z-axis
-	mlx_loop(mlx);
-	mlx_loop_hook(mlx, ft_hook, img);
-	mlx_terminate(mlx);
+	mlx_key_hook(fdf->mlx, &my_keyhook, fdf);
+	mlx_loop_hook(fdf->mlx, ft_hook, fdf);
+	mlx_loop(fdf->mlx);
+	mlx_terminate(fdf->mlx);
 	return (EXIT_SUCCESS);
 }

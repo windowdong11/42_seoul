@@ -1,34 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector3.h                                          :+:      :+:    :+:   */
+/*   draw3d.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/27 22:42:09 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/09 17:17:53 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/09 16:08:24 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/10 17:48:39 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VECTOR3_H
-# define VECTOR3_H
+#include "mlx_utils.h"
 
-# include "matrix3.h"
-# include "matrix4.h"
-
-typedef struct s_vector3
+void	draw_point3d(mlx_image_t *img, t_point3d p, t_rgba color)
 {
-	float	x;
-	float	y;
-	float	z;
-}	t_vector3;
+	mlx_put_pixel(img, (uint32_t)p.x, (uint32_t)p.y, color);
+}
 
-typedef t_vector3	t_point3d;
-
-typedef struct s_edge3d
+void	draw_line3d(mlx_image_t *img, t_point3d p1, t_point3d p2, t_rgba color)
 {
-	t_point3d	v1;
-	t_point3d	v2;
-}	t_edge3d;
-
-#endif
+	draw_line(img, (int [2]){p1.x, p1.y}, (int [2]){p2.x, p2.y}, color);
+}

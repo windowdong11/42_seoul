@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 15:22:32 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/08 22:16:47 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/10 22:49:20 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ t_matrix3	*m3_multiply(t_matrix3 *out,
 				const t_matrix3 *m1, const t_matrix3 *m2);
 t_matrix3	*m3_translation(t_matrix3 *out, float x, float y, float z);
 
-t_matrix3	*m3_rotate_x(t_matrix3 *out, float angle);
-t_matrix3	*m3_rotate_y(t_matrix3 *out, float angle);
-t_matrix3	*m3_rotate_z(t_matrix3 *out, float angle);
+t_matrix3	*m3_rotate_x(t_matrix3 *out, float rad);
+t_matrix3	*m3_rotate_y(t_matrix3 *out, float rad);
+t_matrix3	*m3_rotate_z(t_matrix3 *out, float rad);
 
 t_matrix3	*m3_scaling(t_matrix3 *out, float sx, float sy, float sz);
 
@@ -43,7 +43,8 @@ t_matrix3		*m3_affinetransform(t_matrix3 *out, float Scaling, const t_vector3 *p
 t_vector3	*vector3(t_vector3 *out, float x, float y, float z);
 t_vector3	*v3_unit(t_vector3 *out, const t_vector3 *v);
 t_vector3	*v3_zero(t_vector3 *out);
-t_vector3	*v3_identity(t_vector3 *out);
+t_vector3	*v3_add(t_vector3 *out, const t_vector3 *v1, const t_vector3 *v2);
+t_vector3	*v3_negate(t_vector3 *out, const t_vector3 *v);
 t_vector3	*v3_pow(t_vector3 *out, const t_vector3 *v, float n);
 t_vector3	*v3_div(t_vector3 *out, const t_vector3 *v, float n);
 t_vector3	*v3_translate(t_vector3 *out,

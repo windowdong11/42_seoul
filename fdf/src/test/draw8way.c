@@ -1,6 +1,7 @@
-
-#include "fdf.h"
-#include "utils/colors.h"
+#include "../utils/colors.h"
+#include "../utils_3d/utils_3d.h"
+#include "../mlx_utils/mlx_utils.h"
+#include <MLX42/MLX42.h>
 
 void draw8way(mlx_image_t *img)
 {
