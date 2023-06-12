@@ -6,9 +6,14 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 22:23:30 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/08 22:26:36 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/11 17:10:46 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef ANGLE_H
+# define ANGLE_H
+
 float	radf(float angle);
 float	anglef(float rad);
+
+#endif

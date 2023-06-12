@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:41:39 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/25 19:08:17 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/11 17:23:43 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	free_smartptr(t_smartptr *ptr_to_free)
 	free(ptr_to_free);
 }
 
-void	smart_free_rest(t_smart_manager*const manager)
+void	smart_clean(t_smart_manager*const manager)
 {
 	t_smartptr					*iter_ptr;
 	t_smartptr					*ptr_to_free;
@@ -63,6 +63,8 @@ void	smart_free(t_smart_manager*const manager, void *ptr_to_free)
 	t_smartptr	*prev_ptr;
 	t_smartptr	*iter_ptr;
 
+	if (ptr_to_free == NULL)
+		return ;
 	prev_ptr = &manager->ptr;
 	iter_ptr = manager->ptr.next;
 	while (iter_ptr != NULL)
@@ -80,6 +82,6 @@ void	smart_free(t_smart_manager*const manager, void *ptr_to_free)
 
 void	smart_exit(t_smart_manager*const manager, int exit_code)
 {
-	smart_free_rest(manager);
+	smart_clean(manager);
 	exit(exit_code);
 }

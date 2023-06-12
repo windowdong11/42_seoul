@@ -6,18 +6,11 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 17:07:30 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/10 17:26:25 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/11 17:36:58 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf_obj.h"
-
-t_smart_manager	*fdf_obj_manager(void)
-{
-	static t_smart_manager	manager;
-
-	return (&manager);
-}
 
 void	delete_obj(void *ptr)
 {
@@ -25,35 +18,44 @@ void	delete_obj(void *ptr)
 
 	if (obj == NULL)
 		return ;
-	smart_free(fdf_obj_manager(), obj->edge);
-	smart_free(fdf_obj_manager(), obj->node);
+	smart_free(ptr_manager(), obj->edge);
+	smart_free(ptr_manager(), obj->node);
 	free(obj);
+}
+
+static t_fdf_obj	*fdf_obj_init(t_fdf_obj *obj)
+{
+	size_t	idx;
+
+	obj->node = smart_malloc(ptr_manager(),
+			sizeof(t_color_point) * obj->cnt_node, free);
+	obj->edge = smart_malloc(ptr_manager(),
+			sizeof(t_color_point **) * obj->cnt_edge, free);
+	if (obj->node == NULL || obj->edge == NULL)
+		smart_exit(ptr_manager(), EXIT_FAILURE);
+	idx = 0;
+	while (idx < obj->cnt_edge)
+	{
+		obj->edge[idx]
+			= smart_malloc(ptr_manager(), sizeof(t_point3d *) * 2, free);
+		if (obj->edge[idx] == NULL)
+			smart_exit(ptr_manager(), EXIT_FAILURE);
+		obj->edge[idx][0] = NULL;
+		obj->edge[idx][1] = NULL;
+		++idx;
+	}
+	return (obj);
 }
 
 t_fdf_obj	*new_obj(size_t points, size_t edges)
 {
 	t_fdf_obj*const	obj
-		= smart_malloc(fdf_obj_manager(), sizeof(t_fdf_obj), delete_obj);
-	size_t			idx;
+		= smart_malloc(ptr_manager(), sizeof(t_fdf_obj), delete_obj);
 
 	if (obj == NULL)
-		smart_exit(fdf_obj_manager(), EXIT_FAILURE);
-	obj->node = smart_malloc(fdf_obj_manager(), sizeof(t_fdf_point) * points, free);
-	obj->edge = smart_malloc(fdf_obj_manager(), sizeof(t_fdf_point **) * edges, free);
-	if (obj->node == NULL || obj->edge == NULL)
-		smart_exit(fdf_obj_manager(), EXIT_FAILURE);
-	obj->cnt_point = points;
+		smart_exit(ptr_manager(), EXIT_FAILURE);
+	obj->cnt_node = points;
 	obj->cnt_edge = edges;
-	idx = 0;
-	while (idx < edges)
-	{
-		obj->edge[idx]
-			= smart_malloc(fdf_obj_manager(), sizeof(t_point3d *) * 2, free);
-		if (obj->edge[idx] == NULL)
-			smart_exit(fdf_obj_manager(), EXIT_FAILURE);
-		obj->edge[idx][0] = NULL;
-		obj->edge[idx][1] = NULL;
-		++idx;
-	}
+	fdf_obj_init(obj);
 	return (obj);
 }

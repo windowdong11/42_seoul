@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 20:42:25 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/09 15:41:37 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/11 22:00:41 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@
 t_matrix3	*m3_rotate_x(t_matrix3 *out, float rad)
 {
 	m3_zero(out);
-	out->_11 = 1;
-	out->_12 = 0;
-	out->_13 = 0;
-	out->_21 = 0;
-	out->_22 = cosf(rad);
-	out->_23 = sinf(rad);
-	out->_31 = 0;
-	out->_32 = -sinf(rad);
-	out->_33 = cosf(rad);
+	out->v[0].x = 1;
+	out->v[0].y = 0;
+	out->v[0].z = 0;
+	out->v[1].x = 0;
+	out->v[1].y = cosf(rad);
+	out->v[1].z = sinf(rad);
+	out->v[2].x = 0;
+	out->v[2].y = -sinf(rad);
+	out->v[2].z = cosf(rad);
 	return (out);
 }
 
@@ -37,15 +37,15 @@ t_matrix3	*m3_rotate_x(t_matrix3 *out, float rad)
 t_matrix3	*m3_rotate_y(t_matrix3 *out, float rad)
 {
 	m3_zero(out);
-	out->_11 = cosf(rad);
-	out->_12 = 0;
-	out->_13 = -sinf(rad);
-	out->_21 = 0;
-	out->_22 = 1;
-	out->_23 = 0;
-	out->_31 = sinf(rad);
-	out->_32 = 0;
-	out->_33 = cosf(rad);
+	out->v[0].x = cosf(rad);
+	out->v[0].y = 0;
+	out->v[0].z = -sinf(rad);
+	out->v[1].x = 0;
+	out->v[1].y = 1;
+	out->v[1].z = 0;
+	out->v[2].x = sinf(rad);
+	out->v[2].y = 0;
+	out->v[2].z = cosf(rad);
 	return (out);
 }
 
@@ -55,14 +55,14 @@ t_matrix3	*m3_rotate_y(t_matrix3 *out, float rad)
 t_matrix3	*m3_rotate_z(t_matrix3 *out, float rad)
 {
 	m3_zero(out);
-	out->_11 = cosf(rad);
-	out->_12 = sinf(rad);
-	out->_13 = 0;
-	out->_21 = -sinf(rad);
-	out->_22 = cosf(rad);
-	out->_23 = 0;
-	out->_31 = 0;
-	out->_32 = 0;
-	out->_33 = 1;
+	out->v[0].x = cosf(rad);
+	out->v[0].y = sinf(rad);
+	out->v[0].z = 0;
+	out->v[1].x = -sinf(rad);
+	out->v[1].y = cosf(rad);
+	out->v[1].z = 0;
+	out->v[2].x = 0;
+	out->v[2].y = 0;
+	out->v[2].z = 1;
 	return (out);
 }

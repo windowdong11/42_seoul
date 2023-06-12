@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf_translate.c                                    :+:      :+:    :+:   */
+/*   ptr_manager.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/09 15:43:24 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/11 13:45:57 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/11 17:16:40 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/11 17:16:59 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf_obj.h"
+#ifndef PTR_MANAGER_H
+# define PTR_MANAGER_H
 
-t_fdf_obj	*fdf_translate(t_fdf_obj *obj, t_vector3 v)
-{
-	size_t		idx;
+# include <smart_ptr.h>
 
-	idx = 0;
-	while (idx < obj->cnt_node)
-	{
-		v3_translate(&obj->node[idx].point, &obj->node[idx].point, &v);
-		++idx;
-	}
-	return (obj);
-}
+t_smart_manager	*ptr_manager(void);
+
+#endif

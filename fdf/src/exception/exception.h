@@ -1,26 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf_translate.c                                    :+:      :+:    :+:   */
+/*   exception.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/09 15:43:24 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/11 13:45:57 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/11 17:19:33 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/11 17:19:37 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf_obj.h"
+#ifndef EXCEPTION_H
+# define EXCEPTION_H
 
-t_fdf_obj	*fdf_translate(t_fdf_obj *obj, t_vector3 v)
-{
-	size_t		idx;
+void	ft_error(void);
 
-	idx = 0;
-	while (idx < obj->cnt_node)
-	{
-		v3_translate(&obj->node[idx].point, &obj->node[idx].point, &v);
-		++idx;
-	}
-	return (obj);
-}
+#endif

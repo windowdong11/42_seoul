@@ -1,43 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf_rotate.c                                       :+:      :+:    :+:   */
+/*   fdf_scale.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/08 22:17:39 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/11 22:55:04 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/11 12:12:37 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/11 15:32:46 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf_obj.h"
 
-t_fdf_obj	*fdf_rotate(t_fdf_obj	*obj, const t_vector3 *rotate)
+t_fdf_obj	*fdf_scale(t_fdf_obj *obj, const t_vector3 *scale)
 {
-	fdf_rotate_x(obj, rotate->x);
-	fdf_rotate_y(obj, rotate->y);
-	fdf_rotate_z(obj, rotate->z);
+	fdf_scale_x(obj, scale->x);
+	fdf_scale_y(obj, scale->y);
+	fdf_scale_z(obj, scale->z);
 	return (obj);
 }
 
-t_fdf_obj	*fdf_rotate_rev(t_fdf_obj	*obj, const t_vector3 *rotate)
+t_fdf_obj	*fdf_scale_rev(t_fdf_obj *obj, const t_vector3 *scale)
 {
 	t_vector3	tmp;
 
-	v3_negate(&tmp, rotate);
-	fdf_rotate_y(obj, tmp.y);
-	fdf_rotate_x(obj, tmp.x);
-	fdf_rotate_z(obj, tmp.z);
+	v3_negate(&tmp, scale);
+	fdf_scale_z(obj, tmp.z);
+	fdf_scale_y(obj, tmp.y);
+	fdf_scale_x(obj, tmp.x);
 	return (obj);
 }
 
-t_fdf_obj	*fdf_rotate_x(t_fdf_obj	*obj, float rad)
+t_fdf_obj	*fdf_scale_x(t_fdf_obj *obj, float sx)
 {
 	t_matrix3	transformer;
 	size_t		idx;
 
 	idx = 0;
-	m3_rotate_x(&transformer, rad);
+	m3_scaling(&transformer, sx, 1.0, 1.0);
 	while (idx < obj->cnt_node)
 	{
 		v3_transform(&obj->node[idx].point,
@@ -47,13 +47,13 @@ t_fdf_obj	*fdf_rotate_x(t_fdf_obj	*obj, float rad)
 	return (obj);
 }
 
-t_fdf_obj	*fdf_rotate_y(t_fdf_obj	*obj, float rad)
+t_fdf_obj	*fdf_scale_y(t_fdf_obj *obj, float sy)
 {
 	t_matrix3	transformer;
 	size_t		idx;
 
 	idx = 0;
-	m3_rotate_y(&transformer, rad);
+	m3_scaling(&transformer, 1.0, sy, 1.0);
 	while (idx < obj->cnt_node)
 	{
 		v3_transform(&obj->node[idx].point,
@@ -63,13 +63,13 @@ t_fdf_obj	*fdf_rotate_y(t_fdf_obj	*obj, float rad)
 	return (obj);
 }
 
-t_fdf_obj	*fdf_rotate_z(t_fdf_obj	*obj, float rad)
+t_fdf_obj	*fdf_scale_z(t_fdf_obj *obj, float sz)
 {
 	t_matrix3	transformer;
 	size_t		idx;
 
 	idx = 0;
-	m3_rotate_z(&transformer, rad);
+	m3_scaling(&transformer, 1.0, 1.0, sz);
 	while (idx < obj->cnt_node)
 	{
 		v3_transform(&obj->node[idx].point,

@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf_translate.c                                    :+:      :+:    :+:   */
+/*   exception.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/09 15:43:24 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/11 13:45:57 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/11 17:11:49 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/11 17:35:37 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf_obj.h"
+#include <MLX42/MLX42.h>
+#include <stdlib.h>
+#include <libft.h>
+#include <smart_ptr.h>
+#include "../ptr_manager/ptr_manager.h"
 
-t_fdf_obj	*fdf_translate(t_fdf_obj *obj, t_vector3 v)
+void	ft_error(void)
 {
-	size_t		idx;
-
-	idx = 0;
-	while (idx < obj->cnt_node)
-	{
-		v3_translate(&obj->node[idx].point, &obj->node[idx].point, &v);
-		++idx;
-	}
-	return (obj);
+	ft_putstr_fd(mlx_strerror(mlx_errno), STDERR_FILENO);
+	smart_clean(ptr_manager());
+	exit(EXIT_FAILURE);
 }

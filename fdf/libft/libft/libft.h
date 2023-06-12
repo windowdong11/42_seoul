@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:00:28 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/01 07:12:52 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/11 17:36:45 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	*ft_memset(void *b, int c, size_t len);
 ssize_t	ft_putchar_fd(char c, int fd);
 ssize_t	ft_putendl_fd(char *s, int fd);
 ssize_t	ft_putnbr_fd(int n, int fd);
-ssize_t	ft_putstr_fd(char *s, int fd);
+ssize_t	ft_putstr_fd(const char *s, int fd);
 char	**ft_split(char const *s, char c);
 char	*ft_strchr(const char *str, int ch);
 char	*ft_strdup(const char *s1);

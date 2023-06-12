@@ -6,20 +6,33 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:48:15 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/10 17:30:36 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/11 19:00:23 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf_obj.h"
 #include "../mlx_utils/mlx_utils.h"
 
-void		fdf_draw(mlx_image_t *img, t_fdf_obj *obj)
+// void	draw_colored(mlx_image_t *img, t_color_point *p1, t_color_point *p2)
+// {
+// 	(p1->p[0] - p2->p[0]) * (p1->p[1] - p2.p[1]) < 0.0
+// }
+
+void	fdf_draw(mlx_image_t *img, t_fdf_obj *obj)
 {
-	for(size_t i = 0; i < obj->cnt_edge; i++)
-		draw_line3d(img, obj->edge[i][0]->point, obj->edge[i][1]->point, my_mlx_rgba(0, 0, 255, 255));
+	size_t	i;
+
+	i = 0;
+	while (i < obj->cnt_edge)
+	{
+		draw_line3d(img,
+			obj->edge[i][0]->point, obj->edge[i][1]->point,
+			obj->edge[i][1]->color);
+		++i;
+	}
 }
 
-void		fdf_draw_at(mlx_image_t *img, t_fdf_obj *obj, t_vector3 at)
+void	fdf_draw_at(mlx_image_t *img, t_fdf_obj *obj, t_vector3 at)
 {
 	fdf_translate(obj, at);
 	fdf_draw(img, obj);
