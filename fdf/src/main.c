@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:56:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/11 23:00:03 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/12 20:47:37 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,6 @@ static void	ft_hook(void *param)
 	fdf_proj(fdf);
 	fdf->is_updated = 0;
 }
-
-// t_fdf_obj	*parse_map(int argc, char *argv[])
-// {
-// 	t_fdf_obj *obj = new_obj();
-// 	return (obj);
-// }
 
 t_fdf_obj	*cube()
 {
@@ -87,7 +81,7 @@ t_fdf_obj	*cube()
 	return (obj);
 }
 
-t_quaternion	quat(float angle, t_vector3 v)
+/* t_quaternion	quat(float angle, t_vector3 v)
 {
 	t_quaternion	q;
 
@@ -97,15 +91,80 @@ t_quaternion	quat(float angle, t_vector3 v)
 	q.y = v.y * s;
 	q.z = v.z * s;
 	return (q);
+} */
+int	ends_with(const char *str, const char *end)
+{
+	const char*const	str_start = str;
+	const char*const	end_start = str;
+
+	while (*str != '\0')
+		str++;
+	while (*end != '\0')
+		end++;
+	if (str - str_start < end - end_start)
+		return (0);
+	while (str >= str_start && end >= end_start)
+	{
+		if (*str != *end)
+			return (0);
+		--str;
+		--end;
+	}
+	return (1);
 }
 
-int	main(void)
+#include <fcntl.h>
+#include <get_next_line.h>
+
+t_fdf_obj	*parse_node(char *splitted)
 {
+
+}
+
+t_fdf_obj	*parse_map(int fd)
+{
+	char		*line;
+	char		**splitted;
+	t_fdf_obj	*obj;
+
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		splitted = ft_split(line, ' ');
+		if (splitted == NULL)
+			ft_error();
+		parse_each_node(splitted);
+		while (*splitted != NULL)
+		{
+			parse_node(*splitted);
+			free(*splitted);
+			(*splitted)++;
+		}
+		free(splitted);
+	}
+	return (NULL);
+}
+
+int	validate_filename(const char *filename)
+{
+	if (ft_strlen(filename) < 4 || ends_with(filename, ".fdf"))
+		return (0);
+	return (1);
+}
+
+int	main(int argc, char *argv[])
+{
+	int fd;
 	t_fdf*const	fdf = new_fdf(1920, 1080, "fdf", true);
 
 	fdf->obj = cube();
 	vector3(&fdf->position, 100.0, 100.0, 100.0);
-	// fdf->obj = parse_map(argc, argv);
+	if (argc != 2 || validate_filename(argv[1]))
+		ft_error();
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+		ft_error();
+	fdf->obj = parse_map(fd);
 	mlx_key_hook(fdf->mlx, key_hook, fdf);
 	mlx_loop_hook(fdf->mlx, ft_hook, fdf);
 	mlx_loop(fdf->mlx);

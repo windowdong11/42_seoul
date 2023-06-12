@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 14:51:30 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/06 14:51:32 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/12 17:58:30 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 typedef struct s_vector4
 {
+	float	w;
 	float	x;
 	float	y;
 	float	z;
-	float	w;
 }	t_vector4;
 
 #endif
