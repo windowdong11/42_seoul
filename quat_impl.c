@@ -91,8 +91,19 @@ t_matrix4	quarternion_to_m4(t_quaternion q)
 	return (mat3_to_mat4(mat3_cast(q)));
 }
 
-void rotate_x(float angle)
+void rotate_x(t_vector4 *v4, float angle)
 {
 	t_quaternion	q = angleAxis(angle, (t_vector3){1, 0, 0});
+	t_matrix4 RotationMatrix = quarternion_to_m4(q);
+	m4_pow_v4(RotationMatrix, v4);
+}
+void rotate_y(float angle)
+{
+	t_quaternion	q = angleAxis(angle, (t_vector3){0, 1, 0});
+	t_matrix4 RotationMatrix = quarternion_to_m4(q);
+}
+void rotate_z(float angle)
+{
+	t_quaternion	q = angleAxis(angle, (t_vector3){0, 0, 1});
 	t_matrix4 RotationMatrix = quarternion_to_m4(q);
 }
