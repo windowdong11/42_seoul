@@ -6,12 +6,14 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 21:31:53 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/12 17:59:03 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/13 14:36:48 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MATRIX4_H
 # define MATRIX4_H
+
+# include "vector4.h"
 
 typedef struct s_matrix4
 {

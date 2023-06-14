@@ -6,11 +6,11 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:31 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/11 17:36:35 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/14 20:52:37 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../libft.h"
 #include <unistd.h>
 
 ssize_t	ft_putstr_fd(const char *s, int fd)

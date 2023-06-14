@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:32 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/12 02:10:52 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/14 21:02:42 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,18 @@ char	**ft_split(const char *s, char c)
 	}
 	ptr[word_idx] = NULL;
 	return (ptr);
+}
+
+void	ft_free_split(char **words, char **from)
+{
+	char**const	start = words;
+
+	while (words != from)
+		words++;
+	while (*words != NULL)
+	{
+		free(*words);
+		words++;
+	}
+	free(start);
 }

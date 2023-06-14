@@ -6,11 +6,11 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:02:24 by dowon             #+#    #+#             */
-/*   Updated: 2023/04/01 07:10:00 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/14 20:52:37 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../libft.h"
 
 ssize_t	ft_putendl_fd(char *s, int fd)
 {

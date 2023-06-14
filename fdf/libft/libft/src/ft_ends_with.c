@@ -1,23 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   ft_ends_with.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/17 19:02:03 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/14 20:52:37 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/14 17:27:40 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/14 17:30:56 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+int	ft_ends_with(const char *str, const char *end)
 {
-	if (!*lst)
+	const char*const	str_start = str;
+	const char*const	end_start = str;
+
+	while (*str != '\0')
+		str++;
+	while (*end != '\0')
+		end++;
+	if (str - str_start < end - end_start)
+		return (0);
+	while (str >= str_start && end >= end_start)
 	{
-		*lst = new;
-		return ;
+		if (*str != *end)
+			return (0);
+		--str;
+		--end;
 	}
-	ft_lstlast(*lst)->next = new;
+	return (1);
 }

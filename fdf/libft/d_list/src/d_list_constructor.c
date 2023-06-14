@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   d_list_structor.c                                  :+:      :+:    :+:   */
+/*   d_list_constructor.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 13:12:39 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/25 16:39:40 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/14 19:21:05 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	init_d_list(t_d_list *this, void *value, t_destructor destructor)
 
 static void	delete_d_list(t_d_list *this)
 {
-	if (this->value != NULL)
+	if (this->destructor != NULL && this->value != NULL)
 		this->destructor(this->value);
 	free(this);
 }

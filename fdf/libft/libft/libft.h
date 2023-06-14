@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 19:00:28 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/11 17:36:45 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/14 21:03:09 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int		ft_memcmp(const void *p1, const void *p2, size_t num);
 void	*ft_memcpy(void *dest, const void *src, size_t cnt);
 void	*ft_memmove(void *dest, const void *src, size_t cnt);
 void	*ft_memset(void *b, int c, size_t len);
+int		ft_parse_int(char *str, int *result);
 ssize_t	ft_putchar_fd(char c, int fd);
 ssize_t	ft_putendl_fd(char *s, int fd);
 ssize_t	ft_putnbr_fd(int n, int fd);
@@ -64,5 +65,9 @@ char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 int		ft_tolower(int ch);
 int		ft_toupper(int ch);
+
+int		ft_ends_with(const char *str, const char *end);
+int		ft_starts_with(const char *str, const char *end);
+void	ft_free_split(char **words, char **from);
 
 #endif 

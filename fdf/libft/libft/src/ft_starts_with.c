@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   ft_starts_with.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/17 19:02:03 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/14 20:52:37 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/14 17:27:09 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/14 18:41:29 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+int	ft_starts_with(const char *str, const char *end)
 {
-	if (!*lst)
+	while (*end != '\0')
 	{
-		*lst = new;
-		return ;
+		if (*str != *end)
+			return (0);
+		++str;
+		++end;
 	}
-	ft_lstlast(*lst)->next = new;
+	return (1);
 }
