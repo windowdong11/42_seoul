@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 22:17:39 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/11 22:55:04 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/12 16:08:43 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 t_fdf_obj	*fdf_rotate(t_fdf_obj	*obj, const t_vector3 *rotate)
 {
+	fdf_rotate_z(obj, rotate->z);
 	fdf_rotate_x(obj, rotate->x);
 	fdf_rotate_y(obj, rotate->y);
-	fdf_rotate_z(obj, rotate->z);
 	return (obj);
 }
 

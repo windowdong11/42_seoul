@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 17:06:13 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/11 17:33:38 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/19 17:59:29 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ t_fdf	*new_fdf(int32_t w, int32_t h, const char *title, bool resize)
 	t_fdf*const	fdf = smart_malloc(ptr_manager(), sizeof(t_fdf),
 			delete_fdf);
 
+	if (fdf == NULL)
+		ft_error();
 	fdf->with_axis = 0;
 	fdf->obj = NULL;
 	fdf->mlx = mlx_init(w, h, title, resize);

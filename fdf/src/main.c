@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:56:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/14 21:24:18 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/19 18:11:56 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,53 +33,12 @@ static void	ft_hook(void *param)
 {
 	t_fdf*const	fdf = param;
 
-	if (fdf->is_updated == 0)
+	if (fdf->is_updated == fdf_rendered)
 		return ;
-	ft_memset(fdf->img->pixels, 255,
+	ft_memset(fdf->img->pixels, 0,
 		fdf->img->width * fdf->img->height * sizeof(int));
-	printf("angle : %f %f %f\n", anglef(fdf->rad.x), anglef(fdf->rad.y), anglef(fdf->rad.z));
 	fdf_proj(fdf);
-	fdf->is_updated = 0;
-}
-
-t_fdf_obj	*cube()
-{
-	t_fdf_obj*const obj = new_obj(8, 12);
-	if (obj == NULL)
-		return (NULL);
-	obj->node[0] = (t_color_point){{{-25, -25, -25},my_mlx_rgba(255, 0, 0, 255)}};
-	obj->node[1] = (t_color_point){{{25, -25, -25},my_mlx_rgba(0, 255, 0, 255)}};
-	obj->node[2] = (t_color_point){{{25, 25, -25},my_mlx_rgba(0, 0, 255, 255)}};
-	obj->node[3] = (t_color_point){{{-25, 25, -25},my_mlx_rgba(0, 255, 0, 255)}};
-	obj->node[4] = (t_color_point){{{-25, -25, 25},my_mlx_rgba(0, 255, 0, 255)}};
-	obj->node[5] = (t_color_point){{{25, -25, 25},my_mlx_rgba(0, 255, 0, 255)}};
-	obj->node[6] = (t_color_point){{{25, 25, 25},my_mlx_rgba(0, 255, 0, 255)}};
-	obj->node[7] = (t_color_point){{{-25, 25, 25},my_mlx_rgba(0, 255, 0, 255)}};
-	obj->edge[0][0] = &obj->node[0];
-	obj->edge[0][1] = &obj->node[1];
-	obj->edge[1][0] = &obj->node[1];
-	obj->edge[1][1] = &obj->node[2];
-	obj->edge[2][0] = &obj->node[2];
-	obj->edge[2][1] = &obj->node[3];
-	obj->edge[3][0] = &obj->node[3];
-	obj->edge[3][1] = &obj->node[0];
-	obj->edge[4][0] = &obj->node[4];
-	obj->edge[4][1] = &obj->node[5];
-	obj->edge[5][0] = &obj->node[5];
-	obj->edge[5][1] = &obj->node[6];
-	obj->edge[6][0] = &obj->node[6];
-	obj->edge[6][1] = &obj->node[7];
-	obj->edge[7][0] = &obj->node[7];
-	obj->edge[7][1] = &obj->node[4];
-	obj->edge[8][0] = &obj->node[0];
-	obj->edge[8][1] = &obj->node[4];
-	obj->edge[9][0] = &obj->node[1];
-	obj->edge[9][1] = &obj->node[5];
-	obj->edge[10][0] = &obj->node[2];
-	obj->edge[10][1] = &obj->node[6];
-	obj->edge[11][0] = &obj->node[3];
-	obj->edge[11][1] = &obj->node[7];
-	return (obj);
+	fdf->is_updated = fdf_rendered;
 }
 
 /* t_quaternion	quat(float angle, t_vector3 v)
@@ -131,7 +90,7 @@ int	mlx_parse_hex_rgba(const char *str, t_rgba *color)
 int	parse_node(char *str, t_color_point *point)
 {
 	char	**words;
-	int		y;
+	int		z;
 
 	if (ft_strchr(str, ',') != NULL)
 	{
@@ -139,20 +98,20 @@ int	parse_node(char *str, t_color_point *point)
 		if (words == NULL)
 			return (1);
 		if (words[0] == NULL || words[1] == NULL || words[2] != NULL
-			|| (ft_parse_int(words[0], &y)
+			|| (ft_parse_int(words[0], &z)
 				|| mlx_parse_hex_rgba(words[1], &point->color)))
 		{
 			ft_free_split(words, words);
 			return (1);
 		}
+		point->point.z = z * 5;
 		ft_free_split(words, words);
-		point->point.y = y;
 	}
 	else
 	{
-		if (ft_parse_int(str, &y))
+		if (ft_parse_int(str, &z))
 			return (1);
-		point->point.y = y;
+		point->point.z = z * 5;
 		point->color = my_mlx_rgba(0, 0, 0, 0xff);
 	}
 	return (0);
@@ -165,7 +124,26 @@ typedef struct s_map_data
 	int			y;
 }	t_map_data;
 
-int	parse_line(char *line, t_map_data *map)
+/* 기울기가 (기울기가 양수인 직선에 대해서)
+1보다 작으면, x를 1씩 증가시키면서 y를 올릴지 말지 판단해야함.
+y를 증가시키면서 x를 올릴지 말지 판단하면, x가 2칸 이상 뛸 수 있음 (->선이 끊어짐)
+1보다 크면, 반대로  y증가 x올릴까말까 판단
+
+f(x)는 x에 대한 직선의 방정식
+f`(y)는 y에 대한 직선의 방정식
+px는 이전 x의 정수 좌표
+py는 이전 y의 정수 좌표
+결국 x를 증가시키면서
+f(x) - py > 1/2를 판단하나
+f`(y) - px > 1/2를 판단하나
+이렇게 식이 두개로 갈라지는데 */
+void set_point_xy(t_color_point *point, int x, int y)
+{
+	point->point.x = x * 10;
+	point->point.y = y * 10;
+}
+
+int	parse_line(char *line, t_map_data *map, int linenumber)
 {
 	char	**splitted;
 	int		count;
@@ -178,11 +156,12 @@ int	parse_line(char *line, t_map_data *map)
 	{
 		if (smart_new_next(ptr_manager(), map->nodes,
 				malloc(sizeof(t_color_point)), free) == NULL
-			|| parse_node(splitted[count], (t_color_point *)map->nodes->next))
+			|| parse_node(splitted[count], (t_color_point *)map->nodes->next->value))
 		{
 			ft_free_split(splitted, splitted + count);
 			return (1);
 		}
+		set_point_xy(map->nodes->next->value, count, linenumber);
 		free(splitted[count]);
 		count++;
 	}
@@ -216,18 +195,26 @@ void remove_endl(char *str)
 t_map_data	parse_map(int fd)
 {
 	char		*line;
+	int			is_last;
 	t_map_data	map;
 
 	map.nodes = smart_new_d_list(ptr_manager(), NULL, NULL);
 	map.x = -1;
 	map.y = 0;
-	line = get_next_line(fd);
-	remove_endl(line);
-	while (line != NULL)
+	is_last = 0;
+	while (1)
 	{
-		if (parse_line(line, &map))
-			ft_error();
 		line = get_next_line(fd);
+		if (is_last && line != NULL)
+			ft_error();
+		if (line == NULL)
+			break ;
+		remove_endl(line);
+		is_last = ft_strlen(line) == 0;
+		if (is_last)
+			continue;
+		if (parse_line(line, &map, map.y))
+			ft_error();
 		++map.y;
 	}
 	map.nodes = map.nodes->next;
@@ -235,50 +222,75 @@ t_map_data	parse_map(int fd)
 	return (map);
 }
 
+void	connect(t_fdf_obj *obj, int idx, int x, int y, int nx, int ny)
+{
+	obj->edge[idx][0] = obj->node + obj->width_x * y + x;
+	obj->edge[idx][1] = obj->node + obj->width_x * ny + nx;
+}
+
 t_fdf_obj	*map_data_to_obj(t_map_data map)
 {
 	t_fdf_obj*const	obj = new_obj(map.x * map.y,
-			2 * map.x * map.y - map.y - map.x);
+			((map.x - 1) * map.y) + ((map.y - 1) * map.x));
 	t_d_list		*del_node;
 	size_t			idx;
 
 	if (obj == NULL)
 		ft_error();
 	idx = 0;
+	obj->width_x = map.x;
+	obj->height_y = map.y;
 	while (map.nodes != NULL)
 	{
-		obj->node[idx] = *(t_color_point *)map.nodes->value;
+		obj->node[idx].point = ((t_color_point *)map.nodes->value)->point;
+		obj->node[idx].color = ((t_color_point *)map.nodes->value)->color;
 		++idx;
 		del_node = map.nodes;
 		map.nodes = map.nodes->next;
 		smart_free(ptr_manager(), del_node);
+	}
+	idx = 0;
+	for (int y = 0; y < map.y; ++y) {
+		for (int x = 0; x < map.x; ++x) {
+			if (x + 1 != map.x)
+			{
+				connect(obj, idx, x, y, x + 1, y);
+				++idx;
+			}
+			if (y + 1 != map.y)
+			{
+				connect(obj, idx, x, y, x, y + 1);
+				++idx;
+			}
+		}
 	}
 	return (obj);
 }
 
 int	validate_filename(const char *filename)
 {
-	if (ft_strlen(filename) < 4 || ft_ends_with(filename, ".fdf"))
+	if (ft_strlen(filename) < 4 || !ft_ends_with(filename, ".fdf"))
 		return (0);
 	return (1);
 }
 
 int	main(int argc, char *argv[])
 {
-	int fd;
+	int			fd;
 	t_fdf*const	fdf = new_fdf(1920, 1080, "fdf", true);
 
-	fdf->obj = cube();
 	vector3(&fdf->position, 100.0, 100.0, 100.0);
-	if (argc != 2 || validate_filename(argv[1]))
+	if (argc != 2 || !validate_filename(argv[1]))
 		ft_error();
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 		ft_error();
 	fdf->obj = map_data_to_obj(parse_map(fd));
+	fdf->is_updated = fdf_changed;
 	mlx_key_hook(fdf->mlx, key_hook, fdf);
 	mlx_loop_hook(fdf->mlx, ft_hook, fdf);
 	mlx_loop(fdf->mlx);
 	mlx_terminate(fdf->mlx);
+	
 	return (EXIT_SUCCESS);
 }

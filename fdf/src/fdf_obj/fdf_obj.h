@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 19:37:04 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/11 17:31:40 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/17 16:36:04 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ typedef struct s_fdf_obj
 	t_color_point	***edge;
 	size_t			cnt_node;
 	size_t			cnt_edge;
+	size_t			width_x;
+	size_t			height_y;
+	size_t			depth_z;
 }	t_fdf_obj;
 
 t_fdf_obj		*copy_fdf_obj(const t_fdf_obj *src);
