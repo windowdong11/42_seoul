@@ -1,14 +1,18 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/20 15:56:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/19 18:11:56 by dowon            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// /* ************************************************************************** */
+// /*                                                                            */
+// /*                                                        :::      ::::::::   */
+// /*   main.c                                             :+:      :+:    :+:   */
+// /*                                                    +:+ +:+         +:+     */
+// /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
+// /*                                                +#+#+#+#+#+   +#+           */
+// /*   Created: 2023/05/20 15:56:52 by dowon             #+#    #+#             */
+// /*   Updated: 2023/06/21 14:50:57 by dowon            ###   ########.fr       */
+// /*                                                                            */
+// /* ************************************************************************** */
+
+#include <lsan_stats.h>
+#include <lsan_internals.h>
+#include "./ptr_manager/ptr_manager.h"
 
 #include "utils/colors.h"
 #include "mlx_utils/mlx_utils.h"
@@ -216,6 +220,7 @@ t_map_data	parse_map(int fd)
 		if (parse_line(line, &map, map.y))
 			ft_error();
 		++map.y;
+		free(line);
 	}
 	map.nodes = map.nodes->next;
 	smart_free(ptr_manager(), map.nodes->prev);
@@ -276,21 +281,53 @@ int	validate_filename(const char *filename)
 
 int	main(int argc, char *argv[])
 {
+	__lsan_trackMemory = true;
+	// smart_init(ptr_manager());
 	int			fd;
 	t_fdf*const	fdf = new_fdf(1920, 1080, "fdf", true);
 
 	vector3(&fdf->position, 100.0, 100.0, 100.0);
-	if (argc != 2 || !validate_filename(argv[1]))
+	if (argc != 2 || !validate_filename(argv[1])) {
+		mlx_terminate(fdf->mlx);
 		ft_error();
+	}
 	fd = open(argv[1], O_RDONLY);
-	if (fd == -1)
+	if (fd == -1) {
+		mlx_terminate(fdf->mlx);
 		ft_error();
+	}
 	fdf->obj = map_data_to_obj(parse_map(fd));
+	close(fd);
+	fdf->obj = new_obj(4, 4);
+	fdf->obj->node[0].point = (t_point3d){0, 0, 0};
+	fdf->obj->node[1].point = (t_point3d){100, 0, 0};
+	fdf->obj->node[2].point = (t_point3d){0, 100, 0};
+	fdf->obj->node[3].point = (t_point3d){100, 100, 0};
+	fdf->obj->edge[0][0] = fdf->obj->node + 0;
+	fdf->obj->edge[0][1] = fdf->obj->node + 1;
+	fdf->obj->edge[1][0] = fdf->obj->node + 0;
+	fdf->obj->edge[1][1] = fdf->obj->node + 2;
+	fdf->obj->edge[2][0] = fdf->obj->node + 1;
+	fdf->obj->edge[2][1] = fdf->obj->node + 3;
+	fdf->obj->edge[3][0] = fdf->obj->node + 2;
+	fdf->obj->edge[3][1] = fdf->obj->node + 3;
 	fdf->is_updated = fdf_changed;
 	mlx_key_hook(fdf->mlx, key_hook, fdf);
 	mlx_loop_hook(fdf->mlx, ft_hook, fdf);
 	mlx_loop(fdf->mlx);
 	mlx_terminate(fdf->mlx);
-	
+	__lsan_printStats();
+    __lsan_printFragmentationStats();
+	smart_exit(ptr_manager(), EXIT_SUCCESS);
+	// mlx_t *mlx = mlx_init(1920, 1080, "fdf", true);
+	// mlx_loop(mlx);
+	// mlx_terminate(mlx);
 	return (EXIT_SUCCESS);
 }
+
+// int main()
+// {
+//     void * pointer = malloc(150);
+// 	(void)pointer;
+// 	exit(0);
+// }

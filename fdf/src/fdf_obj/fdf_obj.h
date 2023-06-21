@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 19:37:04 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/17 16:36:04 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/21 15:43:51 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ t_fdf_obj		*fdf_scale_x(t_fdf_obj *obj, float sx);
 t_fdf_obj		*fdf_scale_y(t_fdf_obj *obj, float sy);
 t_fdf_obj		*fdf_scale_z(t_fdf_obj *obj, float sz);
 
-t_smart_manager	*ptr_manager(void);
 void			delete_obj(void *ptr);
 t_fdf_obj		*new_obj(size_t points, size_t edges);
 

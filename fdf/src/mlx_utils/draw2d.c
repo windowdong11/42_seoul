@@ -6,13 +6,17 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 16:17:14 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/10 17:59:02 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/21 20:15:38 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx_utils.h"
 #include "../utils/swap.h"
 #include <stdlib.h>
+
+void	draw_line_low(mlx_image_t *img, int p1[2], int p2[2])
+{
+}
 
 void	draw_line(mlx_image_t *img, int p1[2], int p2[2], t_rgba color)
 {
