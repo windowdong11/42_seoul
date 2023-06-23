@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 19:37:04 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/21 15:43:51 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/23 23:22:36 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ typedef struct s_fdf_obj
 	size_t			depth_z;
 }	t_fdf_obj;
 
-t_fdf_obj		*copy_fdf_obj(const t_fdf_obj *src);
+t_fdf_obj		*dup_fdf_obj(const t_fdf_obj *src);
+void			copy_fdf_obj(t_fdf_obj *dest, const t_fdf_obj *src);
 void			fdf_draw(mlx_image_t *img, t_fdf_obj *obj);
 void			fdf_draw_at(mlx_image_t *img, t_fdf_obj *obj, t_vector3 at);
 t_fdf_obj		*fdf_rotate(t_fdf_obj *obj, const t_vector3 *rotate);

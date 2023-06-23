@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 17:06:13 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/19 17:59:29 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/23 23:41:57 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "fdf_struct.h"
 #include "../utils/angle.h"
 #include "../exception/exception.h"
+#include "../ptr_manager/ptr_manager.h"
 
 t_fdf	*new_fdf(int32_t w, int32_t h, const char *title, bool resize)
 {
@@ -24,6 +25,7 @@ t_fdf	*new_fdf(int32_t w, int32_t h, const char *title, bool resize)
 		ft_error();
 	fdf->with_axis = 0;
 	fdf->obj = NULL;
+	fdf->tmp = NULL;
 	fdf->mlx = mlx_init(w, h, title, resize);
 	if (!fdf->mlx)
 		ft_error();
@@ -51,8 +53,8 @@ void	delete_fdf(void *ptr)
 
 	if (fdf->img)
 		smart_free(ptr_manager(), fdf->img);
-	if (fdf->mlx)
-		smart_free(ptr_manager(), fdf->mlx);
+	// if (fdf->mlx)
+	// 	smart_free(ptr_manager(), fdf->mlx);
 	if (fdf->obj)
 		smart_free(ptr_manager(), fdf->obj);
 	free(ptr);

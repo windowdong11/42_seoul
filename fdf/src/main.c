@@ -42,6 +42,8 @@ static void	ft_hook(void *param)
 	ft_memset(fdf->img->pixels, 0,
 		fdf->img->width * fdf->img->height * sizeof(int));
 	fdf_proj(fdf);
+	draw8way(fdf->img);
+	printf("render\n");
 	fdf->is_updated = fdf_rendered;
 }
 
@@ -298,19 +300,20 @@ int	main(int argc, char *argv[])
 	}
 	fdf->obj = map_data_to_obj(parse_map(fd));
 	close(fd);
-	fdf->obj = new_obj(4, 4);
-	fdf->obj->node[0].point = (t_point3d){0, 0, 0};
-	fdf->obj->node[1].point = (t_point3d){100, 0, 0};
-	fdf->obj->node[2].point = (t_point3d){0, 100, 0};
-	fdf->obj->node[3].point = (t_point3d){100, 100, 0};
-	fdf->obj->edge[0][0] = fdf->obj->node + 0;
-	fdf->obj->edge[0][1] = fdf->obj->node + 1;
-	fdf->obj->edge[1][0] = fdf->obj->node + 0;
-	fdf->obj->edge[1][1] = fdf->obj->node + 2;
-	fdf->obj->edge[2][0] = fdf->obj->node + 1;
-	fdf->obj->edge[2][1] = fdf->obj->node + 3;
-	fdf->obj->edge[3][0] = fdf->obj->node + 2;
-	fdf->obj->edge[3][1] = fdf->obj->node + 3;
+	fdf->tmp = dup_fdf_obj(fdf->obj);
+	// fdf->obj = new_obj(4, 4);
+	// fdf->obj->node[0].point = (t_point3d){0, 0, 0};
+	// fdf->obj->node[1].point = (t_point3d){100, 0, 0};
+	// fdf->obj->node[2].point = (t_point3d){0, 100, 0};
+	// fdf->obj->node[3].point = (t_point3d){100, 100, 0};
+	// fdf->obj->edge[0][0] = fdf->obj->node + 0;
+	// fdf->obj->edge[0][1] = fdf->obj->node + 1;
+	// fdf->obj->edge[1][0] = fdf->obj->node + 0;
+	// fdf->obj->edge[1][1] = fdf->obj->node + 2;
+	// fdf->obj->edge[2][0] = fdf->obj->node + 1;
+	// fdf->obj->edge[2][1] = fdf->obj->node + 3;
+	// fdf->obj->edge[3][0] = fdf->obj->node + 2;
+	// fdf->obj->edge[3][1] = fdf->obj->node + 3;
 	fdf->is_updated = fdf_changed;
 	mlx_key_hook(fdf->mlx, key_hook, fdf);
 	mlx_loop_hook(fdf->mlx, ft_hook, fdf);
@@ -319,9 +322,6 @@ int	main(int argc, char *argv[])
 	__lsan_printStats();
     __lsan_printFragmentationStats();
 	smart_exit(ptr_manager(), EXIT_SUCCESS);
-	// mlx_t *mlx = mlx_init(1920, 1080, "fdf", true);
-	// mlx_loop(mlx);
-	// mlx_terminate(mlx);
 	return (EXIT_SUCCESS);
 }
 

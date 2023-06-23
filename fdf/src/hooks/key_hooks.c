@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 16:53:04 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/19 16:51:25 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/23 23:47:19 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,9 @@ void	handle_key_repeat(mlx_key_data_t keydata, t_fdf *fdf)
 	else if (keydata.key == MLX_KEY_RIGHT)
 		fdf->d_pos.x = minf(fdf->max_dpos.x, fdf->d_pos.x + 1.0);
 	else if (keydata.key == MLX_KEY_UP)
-		fdf->img->instances[0].x++;
-		// fdf->d_pos.y = maxf(-fdf->max_dpos.y, fdf->d_pos.y - 1.0);
+		fdf->d_pos.y = maxf(-fdf->max_dpos.y, fdf->d_pos.y - 1.0);
 	else if (keydata.key == MLX_KEY_DOWN)
-		fdf->img->instances[0].x--;
-		// fdf->d_pos.y = minf(fdf->max_dpos.y, fdf->d_pos.y + 1.0);
+		fdf->d_pos.y = minf(fdf->max_dpos.y, fdf->d_pos.y + 1.0);
 	else if (keydata.key == MLX_KEY_I)
 		fdf->d_scale.x = maxf(-fdf->max_dscale.x, fdf->d_scale.x - 0.01);
 	else if (keydata.key == MLX_KEY_K)

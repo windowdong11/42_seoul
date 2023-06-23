@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:48:15 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/19 14:47:00 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/23 17:14:48 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	fdf_draw(mlx_image_t *img, t_fdf_obj *obj)
 	{
 		draw_line3d(img,
 			obj->edge[i][0]->point, obj->edge[i][1]->point,
-			obj->edge[i][1]->color);
+			my_mlx_rgba(255, 0, 0, 255));
 		++i;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 17:00:01 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/19 16:47:07 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/23 23:23:27 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_fdf
 	mlx_t			*mlx;
 	mlx_image_t		*img;
 	t_fdf_obj		*obj;
+	t_fdf_obj		*tmp;
 	t_vector3		position;
 	t_vector3		rad;
 	t_vector3		scale;
