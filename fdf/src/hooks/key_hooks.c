@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 16:53:04 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/23 23:47:19 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/25 21:23:07 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "../fdf_struct/fdf_struct.h"
 #include "../utils/float.h"
 #include "../utils/angle.h"
+
+void	isometric(t_fdf *fdf);
 
 void	handle_key_press(mlx_key_data_t keydata, t_fdf *fdf)
 {
@@ -54,7 +56,15 @@ void	handle_key_press(mlx_key_data_t keydata, t_fdf *fdf)
 	else if (keydata.key == MLX_KEY_1)
 		fdf->with_axis = !fdf->with_axis;
 	else if (keydata.key == MLX_KEY_2)
+		isometric(fdf);
+	else if (keydata.key == MLX_KEY_3)
 		vector3(&fdf->rad, 0.0, 0.0, 0.0);
+	else if (keydata.key == MLX_KEY_4)
+		vector3(&fdf->rad, 90.0f, 0.0, 0.0);
+	else if (keydata.key == MLX_KEY_5)
+		vector3(&fdf->rad, 0.0, 90.0f, 0.0);
+	else if (keydata.key == MLX_KEY_6)
+		vector3(&fdf->rad, 0.0, 0.0, 90.0f);
 }
 
 void	handle_key_release(mlx_key_data_t keydata, t_fdf *fdf)

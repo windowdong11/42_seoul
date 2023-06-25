@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 17:00:01 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/23 23:23:27 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/25 18:59:55 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ typedef struct s_fdf
 	mlx_t			*mlx;
 	mlx_image_t		*img;
 	t_fdf_obj		*obj;
-	t_fdf_obj		*tmp;
+	t_fdf_obj		*axis;
+	t_fdf_obj		*tmp_axis;
+	t_fdf_obj		*tmp_obj;
 	t_vector3		position;
 	t_vector3		rad;
 	t_vector3		scale;
@@ -42,10 +44,11 @@ typedef struct s_fdf
 	t_vector3		max_dscale;
 }	t_fdf;
 
-t_fdf	*new_fdf(int32_t w, int32_t h, const char *title, bool resize);
-void	delete_fdf(void *ptr);
+t_fdf		*new_fdf(int32_t w, int32_t h, const char *title, bool resize);
+void		delete_fdf(void *ptr);
 
-void	fdf_proj(t_fdf	*fdf);
-void	draw_axis(t_fdf *fdf, const t_vector3 *len, t_matrix3 trans);
+void		fdf_proj(t_fdf	*fdf);
+void		draw_axis(t_fdf *fdf, t_matrix3 *trans);
+t_fdf_obj	*new_axis(const t_vector3 len);
 
 #endif

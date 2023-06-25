@@ -6,12 +6,30 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:48:15 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/23 17:14:48 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/25 20:09:51 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf_obj.h"
 #include "../mlx_utils/mlx_utils.h"
+#include <math.h>
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw2d.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/09 16:17:14 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/25 17:33:31 by dowon            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../mlx_utils/mlx_utils.h"
+#include "../utils/swap.h"
+#include <stdlib.h>
+#include <libft.h>
 
 void	fdf_draw(mlx_image_t *img, t_fdf_obj *obj)
 {
@@ -22,7 +40,7 @@ void	fdf_draw(mlx_image_t *img, t_fdf_obj *obj)
 	{
 		draw_line3d(img,
 			obj->edge[i][0]->point, obj->edge[i][1]->point,
-			my_mlx_rgba(255, 0, 0, 255));
+			my_mlx_rgba(125, 125, 0, 255));
 		++i;
 	}
 }

@@ -10,10 +10,10 @@
 // /*                                                                            */
 // /* ************************************************************************** */
 
-// #include <lsan_stats.h>
-// #include <lsan_internals.h>
+#include <lsan_stats.h>
+#include <lsan_internals.h>
 #include "./ptr_manager/ptr_manager.h"
-
+#include "utils/float.h"
 #include "utils/colors.h"
 #include "mlx_utils/mlx_utils.h"
 #include "fdf_struct/fdf_struct.h"
@@ -32,6 +32,8 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <ft_printf.h>
+#include <fcntl.h>
+#include <get_next_line.h>
 
 // Print the window width and height.
 static void	ft_hook(void *param)
@@ -43,24 +45,8 @@ static void	ft_hook(void *param)
 	ft_memset(fdf->img->pixels, 0,
 		fdf->img->width * fdf->img->height * sizeof(int));
 	fdf_proj(fdf);
-	draw8way(fdf->img);
 	fdf->is_updated = fdf_rendered;
 }
-
-/* t_quaternion	quat(float angle, t_vector3 v)
-{
-	t_quaternion	q;
-
-	float s = sin(angle * 0.5f);
-	q.w = cos(angle * 0.5f);
-	q.x = v.x * s;
-	q.y = v.y * s;
-	q.z = v.z * s;
-	return (q);
-} */
-
-#include <fcntl.h>
-#include <get_next_line.h>
 
 /*
 @param str string to convert to rgba
@@ -130,23 +116,10 @@ typedef struct s_map_data
 	int			y;
 }	t_map_data;
 
-/* 기울기가 (기울기가 양수인 직선에 대해서)
-1보다 작으면, x를 1씩 증가시키면서 y를 올릴지 말지 판단해야함.
-y를 증가시키면서 x를 올릴지 말지 판단하면, x가 2칸 이상 뛸 수 있음 (->선이 끊어짐)
-1보다 크면, 반대로  y증가 x올릴까말까 판단
-
-f(x)는 x에 대한 직선의 방정식
-f`(y)는 y에 대한 직선의 방정식
-px는 이전 x의 정수 좌표
-py는 이전 y의 정수 좌표
-결국 x를 증가시키면서
-f(x) - py > 1/2를 판단하나
-f`(y) - px > 1/2를 판단하나
-이렇게 식이 두개로 갈라지는데 */
 void set_point_xy(t_color_point *point, int x, int y)
 {
-	point->point.x = x * 10;
-	point->point.y = y * 10;
+	point->point.x = x;
+	point->point.y = y;
 }
 
 int	parse_line(char *line, t_map_data *map, int linenumber)
@@ -160,8 +133,8 @@ int	parse_line(char *line, t_map_data *map, int linenumber)
 		return (1);
 	while (splitted[count] != NULL)
 	{
-		if (smart_new_next(ptr_manager(), map->nodes,
-				malloc(sizeof(t_color_point)), free) == NULL
+		if (d_list_push_next(map->nodes,
+				new_d_list(malloc(sizeof(t_color_point)), free)) == NULL
 			|| parse_node(splitted[count], (t_color_point *)map->nodes->next->value))
 		{
 			ft_free_split(splitted, splitted + count);
@@ -204,7 +177,7 @@ t_map_data	parse_map(int fd)
 	int			is_last;
 	t_map_data	map;
 
-	map.nodes = smart_new_d_list(ptr_manager(), NULL, NULL);
+	map.nodes = new_d_list(NULL, NULL);
 	map.x = -1;
 	map.y = 0;
 	is_last = 0;
@@ -218,14 +191,14 @@ t_map_data	parse_map(int fd)
 		remove_endl(line);
 		is_last = ft_strlen(line) == 0;
 		if (is_last)
-			continue;
+			continue ;
 		if (parse_line(line, &map, map.y))
 			ft_error();
 		++map.y;
 		free(line);
 	}
 	map.nodes = map.nodes->next;
-	smart_free(ptr_manager(), map.nodes->prev);
+	free(map.nodes->prev);
 	return (map);
 }
 
@@ -246,15 +219,17 @@ t_fdf_obj	*map_data_to_obj(t_map_data map)
 		ft_error();
 	idx = 0;
 	obj->width_x = map.x;
-	obj->height_y = map.y;
+	obj->length_y = map.y;
 	while (map.nodes != NULL)
 	{
 		obj->node[idx].point = ((t_color_point *)map.nodes->value)->point;
+		obj->depth_z = maxf(obj->depth_z, obj->node[idx].point.z);
 		obj->node[idx].color = ((t_color_point *)map.nodes->value)->color;
 		++idx;
 		del_node = map.nodes;
 		map.nodes = map.nodes->next;
-		smart_free(ptr_manager(), del_node);
+		del_node->destructor(del_node->value);
+		free(del_node);
 	}
 	idx = 0;
 	for (int y = 0; y < map.y; ++y) {
@@ -281,59 +256,58 @@ int	validate_filename(const char *filename)
 	return (1);
 }
 
+void isometric(t_fdf *fdf)
+{
+	fdf->rad.x = radf(35.264f);
+	fdf->rad.z = radf(45.0f);
+	fdf->rad.y = radf(0.0f);
+	fdf->scale = (t_vector3){
+		(fdf->img->width / 2) / fdf->obj->width_x,
+		(fdf->img->height / 2) / fdf->obj->length_y,
+		(fdf->img->height / 8) / fdf->obj->depth_z,
+	};
+	fdf->position.x = (fdf->img->width / 2);
+	fdf->position.y = (fdf->img->height / 2);
+}
+
+void	move_coord_to_center(t_fdf_obj *obj)
+{
+	size_t	idx;
+
+	idx = 0;
+	while (idx < obj->cnt_node)
+	{
+		obj->node[idx].point.x -= obj->width_x / 2;
+		obj->node[idx].point.y -= obj->length_y / 2;
+		++idx;
+	}
+}
+
 int	main(int argc, char *argv[])
 {
-	// __lsan_trackMemory = true;
-	// smart_init(ptr_manager());
 	int			fd;
 	t_fdf*const	fdf = new_fdf(1920, 1080, "fdf", true);
 
-	vector3(&fdf->position, 100.0, 100.0, 100.0);
-	if (argc != 2 || !validate_filename(argv[1])) {
-		mlx_terminate(fdf->mlx);
+	if (argc != 2 || !validate_filename(argv[1]))
 		ft_error();
-	}
 	fd = open(argv[1], O_RDONLY);
-	if (fd == -1) {
-		mlx_terminate(fdf->mlx);
+	if (fd == -1)
 		ft_error();
-	}
 	fdf->obj = map_data_to_obj(parse_map(fd));
-	ft_printf("parsed\n");
 	close(fd);
-	fdf->tmp = dup_fdf_obj(fdf->obj);
-	// fdf->scale = (t_vector3){
-	// 	fdf->img->width * 80 / fdf->obj->width_x,
-	// 	fdf->img->height * 80 / fdf->obj->height_y,
-	// 	10
-	// };
-	// fdf->obj = new_obj(4, 4);
-	// fdf->obj->node[0].point = (t_point3d){0, 0, 0};
-	// fdf->obj->node[1].point = (t_point3d){100, 0, 0};
-	// fdf->obj->node[2].point = (t_point3d){0, 100, 0};
-	// fdf->obj->node[3].point = (t_point3d){100, 100, 0};
-	// fdf->obj->edge[0][0] = fdf->obj->node + 0;
-	// fdf->obj->edge[0][1] = fdf->obj->node + 1;
-	// fdf->obj->edge[1][0] = fdf->obj->node + 0;
-	// fdf->obj->edge[1][1] = fdf->obj->node + 2;
-	// fdf->obj->edge[2][0] = fdf->obj->node + 1;
-	// fdf->obj->edge[2][1] = fdf->obj->node + 3;
-	// fdf->obj->edge[3][0] = fdf->obj->node + 2;
-	// fdf->obj->edge[3][1] = fdf->obj->node + 3;
+	move_coord_to_center(fdf->obj);
+	fdf->tmp_obj = dup_fdf_obj(fdf->obj);
+	fdf->axis = new_axis((t_vector3){
+			fdf->obj->width_x / 2 + 3,
+			fdf->obj->length_y / 2 + 3,
+			fdf->obj->depth_z + 10});
+	fdf->tmp_axis = dup_fdf_obj(fdf->axis);
+	isometric(fdf);
 	fdf->is_updated = fdf_changed;
 	mlx_key_hook(fdf->mlx, key_hook, fdf);
 	mlx_loop_hook(fdf->mlx, ft_hook, fdf);
 	mlx_loop(fdf->mlx);
-	mlx_terminate(fdf->mlx);
-	// __lsan_printStats();
-    // __lsan_printFragmentationStats();
 	smart_exit(ptr_manager(), EXIT_SUCCESS);
 	return (EXIT_SUCCESS);
 }
 
-// int main()
-// {
-//     void * pointer = malloc(150);
-// 	(void)pointer;
-// 	exit(0);
-// }

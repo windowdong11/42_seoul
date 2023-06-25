@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 19:37:04 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/23 23:22:36 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/25 17:26:20 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,17 @@
 # include "../utils/colors.h"
 # include "../mlx_utils/mlx_utils.h"
 
+typedef t_color_point*	t_fdf_node;
+typedef t_fdf_node**	t_fdf_edge;
 typedef struct s_fdf_obj
 {
-	t_color_point	*node;
-	t_color_point	***edge;
-	size_t			cnt_node;
-	size_t			cnt_edge;
-	size_t			width_x;
-	size_t			height_y;
-	size_t			depth_z;
+	t_fdf_node	node;
+	t_fdf_edge	edge;
+	size_t		cnt_node;
+	size_t		cnt_edge;
+	size_t		width_x;
+	size_t		length_y;
+	float		depth_z;
 }	t_fdf_obj;
 
 t_fdf_obj		*dup_fdf_obj(const t_fdf_obj *src);

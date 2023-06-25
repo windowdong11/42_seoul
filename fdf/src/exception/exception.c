@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 17:11:49 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/21 14:36:25 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/25 20:57:27 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,5 @@
 void	ft_error(void)
 {
 	ft_putstr_fd("Error\n", STDERR_FILENO);
-	smart_clean_all(ptr_manager());
-	exit(EXIT_FAILURE);
+	smart_exit(ptr_manager(), EXIT_FAILURE);
 }
