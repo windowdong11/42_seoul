@@ -6,12 +6,13 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 17:03:47 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/19 16:47:19 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/24 19:11:25 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf_obj/fdf_obj.h"
 #include "fdf_struct.h"
+#include "../ptr_manager/ptr_manager.h"
 
 void	draw_axis(t_fdf *fdf, const t_vector3 *len, t_matrix3 trans)
 {
@@ -39,6 +40,6 @@ void	draw_axis(t_fdf *fdf, const t_vector3 *len, t_matrix3 trans)
 			&axis->node[idx].point, &trans);
 		++idx;
 	}
-	fdf_draw_at(fdf->img, axis, fdf->position);
+	fdf_draw(fdf->img, fdf_translate(axis, fdf->position));
 	smart_free(ptr_manager(), axis);
 }

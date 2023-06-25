@@ -10,8 +10,8 @@
 // /*                                                                            */
 // /* ************************************************************************** */
 
-#include <lsan_stats.h>
-#include <lsan_internals.h>
+// #include <lsan_stats.h>
+// #include <lsan_internals.h>
 #include "./ptr_manager/ptr_manager.h"
 
 #include "utils/colors.h"
@@ -31,6 +31,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <ft_printf.h>
 
 // Print the window width and height.
 static void	ft_hook(void *param)
@@ -43,7 +44,6 @@ static void	ft_hook(void *param)
 		fdf->img->width * fdf->img->height * sizeof(int));
 	fdf_proj(fdf);
 	draw8way(fdf->img);
-	printf("render\n");
 	fdf->is_updated = fdf_rendered;
 }
 
@@ -283,7 +283,7 @@ int	validate_filename(const char *filename)
 
 int	main(int argc, char *argv[])
 {
-	__lsan_trackMemory = true;
+	// __lsan_trackMemory = true;
 	// smart_init(ptr_manager());
 	int			fd;
 	t_fdf*const	fdf = new_fdf(1920, 1080, "fdf", true);
@@ -299,8 +299,14 @@ int	main(int argc, char *argv[])
 		ft_error();
 	}
 	fdf->obj = map_data_to_obj(parse_map(fd));
+	ft_printf("parsed\n");
 	close(fd);
 	fdf->tmp = dup_fdf_obj(fdf->obj);
+	// fdf->scale = (t_vector3){
+	// 	fdf->img->width * 80 / fdf->obj->width_x,
+	// 	fdf->img->height * 80 / fdf->obj->height_y,
+	// 	10
+	// };
 	// fdf->obj = new_obj(4, 4);
 	// fdf->obj->node[0].point = (t_point3d){0, 0, 0};
 	// fdf->obj->node[1].point = (t_point3d){100, 0, 0};
@@ -319,8 +325,8 @@ int	main(int argc, char *argv[])
 	mlx_loop_hook(fdf->mlx, ft_hook, fdf);
 	mlx_loop(fdf->mlx);
 	mlx_terminate(fdf->mlx);
-	__lsan_printStats();
-    __lsan_printFragmentationStats();
+	// __lsan_printStats();
+    // __lsan_printFragmentationStats();
 	smart_exit(ptr_manager(), EXIT_SUCCESS);
 	return (EXIT_SUCCESS);
 }

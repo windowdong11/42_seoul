@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 16:17:14 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/23 23:51:30 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/24 18:27:16 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ static void	draw_line_low(mlx_image_t *img, int p1[2], int p2[2], t_rgba color)
 	stack = opt[0];
 	while (point[0] <= p2[0])
 	{
-		mlx_put_pixel(img, point[0], point[1], color);
+		if (!(point[0] < 0 || point[0] >= (int)img->width
+				|| point[1] < 0 || point[1] >= (int)img->height))
+			mlx_put_pixel(img, point[0], point[1], color);
 		point[0] += 1;
 		if (stack > 0)
 		{
@@ -59,7 +61,9 @@ static void	draw_line_high(mlx_image_t *img, int p1[2], int p2[2], t_rgba color)
 	stack = opt[0];
 	while (point[1] <= p2[1])
 	{
-		mlx_put_pixel(img, point[0], point[1], color);
+		if (!(point[0] < 0 || point[0] >= (int)img->width
+				|| point[1] < 0 || point[1] >= (int)img->height))
+			mlx_put_pixel(img, point[0], point[1], color);
 		point[1] += 1;
 		if (stack > 0)
 		{
@@ -71,27 +75,27 @@ static void	draw_line_high(mlx_image_t *img, int p1[2], int p2[2], t_rgba color)
 	}
 }
 
-static void	move_point_inbound(int point[2], int width, int height)
-{
-	if (point[0] < 0)
-		point[0] = 0;
-	else if (point[0] >= width)
-		point[0] = width - 1;
-	if (point[1] < 0)
-		point[1] = 0;
-	else if (point[1] >= height)
-		point[1] = height - 1;
-}
+// static void	move_point_inbound(int point[2], int width, int height)
+// {
+// 	if (point[0] < 0)
+// 		point[0] = 0;
+// 	else if (point[0] >= width)
+// 		point[0] = width - 1;
+// 	if (point[1] < 0)
+// 		point[1] = 0;
+// 	else if (point[1] >= height)
+// 		point[1] = height - 1;
+// }
 
 void	draw_line(mlx_image_t *img, int p1[2], int p2[2], t_rgba color)
 {
-	if (p1[0] < 0 || p1[0] >= (int)img->width
-		|| p1[1] < 0 || p1[1] >= (int)img->height
-		|| p2[0] < 0 || p2[0] >= (int)img->width
-		|| p2[1] < 0 || p2[1] >= (int)img->height)
-		return ;
-	move_point_inbound(p1, img->width, img->height);
-	move_point_inbound(p2, img->width, img->height);
+	// if (p1[0] < 0 || p1[0] >= (int)img->width
+	// 	|| p1[1] < 0 || p1[1] >= (int)img->height
+	// 	|| p2[0] < 0 || p2[0] >= (int)img->width
+	// 	|| p2[1] < 0 || p2[1] >= (int)img->height)
+	// 	return ;
+	// move_point_inbound(p1, img->width, img->height);
+	// move_point_inbound(p2, img->width, img->height);
 	(void)color;
 	if (abs(p2[0] - p1[0]) < abs(p2[1] - p1[1]))
 	{
