@@ -1,22 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   colors.c                                           :+:      :+:    :+:   */
+/*   parse_map.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/20 17:30:34 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/27 22:03:13 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/27 18:26:57 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/27 23:09:22 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-unsigned int	my_mlx_rgba(
-	unsigned char r, unsigned char g, unsigned char b, unsigned char a)
-{
-	return (r << 24 | g << 16 | b << 8 | a);
-}
+#ifndef PARSE_MAP_H
+# define PARSE_MAP_H
 
-float	lerp(float p1, float p2, float d1)
+# include "../fdf_obj/fdf_obj.h"
+# include <d_list.h>
+
+typedef struct s_map_data
 {
-	return ((1 - d1) * p1 + d1 * p2);
-}
+	t_d_list	*nodes;
+	int			x;
+	int			y;
+}	t_map_data;
+
+t_map_data	parse_map(int fd);
+
+#endif

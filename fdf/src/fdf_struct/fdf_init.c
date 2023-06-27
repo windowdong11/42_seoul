@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 17:06:13 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/25 20:52:21 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/27 19:53:51 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,20 @@
 
 t_fdf	*new_fdf(int32_t w, int32_t h, const char *title, bool resize)
 {
-	t_fdf*const	fdf = smart_malloc(ptr_manager(), sizeof(t_fdf),
-			delete_fdf);
+	t_fdf*const	fdf = smart_malloc(ptr_manager(), sizeof(t_fdf), delete_fdf);
 
 	if (fdf == NULL)
 		ft_error();
-	fdf->with_axis = 0;
-	fdf->axis = NULL;
-	fdf->tmp_axis = NULL;
-	fdf->obj = NULL;
-	fdf->tmp_obj = NULL;
+	ft_bzero(fdf, sizeof(t_fdf));
 	fdf->mlx = mlx_init(w, h, title, resize);
-	if (!fdf->mlx)
+	if (fdf->mlx == NULL)
 		ft_error();
 	fdf->img = mlx_new_image(fdf->mlx, w, h);
+	if (fdf->img == NULL || (mlx_image_to_window(fdf->mlx, fdf->img, 0, 0) < 0))
+		ft_error();
 	ft_memset(fdf->img->pixels, 0,
 		fdf->img->width * fdf->img->height * sizeof(int));
-	if (!fdf->img || (mlx_image_to_window(fdf->mlx, fdf->img, 0, 0) < 0))
-		ft_error();
+	fdf->with_axis = 0;
 	vector3(&fdf->rad, 0.0f, 0.0f, 0.0f);
 	vector3(&fdf->d_rad, 0.0f, 0.0f, 0.0f);
 	vector3(&fdf->max_drad, radf(1.0f), radf(1.0f), radf(1.0f));
@@ -45,16 +41,16 @@ t_fdf	*new_fdf(int32_t w, int32_t h, const char *title, bool resize)
 	vector3(&fdf->scale, 1.0f, 1.0f, 1.0f);
 	vector3(&fdf->d_scale, 0.0f, 0.0f, 0.0f);
 	vector3(&fdf->max_dscale, 1.5f, 1.5f, 0.15f);
-	fdf->is_updated = 1;
+	fdf->is_updated = fdf_changed;
 	return (fdf);
 }
-#include <stdio.h>
+
 void	delete_fdf(void *ptr)
 {
 	t_fdf*const	fdf = ptr;
 
 	if (fdf->img)
-		smart_free(ptr_manager(), fdf->img);
+		mlx_delete_image(fdf->mlx, fdf->img);
 	if (fdf->mlx)
 		mlx_terminate(fdf->mlx);
 	if (fdf->obj)

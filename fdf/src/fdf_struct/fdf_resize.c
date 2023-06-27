@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   colors.c                                           :+:      :+:    :+:   */
+/*   fdf_resize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/20 17:30:34 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/27 22:03:13 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/27 18:19:55 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/27 18:32:08 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-unsigned int	my_mlx_rgba(
-	unsigned char r, unsigned char g, unsigned char b, unsigned char a)
-{
-	return (r << 24 | g << 16 | b << 8 | a);
-}
+#include "./fdf_struct.h"
 
-float	lerp(float p1, float p2, float d1)
+void	move_coord_to_center(t_fdf_obj *obj)
 {
-	return ((1 - d1) * p1 + d1 * p2);
+	size_t	idx;
+
+	idx = 0;
+	while (idx < obj->cnt_node)
+	{
+		obj->node[idx].point.x -= obj->width_x / 2;
+		obj->node[idx].point.y -= obj->length_y / 2;
+		++idx;
+	}
 }

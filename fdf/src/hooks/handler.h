@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   colors.c                                           :+:      :+:    :+:   */
+/*   handler.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/20 17:30:34 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/27 22:03:13 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/27 20:16:34 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/27 20:18:17 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-unsigned int	my_mlx_rgba(
-	unsigned char r, unsigned char g, unsigned char b, unsigned char a)
-{
-	return (r << 24 | g << 16 | b << 8 | a);
-}
+#ifndef HANDLER_H
+# define HANDLER_H
 
-float	lerp(float p1, float p2, float d1)
-{
-	return ((1 - d1) * p1 + d1 * p2);
-}
+# include <MLX42/MLX42.h>
+# include "../fdf_struct/fdf_struct.h"
+
+void	handle_key_press(mlx_key_data_t keydata, t_fdf *fdf);
+void	handle_key_release(mlx_key_data_t keydata, t_fdf *fdf);
+void	handle_key_repeat(mlx_key_data_t keydata, t_fdf *fdf);
+
+#endif

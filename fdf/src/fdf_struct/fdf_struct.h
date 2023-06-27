@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 17:00:01 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/25 18:59:55 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/27 18:32:01 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,11 @@ typedef struct s_fdf
 
 t_fdf		*new_fdf(int32_t w, int32_t h, const char *title, bool resize);
 void		delete_fdf(void *ptr);
-
 void		fdf_proj(t_fdf	*fdf);
 void		draw_axis(t_fdf *fdf, t_matrix3 *trans);
 t_fdf_obj	*new_axis(const t_vector3 len);
+
+void		move_coord_to_center(t_fdf_obj *obj);
+void		isometric(t_fdf *fdf);
 
 #endif

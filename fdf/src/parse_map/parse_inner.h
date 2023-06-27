@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   colors.c                                           :+:      :+:    :+:   */
+/*   parse_inner.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/20 17:30:34 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/27 22:03:13 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/27 22:04:10 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/27 23:09:25 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-unsigned int	my_mlx_rgba(
-	unsigned char r, unsigned char g, unsigned char b, unsigned char a)
-{
-	return (r << 24 | g << 16 | b << 8 | a);
-}
+#ifndef PARSE_INNER_H
+# define PARSE_INNER_H
 
-float	lerp(float p1, float p2, float d1)
-{
-	return ((1 - d1) * p1 + d1 * p2);
-}
+# include "parse_map.h"
+
+int			parse_line(char *line, t_map_data *map);
+t_fdf_obj	*map_data_to_obj(t_map_data map);
+int			mlx_parse_hex_rgba(const char *str, t_rgba *color);
+
+#endif

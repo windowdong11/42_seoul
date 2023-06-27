@@ -6,13 +6,27 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 17:04:30 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/25 19:07:01 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/27 18:50:03 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf_struct.h"
 #include "../fdf_obj/fdf_obj.h"
-#include <stdio.h>
+#include "../utils/angle.h"
+
+void	isometric(t_fdf *fdf)
+{
+	fdf->rad.x = radf(35.264f);
+	fdf->rad.z = radf(45.0f);
+	fdf->rad.y = radf(0.0f);
+	fdf->scale = (t_vector3){
+		(fdf->img->width / 2) / fdf->obj->width_x,
+		(fdf->img->height / 2) / fdf->obj->length_y,
+		(fdf->img->height / 8) / fdf->obj->depth_z,
+	};
+	fdf->position.x = (fdf->img->width / 2);
+	fdf->position.y = (fdf->img->height / 2);
+}
 
 void	draw_axis(t_fdf *fdf, t_matrix3 *trans)
 {
