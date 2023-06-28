@@ -6,19 +6,20 @@
 #    By: dowon <dowon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/12 02:10:08 by dowon             #+#    #+#              #
-#    Updated: 2023/05/27 17:16:56 by dowon            ###   ########.fr        #
+#    Updated: 2023/06/28 19:15:42 by dowon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -c
+CFLAGS = -Wall -Wextra -Werror -c -g
 
 NAME = libget_next_line.a
 
-SRC = get_next_line.c get_next_line_utils.c
-
 SRC_DIR = ./src
 OBJ_DIR = ./obj
+
+SHELL_SRCS := $(shell find $(SRC_DIR) -name '*.c')
+SRC = $(SHELL_SRCS:./src/%=%)
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))

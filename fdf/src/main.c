@@ -6,12 +6,13 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:56:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/28 18:46:11 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/28 19:44:08 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <lsan_stats.h>
 #include <lsan_internals.h>
+
 #include "./ptr_manager/ptr_manager.h"
 #include "utils/float.h"
 #include "utils/colors.h"
@@ -74,17 +75,19 @@ int	main(int argc, char *argv[])
 	int			fd;
 	t_fdf*const	fdf = new_fdf(1920, 1080, "fdf", true);
 
+	__lsan_printStatsOnExit = true;
 	if (!is_valid_args(argc, argv))
-		ft_error();
+		ft_error("Invalid arguments. Run as ex)./fdf test_maps/42.fdf");
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
-		ft_error();
+		ft_error("Invalid filename. Run as ex)./fdf test_maps/42.fdf");
 	fdf->obj = map_data_to_obj(parse_map(fd));
 	close(fd);
 	init_fdf(fdf);
 	mlx_key_hook(fdf->mlx, key_hook, fdf);
 	mlx_loop_hook(fdf->mlx, loop_hook, fdf);
 	mlx_loop(fdf->mlx);
+	__lsan_printStats();
 	smart_exit(ptr_manager(), EXIT_SUCCESS);
 	return (EXIT_SUCCESS);
 }

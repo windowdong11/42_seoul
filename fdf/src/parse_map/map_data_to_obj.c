@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:30:50 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/28 18:46:58 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/28 19:28:44 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_fdf_obj	*map_data_to_obj(t_map_data map)
 	size_t			idx;
 
 	if (obj == NULL)
-		ft_error();
+		ft_error("malloc failed\n");
 	idx = 0;
 	obj->width_x = map.x;
 	obj->length_y = map.y;

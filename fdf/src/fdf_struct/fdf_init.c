@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 17:06:13 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/27 19:53:51 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/28 19:28:33 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ t_fdf	*new_fdf(int32_t w, int32_t h, const char *title, bool resize)
 	t_fdf*const	fdf = smart_malloc(ptr_manager(), sizeof(t_fdf), delete_fdf);
 
 	if (fdf == NULL)
-		ft_error();
+		ft_error("malloc error\n");
 	ft_bzero(fdf, sizeof(t_fdf));
 	fdf->mlx = mlx_init(w, h, title, resize);
 	if (fdf->mlx == NULL)
-		ft_error();
+		ft_error("mlx init failed\n");
 	fdf->img = mlx_new_image(fdf->mlx, w, h);
 	if (fdf->img == NULL || (mlx_image_to_window(fdf->mlx, fdf->img, 0, 0) < 0))
-		ft_error();
+		ft_error("mlx image creation failed\n");
 	ft_memset(fdf->img->pixels, 0,
 		fdf->img->width * fdf->img->height * sizeof(int));
 	fdf->with_axis = 0;

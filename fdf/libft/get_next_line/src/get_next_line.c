@@ -6,13 +6,15 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 09:12:31 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/25 16:08:35 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/28 19:32:31 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../get_next_line.h"
+#include "./gnl_inner.h"
 #include <fcntl.h>
 #include <stdlib.h>
+
 
 t_gnl_fd	*insert_gnl_fd(t_gnl_fd *prev_node, int fd)
 {
@@ -81,13 +83,12 @@ char	*read_until_endl(t_gnl_fd *gnl_fd)
 
 char	*get_next_line(int fd)
 {
-	static t_gnl_fd	dummy_fd = {-1, "", 0, NULL, NULL};
 	t_gnl_fd		*gnl_fd;
 	char			*result;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	gnl_fd = find_fd(&dummy_fd, fd);
+	gnl_fd = find_fd(static_gnl_fd(), fd);
 	result = read_until_endl(gnl_fd);
 	if (result == NULL)
 	{

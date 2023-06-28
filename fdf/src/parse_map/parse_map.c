@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:23:14 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/27 23:10:00 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/28 20:15:48 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,37 +19,53 @@
 #include "parse_map.h"
 #include "parse_inner.h"
 
-void	delete_t_map_data(void *ptr)
+static char	*remove_endl(char *str)
 {
-	t_map_data*const	data = ptr;
+	char*const	start = str;
 
-	if (ptr != NULL)
-		smart_free(ptr_manager(), data->nodes);
-	free(data);
-}
-
-static void	remove_endl(char *str)
-{
-	while (*str != '\n')
+	while (*str != '\0')
+	{
+		if (*str == '\n')
+		{
+			*str = '\0';
+			break ;
+		}
 		++str;
-	if (*str == '\n')
-		*str = '\0';
+	}
+	return (start);
 }
 
-static void	handle_parse_error(char *line, t_d_list *head)
+static void	handle_parse_error(char *line, t_d_list *map_nodes, int fd)
 {
 	free(line);
-	delete_all_d_list(head);
-	ft_error();
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		free(line);
+		line = get_next_line(fd);
+	}
+	delete_all_d_list(map_nodes);
+	ft_error("parse_error\n");
 }
 
 static void	init_map_data(t_map_data *map)
 {
 	map->nodes = new_d_list(NULL, NULL);
 	if (map->nodes == NULL)
-		ft_error();
+		ft_error("Failed to alloc memory.\n");
 	map->x = -1;
 	map->y = 0;
+}
+
+static void	remove_dummy_node(t_map_data *map, int fd)
+{
+	t_d_list	*delete_node;
+
+	if (map->nodes->next == NULL)
+		handle_parse_error(NULL, map->nodes, fd);
+	delete_node = map->nodes;
+	map->nodes = map->nodes->next;
+	free(delete_node);
 }
 
 t_map_data	parse_map(int fd)
@@ -60,23 +76,22 @@ t_map_data	parse_map(int fd)
 
 	init_map_data(&map);
 	is_last = 0;
+	line = NULL;
 	while (1)
 	{
+		free(line);
 		line = get_next_line(fd);
 		if (is_last && line != NULL)
-			handle_parse_error(line, map.nodes);
+			handle_parse_error(line, map.nodes, fd);
 		if (line == NULL)
 			break ;
-		remove_endl(line);
-		is_last = ft_strlen(line) == 0;
+		is_last = ft_strlen(remove_endl(line)) == 0;
 		if (is_last)
 			continue ;
 		if (parse_line(line, &map))
-			handle_parse_error(line, map.nodes);
+			handle_parse_error(line, map.nodes, fd);
 		++map.y;
-		free(line);
 	}
-	map.nodes = map.nodes->next;
-	free(map.nodes->prev);
+	remove_dummy_node(&map, fd);
 	return (map);
 }

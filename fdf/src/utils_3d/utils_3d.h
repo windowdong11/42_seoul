@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 15:22:32 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/27 20:20:40 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/28 19:41:03 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@
 /* matrix3 */
 t_matrix3	*m3_zero(t_matrix3 *out);
 t_matrix3	*m3_identity(t_matrix3 *out);
-t_matrix3	*m3_add(t_matrix3 *out,
-				const t_matrix3 *m1, const t_matrix3 *m2);
+t_matrix3	*m3_add(t_matrix3 *out, const t_matrix3 *m1, const t_matrix3 *m2);
 t_matrix3	*m3_multiply(t_matrix3 *out,
 				const t_matrix3 *m1, const t_matrix3 *m2);
 t_matrix3	*m3_translation(t_matrix3 *out, float x, float y, float z);
