@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:30:50 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/28 19:28:44 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/28 23:27:01 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,16 @@
 #include "../exception/exception.h"
 #include "../utils/float.h"
 
-static void	connect(t_fdf_obj *obj, int idx, int x, int y, int nx, int ny)
+static void	connect_right(t_fdf_obj *obj, int idx, int x, int y)
 {
 	obj->edge[idx][0] = obj->node + obj->width_x * y + x;
-	obj->edge[idx][1] = obj->node + obj->width_x * ny + nx;
+	obj->edge[idx][1] = obj->node + obj->width_x * y + x + 1;
+}
+
+static void	connect_down(t_fdf_obj *obj, int idx, int x, int y)
+{
+	obj->edge[idx][0] = obj->node + obj->width_x * y + x;
+	obj->edge[idx][1] = obj->node + obj->width_x * (y + 1) + x;
 }
 
 static void	connect_nodes(t_fdf_obj *obj)
@@ -33,17 +39,17 @@ static void	connect_nodes(t_fdf_obj *obj)
 		x = 0;
 		while (x < obj->width_x - 1)
 		{
-			connect(obj, idx++, x, y, x + 1, y);
-			connect(obj, idx++, x, y, x, y + 1);
+			connect_right(obj, idx++, x, y);
+			connect_down(obj, idx++, x, y);
 			++x;
 		}
-		connect(obj, idx++, obj->width_x - 1, y, obj->width_x - 1, y + 1);
+		connect_down(obj, idx++, obj->width_x - 1, y);
 		++y;
 	}
 	x = 0;
 	while (x < obj->width_x - 1)
 	{
-		connect(obj, idx++, x, obj->length_y - 1, x + 1, obj->length_y - 1);
+		connect_right(obj, idx++, x, obj->length_y - 1);
 		++x;
 	}
 }
@@ -63,7 +69,8 @@ t_fdf_obj	*map_data_to_obj(t_map_data map)
 	while (map.nodes != NULL)
 	{
 		obj->node[idx].point = ((t_color_point *)map.nodes->value)->point;
-		obj->depth_z = maxf(obj->depth_z, obj->node[idx].point.z);
+		obj->max_depth_z = maxf(obj->max_depth_z, obj->node[idx].point.z);
+		obj->min_depth_z = minf(obj->min_depth_z, obj->node[idx].point.z);
 		obj->node[idx].color = ((t_color_point *)map.nodes->value)->color;
 		++idx;
 		del_node = map.nodes;

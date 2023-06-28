@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:56:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/28 19:44:08 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/28 23:32:11 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ static void	init_fdf(t_fdf *fdf)
 	move_coord_to_center(fdf->obj);
 	fdf->tmp_obj = dup_fdf_obj(fdf->obj);
 	fdf->axis = new_axis((t_vector3){
-			fdf->obj->width_x / 2 + 3,
-			fdf->obj->length_y / 2 + 3,
-			fdf->obj->depth_z + 10});
+			fdf->obj->width_x / 2.0f + 3.0f,
+			fdf->obj->length_y / 2.0f + 3.0f,
+			fabsf(fdf->obj->max_depth_z) + 5.0f});
 	fdf->tmp_axis = dup_fdf_obj(fdf->axis);
 	isometric(fdf);
 	fdf->is_updated = fdf_changed;

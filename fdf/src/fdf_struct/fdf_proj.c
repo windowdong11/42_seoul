@@ -6,13 +6,14 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 17:04:30 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/27 18:50:03 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/28 23:36:24 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf_struct.h"
 #include "../fdf_obj/fdf_obj.h"
 #include "../utils/angle.h"
+#include <math.h>
 
 void	isometric(t_fdf *fdf)
 {
@@ -22,8 +23,11 @@ void	isometric(t_fdf *fdf)
 	fdf->scale = (t_vector3){
 		(fdf->img->width / 2) / fdf->obj->width_x,
 		(fdf->img->height / 2) / fdf->obj->length_y,
-		(fdf->img->height / 8) / fdf->obj->depth_z,
+		(fdf->img->height / 8)
+		/ (fdf->obj->max_depth_z - fdf->obj->min_depth_z),
 	};
+	if (fdf->obj->max_depth_z < -fdf->obj->min_depth_z + 0.1)
+		fdf->scale.z = 1.0f;
 	fdf->position.x = (fdf->img->width / 2);
 	fdf->position.y = (fdf->img->height / 2);
 }

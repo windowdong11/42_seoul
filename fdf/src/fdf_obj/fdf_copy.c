@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 17:05:26 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/25 20:53:21 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/28 23:35:29 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,12 @@ void	copy_fdf_obj(t_fdf_obj *dest, const t_fdf_obj *src)
 {
 	size_t			idx;
 
+	dest->cnt_edge = src->cnt_edge;
+	dest->cnt_node = src->cnt_node;
+	dest->length_y = src->length_y;
+	dest->width_x = src->width_x;
+	dest->max_depth_z = src->max_depth_z;
+	dest->min_depth_z = src->min_depth_z;
 	idx = 0;
 	while (idx < src->cnt_node)
 	{
