@@ -6,35 +6,19 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:56:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/28 23:32:11 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/28 23:58:12 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <lsan_stats.h>
-#include <lsan_internals.h>
-
-#include "./ptr_manager/ptr_manager.h"
-#include "utils/float.h"
-#include "utils/colors.h"
-#include "mlx_utils/mlx_utils.h"
+#include "ptr_manager/ptr_manager.h"
 #include "fdf_struct/fdf_struct.h"
-#include "utils/angle.h"
-#include "utils_3d/utils_3d.h"
-#include "fdf_obj/fdf_obj.h"
 #include "parse_map/parse_map.h"
 #include "hooks/hooks.h"
 #include "exception/exception.h"
-#include "parse_map/parse_map.h"
-#include <d_list.h>
 #include <libft.h>
 #include <MLX42/MLX42.h>
-#include <smart_ptr.h>
 #include <math.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <ft_printf.h>
 #include <fcntl.h>
-#include <get_next_line.h>
 
 static void	loop_hook(void *param)
 {
@@ -75,9 +59,8 @@ int	main(int argc, char *argv[])
 	int			fd;
 	t_fdf*const	fdf = new_fdf(1920, 1080, "fdf", true);
 
-	__lsan_printStatsOnExit = true;
 	if (!is_valid_args(argc, argv))
-		ft_error("Invalid arguments. Run as ex)./fdf test_maps/42.fdf");
+		ft_error("Invalid arguments. Run as ex)./fd	f test_maps/42.fdf");
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 		ft_error("Invalid filename. Run as ex)./fdf test_maps/42.fdf");
@@ -87,7 +70,6 @@ int	main(int argc, char *argv[])
 	mlx_key_hook(fdf->mlx, key_hook, fdf);
 	mlx_loop_hook(fdf->mlx, loop_hook, fdf);
 	mlx_loop(fdf->mlx);
-	__lsan_printStats();
 	smart_exit(ptr_manager(), EXIT_SUCCESS);
 	return (EXIT_SUCCESS);
 }
