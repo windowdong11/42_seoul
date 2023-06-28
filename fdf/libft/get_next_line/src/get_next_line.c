@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 09:12:31 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/28 19:32:31 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/28 23:27:39 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "./gnl_inner.h"
 #include <fcntl.h>
 #include <stdlib.h>
-
 
 t_gnl_fd	*insert_gnl_fd(t_gnl_fd *prev_node, int fd)
 {
