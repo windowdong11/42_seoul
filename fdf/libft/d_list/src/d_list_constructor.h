@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.h                                             :+:      :+:    :+:   */
+/*   d_list_constructor.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/10 15:02:18 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/27 20:21:42 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/27 20:27:46 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/27 20:28:46 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEST_H
-# define TEST_H
+#ifndef D_LIST_CONSTRUCTOR_H
+# define D_LIST_CONSTRUCTOR_H
+# include "../d_list.h"
 
-# include <MLX42/MLX42.h>
-
-void	draw8way(mlx_image_t *img);
+void	init_d_list(t_d_list *this, void *value, t_destructor destructor);
+void	delete_d_list(t_d_list *this);
 
 #endif

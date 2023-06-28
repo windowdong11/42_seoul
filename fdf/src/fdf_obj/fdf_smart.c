@@ -6,14 +6,13 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 17:07:30 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/25 20:52:57 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/28 18:45:25 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf_obj.h"
 #include "../ptr_manager/ptr_manager.h"
 #include <smart_ptr.h>
-#include <stdio.h>
 
 void	delete_obj(void *ptr)
 {

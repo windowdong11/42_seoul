@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 16:36:54 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/14 21:18:49 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/28 18:44:48 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static int	is_int_str_equal(int num, char *num_str)
 	}
 	return (1);
 }
-#include <stdio.h>
 
 /*
 @param str string to convert to integer

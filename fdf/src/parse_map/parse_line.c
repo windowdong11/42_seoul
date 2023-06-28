@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 21:43:22 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/27 23:09:39 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/28 17:48:31 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ int	parse_line(char *line, t_map_data *map)
 			return (1);
 		}
 		set_point_xy(map->nodes->next->value, count, map->y);
-		free(splitted[count]);
-		count++;
+		free(splitted[count++]);
 	}
 	free(splitted);
 	if (count == 0)

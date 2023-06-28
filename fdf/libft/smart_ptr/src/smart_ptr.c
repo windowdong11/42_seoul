@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:41:39 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/21 15:13:54 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/27 18:12:44 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,19 @@
 */
 static void	free_smartptr(t_smartptr *ptr_to_free)
 {
-	ptr_to_free->destructor(ptr_to_free->ptr);
+	if (ptr_to_free->destructor && ptr_to_free->ptr)
+		ptr_to_free->destructor(ptr_to_free->ptr);
 	free(ptr_to_free);
 }
 
 void	smart_clean_all(t_smart_manager*const manager)
 {
-	t_smartptr					*iter_ptr;
-	t_smartptr					*ptr_to_free;
+	t_smartptr	*ptr_to_free;
 
-	iter_ptr = manager->head.next;
-	while (iter_ptr != NULL)
+	while (manager->head.next != NULL)
 	{
-		ptr_to_free = iter_ptr;
-		iter_ptr = iter_ptr->next;
+		ptr_to_free = manager->head.next;
+		manager->head.next = manager->head.next->next;
 		free_smartptr(ptr_to_free);
 	}
 	smart_init(manager);
@@ -40,20 +39,19 @@ void	smart_clean_all(t_smart_manager*const manager)
 void	*smart_malloc(
 	t_smart_manager*const manager, size_t size, t_destructor destructor)
 {
-	void*const	ptr = malloc(size);
-	t_smartptr	*last_smart_ptr;
+	void*const			ptr = malloc(size);
+	t_smartptr*const	new_ptr = malloc(sizeof(t_smartptr));
 
-	if (ptr == NULL)
+	if (ptr == NULL || new_ptr == NULL)
+	{
+		free(ptr);
+		free(new_ptr);
 		return (NULL);
-	last_smart_ptr = &manager->head;
-	while (last_smart_ptr->next != NULL)
-		last_smart_ptr = last_smart_ptr->next;
-	last_smart_ptr->next = malloc(sizeof(t_smartptr));
-	if (last_smart_ptr->next == NULL)
-		return (NULL);
-	last_smart_ptr->next->next = NULL;
-	last_smart_ptr->next->ptr = ptr;
-	last_smart_ptr->next->destructor = destructor;
+	}
+	new_ptr->ptr = ptr;
+	new_ptr->destructor = destructor;
+	new_ptr->next = manager->head.next;
+	manager->head.next = new_ptr;
 	return (ptr);
 }
 

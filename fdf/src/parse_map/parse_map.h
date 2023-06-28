@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:26:57 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/27 23:09:22 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/28 18:46:31 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ typedef struct s_map_data
 }	t_map_data;
 
 t_map_data	parse_map(int fd);
+t_fdf_obj	*map_data_to_obj(t_map_data map);
 
 #endif

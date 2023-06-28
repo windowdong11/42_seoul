@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:56:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/27 18:43:32 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/28 18:46:11 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include "utils/angle.h"
 #include "utils_3d/utils_3d.h"
 #include "fdf_obj/fdf_obj.h"
-#include "test/test.h"
+#include "parse_map/parse_map.h"
 #include "hooks/hooks.h"
 #include "exception/exception.h"
 #include "parse_map/parse_map.h"
@@ -31,7 +31,6 @@
 #include <math.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
 #include <ft_printf.h>
 #include <fcntl.h>
 #include <get_next_line.h>
