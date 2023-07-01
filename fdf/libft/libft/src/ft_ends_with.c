@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 17:27:40 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/14 17:30:56 by dowon            ###   ########.fr       */
+/*   Updated: 2023/07/01 22:43:35 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_ends_with(const char *str, const char *end)
 {
 	const char*const	str_start = str;
-	const char*const	end_start = str;
+	const char*const	end_start = end;
 
 	while (*str != '\0')
 		str++;

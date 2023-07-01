@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 18:23:14 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/28 22:20:58 by dowon            ###   ########.fr       */
+/*   Updated: 2023/07/01 22:45:28 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	handle_parse_error(char *line, t_d_list *map_nodes, int fd)
 		line = get_next_line(fd);
 	}
 	delete_all_d_list(map_nodes);
-	ft_error("parse_error\n");
+	ft_error("Parse error.\n");
 }
 
 static void	init_map_data(t_map_data *map)

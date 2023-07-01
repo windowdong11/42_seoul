@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:56:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/06/28 23:58:12 by dowon            ###   ########.fr       */
+/*   Updated: 2023/07/01 22:47:03 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static int	is_valid_args(int argc, char *argv[])
 {
 	return (
 		argc == 2
-		|| ft_strlen(argv[1]) >= 4
-		|| ft_ends_with(argv[1], ".fdf")
+		&& ft_strlen(argv[1]) >= 4
+		&& ft_ends_with(argv[1], ".fdf")
 	);
 }
 
@@ -57,15 +57,18 @@ static void	init_fdf(t_fdf *fdf)
 int	main(int argc, char *argv[])
 {
 	int			fd;
-	t_fdf*const	fdf = new_fdf(1920, 1080, "fdf", true);
+	t_fdf		*fdf;
+	t_map_data	map_data;
 
 	if (!is_valid_args(argc, argv))
-		ft_error("Invalid arguments. Run as ex)./fd	f test_maps/42.fdf");
+		ft_error("Invalid arguments. Run as ex)./fdf test_maps/file_name.fdf\n");
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
-		ft_error("Invalid filename. Run as ex)./fdf test_maps/42.fdf");
-	fdf->obj = map_data_to_obj(parse_map(fd));
+		ft_error("Invalid file.\n");
+	map_data = parse_map(fd);
 	close(fd);
+	fdf = new_fdf(1920, 1080, "fdf", true);
+	fdf->obj = map_data_to_obj(map_data);
 	init_fdf(fdf);
 	mlx_key_hook(fdf->mlx, key_hook, fdf);
 	mlx_loop_hook(fdf->mlx, loop_hook, fdf);
