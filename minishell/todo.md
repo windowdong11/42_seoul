@@ -43,3 +43,7 @@
 `command | process` : 출력을 다른 프로세스의 입력으로 돌림
 The output of each command in the pipeline is
 connected to the input of the next command via a pipe.
+
+echo 'Hello' | cat
+echo 'Hello' | cat file1
+(cat은 file1로부터 읽어서 출력함. cat은 인자가 없을 때, stdin으로부터 입력을 받기 때문)

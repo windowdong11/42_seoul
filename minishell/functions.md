@@ -25,7 +25,27 @@
 - `open` : 
 - `read` : 
 - `close` : 
-- `fork` : 
+- `fork` : 부모 프로세스(fork를 호출하는 프로세스)를 복제해서 자식 프로세스를 만듬  
+	단, PID는 다름, 자식들은 서로 다른 부모 pid를 가짐, 
+
+	The child process has a unique process ID.
+
+		o   The child process has a different parent process ID (i.e., the process ID of the parent process).
+
+		o   The child process has its own copy of the parent's descriptors.  These descriptors reference the same underlying objects, so that, for instance, file pointers in file objects
+			are shared between the child and the parent, so that an lseek(2) on a descriptor in the child process can affect a subsequent read or write by the parent.  This descriptor
+			copying is also used by the shell to establish standard input and output for newly created processes as well as to set up pipes.
+
+		o   The child processes resource utilizations are set to 0; see setrlimit(2).
+
+	fork() will fail and no child process will be created if:
+	[EAGAIN]           The system-imposed limit on the total number of processes under executi
+on would be exceeded.  This limit is configuration-dependent.
+
+     [EAGAIN]           The system-imposed limit MAXUPRC (<sys/param.h>) on the total number of
+ processes under execution by a single user would be exceeded.
+
+     [ENOMEM]           There is insufficient swap space for the new process.
 - `wait` : 
 - `waitpid` : 
 - `wait3` : 
