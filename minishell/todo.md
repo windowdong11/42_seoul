@@ -5,11 +5,11 @@
 - [ ] 닫히지 않은 따옴표(quotes)나 과제에서 요구하지 않은 특수문자를 해석하지 않아야 함  
 (예시 : `\` 또는 `;`)
 - [ ] `'` (single quote)를 처리해서 따옴표에 감싸진 metacharacters를 처리하지 않도록 해야합니다.  
-(예시 : echo '~' -> ~)  
-(안했을 때 예시 : echo '~' -> '/home/dowon')
+(예시 : echo '~' -> /home/dowon)  
+(안했을 때 예시 : echo '~' -> ~)
 - [ ] `"` (double quotes)를 처리해서 따옴표 처리된 metacharacters를 따옴표를 처리하지 않아야 합니다. (`$`제외)  
-(예시1 : echo "~" -> ~)  
-(안했을 때 예시 : echo "~" -> "/home/dowon")  
+(예시1 : echo "~" -> /home/dowon)  
+(안했을 때 예시 : echo "~" -> ~)  
 (예시2 : echo "\$PATH")
 - [ ] 리다이렉션 구현
   - [ ] `<` shoud redirect input

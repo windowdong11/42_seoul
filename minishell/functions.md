@@ -46,27 +46,33 @@ on would be exceeded.  This limit is configuration-dependent.
  processes under execution by a single user would be exceeded.
 
      [ENOMEM]           There is insufficient swap space for the new process.
-- `wait` : 
-- `waitpid` : 
-- `wait3` : 
-- `wait4` : 
+
+- `fork` : 
+- `pid_t wait(int *stat_loc)` : 프로세스의 종료를 기다림  
+	`stat_loc` information is available 하거나, signal이 올 때까지 호출 프로세스를 멈춘다.
+	`wait`가 성공적으로 실행되면, `stat_loc`은 프로세스의 종료 정보를 가지고 있는다.
+	종료 정보 : 
+- `pid_t waitpid(pid_t pid, int *stat_loc, int options)` : `pid`가 종료될 때 까지 기다림
+- `pid_t wait3(int *stat_loc, int options, struct rusage *rusage)` : wait + 사용량 정보
+- `pid_t wait4(pid_t pid, int *stat_loc, int options, struct rusage *rusage)` : wait + 사용량 정보
 - `signal` : 
 - `sigaction` : 
 - `sigemptyset` : 
 - `sigaddset` : 
 - `kill` : 
 - `exit` : 
-- `getcwd` : 
+- `char getcwd(char *buf, size_t size)` : `buf`에 담아서 줌, `size`는 `buf`의 크기(바이트 수)  
+  `buf`가 `NULL`이면, `size`는 무시되고 필요한 크기만큼 `malloc`되어서 반환됨.
 - `chdir` : 
 - `stat` : 
 - `lstat` : 
 - `fstat` : 
 - `unlink` : 
 - `execve` : 
-- `dup` : 
-- `dup2` : 
-- `pipe` : 
-- `opendir` : 
+- `int dup(int fildes)` : `filedes`를 복제해서 반환해줌
+- `int dup2(int fildes, int fildes2)` : `fildes`를 `filedes2`에 복제해서 반환해줌
+- `int pipe(int fildes[2])` : 파이프의 read 끝단, write 끝단에 fd를 설정
+- `opendir` : `
 - `readdir` : 
 - `closedir` : 
 - `strerror` : 

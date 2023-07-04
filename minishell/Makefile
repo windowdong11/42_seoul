@@ -6,7 +6,7 @@
 #    By: dowon <dowon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/27 20:13:17 by dowon             #+#    #+#              #
-#    Updated: 2023/07/01 00:46:50 by dowon            ###   ########.fr        #
+#    Updated: 2023/07/03 20:42:57 by dowon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,13 @@ LINK :=  $(addprefix -l, $(LIBS_FILENAMES:lib%.a=%) $(EXT_LINK))
 LINK_PATH := $(addprefix -L, $(LIBS_DIRS) $(EXT_LINK_PATH))
 INCLUDE_PATH := $(addprefix -I, $(LIBS_DIRS) $(EXT_INCLUDE_PATH))
 
-all: $(NAME)
+UTILS_SRC := $(shell find utils -depth 1 -name '*.c')
+UTILS := $(UTILS_SRC:.c=)
+
+all: $(NAME) $(UTILS)
+
+$(UTILS):
+	$(CC) $@.c -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(DEBUG) $(LEAKS) $(INCLUDE_PATH) -c $^ -o $@
@@ -74,6 +80,9 @@ $(LIBS):
 $(NAME) : $(OBJS) $(LIBS)
 	$(CC) $(CFLAGS) $(DEBUG) $(LEAKS) $(LIBS_INCLUDE_PATH) $(LINK) $(LINK_PATH) $^ -o $@
 
+clean_utils:
+	rm -rf $(UTILS)
+
 clean:
 	$(foreach lib_path, $(LIBS_DIRS), make fclean -C $(lib_path);)
 	rm -rf $(OBJ_DIR)
@@ -83,4 +92,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: re clean fclean all
+.PHONY: re clean fclean all clean_utils
