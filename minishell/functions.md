@@ -47,7 +47,6 @@ on would be exceeded.  This limit is configuration-dependent.
 
      [ENOMEM]           There is insufficient swap space for the new process.
 
-- `fork` : 
 - `pid_t wait(int *stat_loc)` : 프로세스의 종료를 기다림  
 	`stat_loc` information is available 하거나, signal이 올 때까지 호출 프로세스를 멈춘다.
 	`wait`가 성공적으로 실행되면, `stat_loc`은 프로세스의 종료 정보를 가지고 있는다.
@@ -72,7 +71,7 @@ on would be exceeded.  This limit is configuration-dependent.
 - `int dup(int fildes)` : `filedes`를 복제해서 반환해줌
 - `int dup2(int fildes, int fildes2)` : `fildes`를 `filedes2`에 복제해서 반환해줌
 - `int pipe(int fildes[2])` : 파이프의 read 끝단, write 끝단에 fd를 설정
-- `opendir` : `
+- `opendir` : 
 - `readdir` : 
 - `closedir` : 
 - `strerror` : 
@@ -81,7 +80,7 @@ on would be exceeded.  This limit is configuration-dependent.
 - `ttyname` : 
 - `ttyslot` : 
 - `ioctl` : 
-- `getenv` : 
+- `char *getenv(const char *name)` : name에 해당하는 env를 가져옴
 - `tcsetattr` : 
 - `tcgetattr` : 
 - `tgetent` : 

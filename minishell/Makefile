@@ -6,7 +6,7 @@
 #    By: dowon <dowon@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/27 20:13:17 by dowon             #+#    #+#              #
-#    Updated: 2023/07/03 20:42:57 by dowon            ###   ########.fr        #
+#    Updated: 2023/07/04 18:56:02 by dowon            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,8 +60,8 @@ UTILS := $(UTILS_SRC:.c=)
 
 all: $(NAME) $(UTILS)
 
-$(UTILS):
-	$(CC) $@.c -o $@
+$(UTILS): $(UTILS_SRC)
+	$(CC) $@.c $(INCLUDE_PATH) $(LINK_PATH) $(LINK) -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(DEBUG) $(LEAKS) $(INCLUDE_PATH) -c $^ -o $@
