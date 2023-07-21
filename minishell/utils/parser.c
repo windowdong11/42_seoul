@@ -28,6 +28,9 @@ int main()
         // Do stuff...
 		printf("%s\n", input);
 
+		size_t idx = 0;
+		char
+
         // Free input.
         free(input);
     }

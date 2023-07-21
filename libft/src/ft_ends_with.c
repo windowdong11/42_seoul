@@ -1,18 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*   ft_ends_with.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/17 19:02:22 by dowon             #+#    #+#             */
-/*   Updated: 2022/12/09 23:12:04 by dowon            ###   ########.fr       */
+/*   Created: 2023/06/14 17:27:40 by dowon             #+#    #+#             */
+/*   Updated: 2023/06/14 17:30:56 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include "../libft.h"
 
-void	ft_putchar_fd(char c, int fd)
+int	ft_ends_with(const char *str, const char *end)
 {
-	write(fd, &c, 1);
+	const char*const	str_start = str;
+	const char*const	end_start = str;
+
+	while (*str != '\0')
+		str++;
+	while (*end != '\0')
+		end++;
+	if (str - str_start < end - end_start)
+		return (0);
+	while (str >= str_start && end >= end_start)
+	{
+		if (*str != *end)
+			return (0);
+		--str;
+		--end;
+	}
+	return (1);
 }

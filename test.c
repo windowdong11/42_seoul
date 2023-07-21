@@ -1,15 +1,21 @@
 #include <stdlib.h>
-typedef void	(*t_destructor)(void*);
-void call(t_destructor destructor, void *ptr) {
-	destructor(ptr);
+#include <stdio.h>
+#include <limits.h>
+
+void	test(char **buff)
+{
+	buff[0][0] = '\0';
 }
 
-void int_destructor(int *ptr) {
-	free(ptr);
+void	ok(char buff[][10])
+{
+	buff[0][0] = '\0';
 }
 
-int main() {
-	int *p = malloc(sizeof(int));
-	call(int_destructor, p);
+int main()
+{
+	char buff[2][10];
+	test((char **)buff);
+	ok(buff);
 	return (0);
 }

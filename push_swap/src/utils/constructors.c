@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 21:32:44 by dowon             #+#    #+#             */
-/*   Updated: 2023/05/23 22:16:19 by dowon            ###   ########.fr       */
+/*   Updated: 2023/06/06 14:40:17 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,7 @@ t_stack_ab	*new_t_stack_ab(int argc, char *argv[])
 			stack_ab->stack_b->destructor(stack_ab->stack_b);
 		if (stack_ab->command != NULL)
 			stack_ab->command->destructor(stack_ab->command);
-		if (stack_ab != NULL)
-			free(stack_ab);
+		free(stack_ab);
 		return (NULL);
 	}
 	bind_method_stack_ab(stack_ab);
