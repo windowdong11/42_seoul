@@ -18,18 +18,21 @@ int main()
         // Display prompt and read input (n.b. input must be freed after use)...
         input = readline(shell_prompt);
 
+        if (fork() == 0) {
+            execv("/bin/cat", (char *[]){"/bin/cat", input, NULL});
+        }
         // Check for EOF.
-        if (input == NULL)
-            break;
-        if (access(input, R_OK) == 0)
-            printf("%s : read ok\n", input);
-        else
-            printf("%s : read fail\n", input);
+        // if (input == NULL)
+        //     break;
+        // if (access(input, R_OK) == 0)
+        //     printf("%s : read ok\n", input);
+        // else
+        //     printf("%s : read fail\n", input);
 
-        if (access(input, F_OK) == 0)
-            printf("%s : exist\n", input);
-        else
-            printf("%s : not exists\n", input);
+        // if (access(input, F_OK) == 0)
+        //     printf("%s : exist\n", input);
+        // else
+        //     printf("%s : not exists\n", input);
 
         // Add input to history.
         add_history(input);

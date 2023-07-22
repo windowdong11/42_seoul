@@ -1,3 +1,6 @@
 [submodule "minishell-team"]
 	path = minishell-team
 	url = https://github.com/BeomJinNa/minishell.git
+[submodule "push_swap_visualizer"]
+	path = push_swap_visualizer
+	url = https://github.com/windowdong11/push_swap_visualizer.git

@@ -12,7 +12,7 @@ int main()
 	else
 		printf("CHILD 1\n");
 
-	p = fork(); // 2
+	p = fork(); // 2`
 	if (p != 0)
 		printf("parent : %d\n", p);
 	else
