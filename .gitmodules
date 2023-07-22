@@ -1,0 +1,3 @@
+[submodule "minishell-team"]
+	path = minishell-team
+	url = https://github.com/BeomJinNa/minishell.git
