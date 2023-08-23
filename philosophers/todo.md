@@ -38,3 +38,8 @@
 - `timestamp_in_ms X died`
 
 ex) `14 1 died`
+
+eat (start) -> eat (end = start + time_to_eat)
+-> sleep (start) -> sleep (end = start + time_to_sleep)
+-> think
+-> eat
