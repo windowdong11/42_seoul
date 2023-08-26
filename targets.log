@@ -7,7 +7,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 
 # This program built for i386-apple-darwin11.3.0
 
-# Make data base, printed on Tue May 30 16:33:39 2023
+# Make data base, printed on Sun Jul 30 20:46:11 2023
 
 # Variables
 
@@ -15,6 +15,8 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 <D = $(patsubst %/,%,$(dir $<))
 # automatic
 ?F = $(notdir $?)
+# environment
+VSCODE_CRASH_REPORTER_PROCESS_TYPE = extensionHost
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # automatic
@@ -26,23 +28,21 @@ CURDIR := /Users/dowon/Desktop/42_seoul
 # makefile
 SHELL = /bin/sh
 # environment
-VSCODE_NLS_CONFIG = {"locale":"ko","availableLanguages":{"*":"ko"},"_languagePackId":"06a05ce9d2dd94d8f4e2a502d338b5ea.ko","_translationsConfigFile":"/Users/dowon/Library/Application Support/Code/clp/06a05ce9d2dd94d8f4e2a502d338b5ea.ko/tcf.json","_cacheRoot":"/Users/dowon/Library/Application Support/Code/clp/06a05ce9d2dd94d8f4e2a502d338b5ea.ko","_resolvedLanguagePackCoreLocation":"/Users/dowon/Library/Application Support/Code/clp/06a05ce9d2dd94d8f4e2a502d338b5ea.ko/97dec172d3256f8ca4bfb2143f3f76b503ca0534","_corruptedFile":"/Users/dowon/Library/Application Support/Code/clp/06a05ce9d2dd94d8f4e2a502d338b5ea.ko/corrupted.info","_languagePackSupport":true}
+VSCODE_NLS_CONFIG = {"locale":"ko","osLocale":"en","availableLanguages":{"*":"ko"},"_languagePackId":"006ad30b4528ec3eecdf4b2d5bb2195e.ko","_translationsConfigFile":"/Users/dowon/Library/Application Support/Code/clp/006ad30b4528ec3eecdf4b2d5bb2195e.ko/tcf.json","_cacheRoot":"/Users/dowon/Library/Application Support/Code/clp/006ad30b4528ec3eecdf4b2d5bb2195e.ko","_resolvedLanguagePackCoreLocation":"/Users/dowon/Library/Application Support/Code/clp/006ad30b4528ec3eecdf4b2d5bb2195e.ko/695af097c7bd098fbf017ce3ac85e09bbc5dda06","_corruptedFile":"/Users/dowon/Library/Application Support/Code/clp/006ad30b4528ec3eecdf4b2d5bb2195e.ko/corrupted.info","_languagePackSupport":true}
 # environment
 _ = /usr/bin/make
 # makefile (from `Makefile', line 1)
 MAKEFILE_LIST :=  Makefile
-# makefile (from `Makefile', line 3)
-LIB_DIR = ..
 # environment
 VSCODE_CWD = /
 # environment
-PATH = /Users/dowon/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki:/Users/dowon/Library/Python/3.8/bin
+PATH = /Users/dowon/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki:/Library/Apple/usr/bin:/Users/dowon/Library/Python/3.8/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.TdUh23ZnEv/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.WJrAqOIRZv/Listeners
 # automatic
 %F = $(notdir $%)
 # environment
@@ -58,7 +58,7 @@ HOME = /Users/dowon
 # default
 MAKEFILEPATH := /Applications/Xcode.app/Contents/Developer/Makefiles
 # environment
-VSCODE_CODE_CACHE_PATH = /Users/dowon/Library/Application Support/Code/CachedData/97dec172d3256f8ca4bfb2143f3f76b503ca0534
+VSCODE_CODE_CACHE_PATH = /Users/dowon/Library/Application Support/Code/CachedData/695af097c7bd098fbf017ce3ac85e09bbc5dda06
 # environment
 LOGNAME = dowon
 # environment
@@ -82,7 +82,7 @@ MAKE_VERSION := 3.81
 # environment
 USER = dowon
 # makefile
-.DEFAULT_GOAL := test
+.DEFAULT_GOAL := 
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # default
@@ -94,7 +94,7 @@ TMPDIR = /var/folders/zz/zyxvpxvq6csfxvn_n000cvc40036v1/T/
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /Users/dowon/Library/Application Support/Code/1.74.3-main.sock
+VSCODE_IPC_HOOK = /Users/dowon/Library/Application Support/Code/1.79-main.sock
 # environment
 MallocNanoZone = 0
 # makefile
@@ -104,13 +104,13 @@ MFLAGS = -Rrqp
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
-XPC_SERVICE_NAME = com.microsoft.VSCode.2188
+XPC_SERVICE_NAME = com.microsoft.VSCode.2576
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
+# environment
+VSCODE_L10N_BUNDLE_LOCATION = file:///Users/dowon/.vscode/extensions/ms-ceintl.vscode-language-pack-ko-1.79.2023061409/translations/extensions/vscode.json-language-features.i18n.json
 # automatic
 +F = $(notdir $+)
-# makefile (from `Makefile', line 1)
-DEP_LIBS = smart_ptr
 # environment
 __CF_USER_TEXT_ENCODING = 0x19B61:0x3:0x33
 # default
@@ -119,8 +119,6 @@ MAKEFILES :=
 <F = $(notdir $<)
 # environment
 LC_ALL = C
-# makefile (from `Makefile', line 4)
-LIBS = $(foreach d, $(DEP_LIBS), -L$(LIB_DIR)/$(d) -l$(d))
 # automatic
 ^F = $(notdir $^)
 # default
@@ -132,9 +130,9 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 3505
+VSCODE_PID = 82798
 # variable set hash-table stats:
-# Load=61/1024=6%, Rehash=0, Collisions=2/85=2%
+# Load=60/1024=6%, Rehash=0, Collisions=1/83=1%
 
 # Pattern-specific Variable Values
 
@@ -142,9 +140,9 @@ VSCODE_PID = 3505
 
 # Directories
 
-# . (device 16777225, inode 1313459): 31 files, no impossibilities.
+# . (device 16777225, inode 1313459): 40 files, no impossibilities.
 
-# 31 files, no impossibilities in 1 directories.
+# 40 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -170,19 +168,11 @@ all:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2023-05-25 14:02:28
+#  Last modified 2023-06-14 17:59:44
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
-
-test:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `Makefile', line 7):
-	echo $(LIBS)
-	
 
 # Not a target:
 .DEFAULT:
@@ -191,7 +181,7 @@ test:
 #  File has not been updated.
 
 # files hash-table stats:
-# Load=5/1024=0%, Rehash=0, Collisions=0/17=0%
+# Load=4/1024=0%, Rehash=0, Collisions=0/16=0%
 # VPATH Search Paths
 
 # No `vpath' search paths.
@@ -203,7 +193,7 @@ test:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Tue May 30 16:33:39 2023
+# Finished Make data base on Sun Jul 30 20:46:11 2023
 
  
 make: *** No rule to make target `all'.  Stop.

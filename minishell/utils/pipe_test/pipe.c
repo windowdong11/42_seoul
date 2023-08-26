@@ -117,6 +117,7 @@ void	execute_pipe(char **commands, size_t n, int in, int out)
 	while (idx < n) {
 		// TODO : 프로세스 에러 처리
 		printf("finish : %d\n", wait(&stat_loc));
+		// printf("finish : %d\n", waitpid(0, &stat_loc, WNOHANG));
 		++idx;
 	}
 	free(pipe_fd);
@@ -174,16 +175,19 @@ int open_redirection_stdout(const char *stdout, int is_append_mode)
 int main(int argc, char **argv)
 {
 	atexit(ft_leaks);
-	char**const	arr = malloc(sizeof(char *) * (argc - 1));
-	arr[0] = ft_strdup("cat");
-	arr[1] = ft_strdup("cat");
+	int count = 3;
+	char**const	arr = malloc(sizeof(char *) * (count));
+	arr[0] = ft_strdup("sleep 5");
+	arr[1] = ft_strdup("yes");
+	arr[2] = ft_strdup("head");
 	char *in = NULL; // NULL or filename
 	char *out = NULL; // NULL or filename
 	int in_fd;
 	int out_fd;
 	in_fd = open_redirection_stdin(in);
 	out_fd = open_redirection_stdout(out, 0);
-	execute_pipe(arr, 2, in_fd, out_fd);
+	execute_pipe(arr, count, in_fd, out_fd);
+	free(arr[2]);
 	free(arr[1]);
 	free(arr[0]);
 	free(arr);
