@@ -1,12 +1,11 @@
 CC		= cc
-CFLAGS	= -g -fsanitize=address -Wall -Wextra -Werror
+CFLAGS	= -g -fsanitize=thread -Wall -Wextra -Werror
 
 #settings==========================
 
 NAME	= philo
 
-SRCS	=	main.c parse_args.c \
-			utils/ft_atoi.c utils/ft_split.c utils/ft_strlen.c
+SRCS	=	clean.c init.c main.c observer.c parse_args.c print_status.c timestamp.c utils/ft_atoi.c utils/ft_split.c utils/ft_strlen.c
 OBJS	= $(SRCS:.c=.o)
 
 .PHONY: all
