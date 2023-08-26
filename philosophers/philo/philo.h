@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:41:19 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/26 21:50:59 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/26 22:03:15 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ typedef struct s_philo
 	pthread_mutex_t	*left;
 	pthread_mutex_t	*right;
 	pthread_mutex_t	*print_mutex;
+	pthread_mutex_t	finish_mutex;
+	pthread_mutex_t	eat_mutex;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;

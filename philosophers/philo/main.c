@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 17:04:40 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/26 22:00:31 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/26 22:45:47 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,18 @@ void	*philo_lr(void *args)
 
 	while (1)
 	{
+		pthread_mutex_lock(&me->finish_mutex);
 		if (me->is_finished)
 			return (NULL);
+		pthread_mutex_unlock(&me->finish_mutex);
 		pthread_mutex_lock(me->left);
 		print_take_fork(me);
 		pthread_mutex_lock(me->right);
 		print_take_fork(me);
+		// pthread_mutex_lock(&me->eat_mutex);
+		me->last_eat_time = get_timestamp_ms();
 		++me->eat_cnt;
+		// pthread_mutex_unlock(&me->eat_mutex);
 		print_eat(me);
 		ft_msleep(me->time_to_eat);
 		pthread_mutex_unlock(me->right);
@@ -69,13 +74,18 @@ void	*philo_rl(void *args)
 
 	while (1)
 	{
+		pthread_mutex_lock(&me->finish_mutex);
 		if (me->is_finished)
 			return (NULL);
+		pthread_mutex_unlock(&me->finish_mutex);
 		pthread_mutex_lock(me->right);
 		print_take_fork(me);
 		pthread_mutex_lock(me->left);
 		print_take_fork(me);
+		pthread_mutex_lock(&me->eat_mutex);
+		me->last_eat_time = get_timestamp_ms();
 		++me->eat_cnt;
+		pthread_mutex_unlock(&me->eat_mutex);
 		print_eat(me);
 		ft_msleep(me->time_to_eat);
 		pthread_mutex_unlock(me->left);
@@ -91,6 +101,7 @@ void	run_philosophers(t_philo_general *data)
 {
 	int	idx;
 
+	printf("start %ld\n", get_timestamp_ms());
 	idx = 1;
 	while (idx <= data->philo_count)
 	{
@@ -98,6 +109,7 @@ void	run_philosophers(t_philo_general *data)
 			philo_lr, &data->philosophers[idx]);
 		idx += 2;
 	}
+	usleep(1000);
 	idx = 2;
 	while (idx <= data->philo_count)
 	{
@@ -107,23 +119,11 @@ void	run_philosophers(t_philo_general *data)
 	}
 }
 
-void	join_all(t_philo_general *data)
-{
-	int	idx;
-
-	idx = 1;
-	while (idx <= data->philo_count)
-	{
-		pthread_join(data->philosophers[idx].thread, NULL);
-		++idx;
-	}
-}
-
 int	main(int argc, char *argv[])
 {
 	int				result[6];
 	int				size;
-	pthread_t		observer;
+	// pthread_t		observer;
 	t_philo_general	data;
 
 	if (parse_args(argc, argv, result, &size))
@@ -134,10 +134,9 @@ int	main(int argc, char *argv[])
 	init_general(&data, result, size);
 	init_timestamp();
 	run_philosophers(&data);
-	pthread_create(&observer, NULL,
-		observe, (void *)&data);
-	join_all(&data);
-	pthread_join(observer, NULL);
+	// pthread_create(&observer, NULL,
+	// 	observe, (void *)&data);
+	// pthread_join(observer, NULL);
 	clean_all(&data);
 	return (0);
 }

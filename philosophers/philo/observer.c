@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:08:29 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/26 21:50:10 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/26 22:36:59 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,13 @@ int	check_eat_all(t_philo_general *data)
 	idx = 1;
 	while (idx < data->philo_count)
 	{
+		pthread_mutex_lock(&data->philosophers[idx].eat_mutex);
 		if (data->philosophers[idx].eat_cnt < data->must_eat_cnt)
+		{
+			pthread_mutex_unlock(&data->philosophers[idx].eat_mutex);
 			return (0);
+		}
+		pthread_mutex_unlock(&data->philosophers[idx].eat_mutex);
 		++idx;
 	}
 	return (1);
@@ -42,21 +47,28 @@ void	*observe(void *arg)
 		idx = 1;
 		while (idx <= data->philo_count)
 		{
+			pthread_mutex_lock(&data->philosophers[idx].eat_mutex);
 			if (data->philosophers[idx].last_eat_time + data->time_to_die
 				<= get_timestamp_ms())
 			{
-				pthread_mutex_lock(&data->print_mutex);
+				pthread_mutex_unlock(&data->philosophers[idx].eat_mutex);
+				pthread_mutex_lock(&data->philosophers[idx].finish_mutex);
 				if (!data->philosophers[idx].is_finished)
+				{
+					pthread_mutex_unlock(&data->philosophers[idx].finish_mutex);
+					pthread_mutex_lock(&data->print_mutex);
 					printf("%ldms %d died\n", get_timestamp_ms(), idx);
+					pthread_mutex_unlock(&data->print_mutex);
+				}
+				else
+					pthread_mutex_unlock(&data->philosophers[idx].finish_mutex);
 				broadcast_finished(data);
-				pthread_mutex_unlock(&data->print_mutex);
 				return (NULL);
 			}
+			pthread_mutex_unlock(&data->philosophers[idx].eat_mutex);
 			if (check_eat_all(data))
 			{
-				pthread_mutex_lock(&data->print_mutex);
 				broadcast_finished(data);
-				pthread_mutex_unlock(&data->print_mutex);
 				return (NULL);
 			}
 			++idx;
@@ -73,7 +85,9 @@ static void	broadcast_finished(t_philo_general *data)
 	idx = 1;
 	while (idx <= data->philo_count)
 	{
+		pthread_mutex_lock(&data->philosophers[idx].finish_mutex);
 		data->philosophers[idx].is_finished = 1;
+		pthread_mutex_unlock(&data->philosophers[idx].finish_mutex);
 		++idx;
 	}
 	return ;
