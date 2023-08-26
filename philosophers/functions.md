@@ -23,7 +23,7 @@ struct timezone {
 ```
 - `int pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine)(void *), void *arg);`
 새로운 스레드 생성  
-(?)thread : 함수 실행에 성공하면, 생성한 thread의 ID를 (인자)thread에 특정한 위치에 저장함  
+thread : 함수 실행에 성공하면, 생성한 thread의 ID를 (인자)thread에 저장함  
 attr : NULL이면, default가 사용됨.  
 start_routine : 시작 함수  
 arg : 시작 함수에 주어지는 인자  
@@ -56,7 +56,7 @@ errors : EINVAL, ESRCH, EDEADLK
 ## Errors
 - [EAGAIN]  
 The system lacked the necessary resources to create another thread, or the system-imposed limit on the total number of threads in a process [PTHREAD_THREADS_MAX] would be exceeded.
-- [EPERM]
+- [EPERM]  
 The caller does not have appropriate permission to set the required scheduling parameters or scheduling policy.
 The current thread does not hold a lock on mutex.
 - [EINVAL]

@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:28:35 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/26 22:46:37 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/26 22:49:35 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ static void	init_philosophers(t_philo_general *data)
 		philosophers[idx].right
 			= &data->forks_mutex[idx % data->philo_count + 1];
 		philosophers[idx].print_mutex = &data->print_mutex;
-		// pthread_mutex_init(&philosophers[idx].finish_mutex, NULL);
-		// pthread_mutex_init(&philosophers[idx].eat_mutex, NULL);
+		pthread_mutex_init(&philosophers[idx].finish_mutex, NULL);
+		pthread_mutex_init(&philosophers[idx].eat_mutex, NULL);
 		philosophers[idx].last_eat_time = 0;
 		philosophers[idx].time_to_die = data->time_to_die;
 		philosophers[idx].time_to_eat = data->time_to_eat;

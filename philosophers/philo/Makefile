@@ -1,5 +1,6 @@
 CC		= cc
-CFLAGS	= -g -fsanitize=thread -Wall -Wextra -Werror
+# DEBUG   = -g -fsanitize=thread
+CFLAGS	= $(DEBUG) -Wall -Wextra -Werror
 
 #settings==========================
 

@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 17:04:40 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/26 22:45:47 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/26 23:15:13 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ void	*philo_lr(void *args)
 		print_take_fork(me);
 		pthread_mutex_lock(me->right);
 		print_take_fork(me);
-		// pthread_mutex_lock(&me->eat_mutex);
+		pthread_mutex_lock(&me->eat_mutex);
 		me->last_eat_time = get_timestamp_ms();
 		++me->eat_cnt;
-		// pthread_mutex_unlock(&me->eat_mutex);
+		pthread_mutex_unlock(&me->eat_mutex);
 		print_eat(me);
 		ft_msleep(me->time_to_eat);
 		pthread_mutex_unlock(me->right);
@@ -106,15 +106,14 @@ void	run_philosophers(t_philo_general *data)
 	while (idx <= data->philo_count)
 	{
 		pthread_create(&data->philosophers[idx].thread, NULL,
-			philo_lr, &data->philosophers[idx]);
+			philo_rl, &data->philosophers[idx]);
 		idx += 2;
 	}
-	usleep(1000);
 	idx = 2;
 	while (idx <= data->philo_count)
 	{
 		pthread_create(&data->philosophers[idx].thread, NULL,
-			philo_rl, &data->philosophers[idx]);
+			philo_lr, &data->philosophers[idx]);
 		idx += 2;
 	}
 }
@@ -123,7 +122,7 @@ int	main(int argc, char *argv[])
 {
 	int				result[6];
 	int				size;
-	// pthread_t		observer;
+	pthread_t		observer;
 	t_philo_general	data;
 
 	if (parse_args(argc, argv, result, &size))
@@ -134,9 +133,9 @@ int	main(int argc, char *argv[])
 	init_general(&data, result, size);
 	init_timestamp();
 	run_philosophers(&data);
-	// pthread_create(&observer, NULL,
-	// 	observe, (void *)&data);
-	// pthread_join(observer, NULL);
+	pthread_create(&observer, NULL,
+		observe, (void *)&data);
+	pthread_join(observer, NULL);
 	clean_all(&data);
 	return (0);
 }
