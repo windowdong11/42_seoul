@@ -6,15 +6,13 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:08:29 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/26 22:36:59 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/27 21:09:08 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <stdio.h>
 #include <unistd.h>
-
-static void	broadcast_finished(t_philo_general *data);
 
 int	check_eat_all(t_philo_general *data)
 {
@@ -37,58 +35,49 @@ int	check_eat_all(t_philo_general *data)
 	return (1);
 }
 
-void	*observe(void *arg)
-{
-	t_philo_general*const	data = arg;
-	int						idx;
-
-	while (1)
-	{
-		idx = 1;
-		while (idx <= data->philo_count)
-		{
-			pthread_mutex_lock(&data->philosophers[idx].eat_mutex);
-			if (data->philosophers[idx].last_eat_time + data->time_to_die
-				<= get_timestamp_ms())
-			{
-				pthread_mutex_unlock(&data->philosophers[idx].eat_mutex);
-				pthread_mutex_lock(&data->philosophers[idx].finish_mutex);
-				if (!data->philosophers[idx].is_finished)
-				{
-					pthread_mutex_unlock(&data->philosophers[idx].finish_mutex);
-					pthread_mutex_lock(&data->print_mutex);
-					printf("%ldms %d died\n", get_timestamp_ms(), idx);
-					pthread_mutex_unlock(&data->print_mutex);
-				}
-				else
-					pthread_mutex_unlock(&data->philosophers[idx].finish_mutex);
-				broadcast_finished(data);
-				return (NULL);
-			}
-			pthread_mutex_unlock(&data->philosophers[idx].eat_mutex);
-			if (check_eat_all(data))
-			{
-				broadcast_finished(data);
-				return (NULL);
-			}
-			++idx;
-		}
-		usleep(1000);
-	}
-	return (NULL);
-}
-
-static void	broadcast_finished(t_philo_general *data)
+static int	anyone_dead(t_philo_general *data)
 {
 	int	idx;
 
 	idx = 1;
 	while (idx <= data->philo_count)
 	{
-		pthread_mutex_lock(&data->philosophers[idx].finish_mutex);
-		data->philosophers[idx].is_finished = 1;
-		pthread_mutex_unlock(&data->philosophers[idx].finish_mutex);
+		pthread_mutex_lock(&data->philosophers[idx].eat_mutex);
+		if (data->philosophers[idx].last_eat_time + data->time_to_die
+			< get_timestamp_ms())
+		{
+			pthread_mutex_unlock(&data->philosophers[idx].eat_mutex);
+			pthread_mutex_lock(&data->finish_mutex);
+			data->is_finished = 1;
+			pthread_mutex_unlock(&data->finish_mutex);
+			pthread_mutex_lock(&data->print_mutex);
+			printf("%ld %d died\n", get_timestamp_ms(), idx);
+			pthread_mutex_unlock(&data->print_mutex);
+			return (1);
+		}
+		pthread_mutex_unlock(&data->philosophers[idx].eat_mutex);
 		++idx;
 	}
-	return ;
+	return (0);
+}
+
+void	*observe(void *arg)
+{
+	t_philo_general*const	data = arg;
+
+	usleep(1000);
+	while (1)
+	{
+		if (anyone_dead(data))
+			return (NULL);
+		if (check_eat_all(data))
+		{
+			pthread_mutex_lock(&data->finish_mutex);
+			data->is_finished = 1;
+			pthread_mutex_unlock(&data->finish_mutex);
+			return (NULL);
+		}
+		usleep(1000);
+	}
+	return (NULL);
 }

@@ -1,12 +1,13 @@
 CC		= cc
-# DEBUG   = -g -fsanitize=thread
-CFLAGS	= $(DEBUG) -Wall -Wextra -Werror
+# DEBUG   = -g
+# SANITIZE_THREAD = -fsanitize=thread
+CFLAGS	= $(DEBUG) $(SANITIZE_THREAD) -Wall -Wextra -Werror
 
 #settings==========================
 
 NAME	= philo
 
-SRCS	=	clean.c init.c main.c observer.c parse_args.c print_status.c timestamp.c utils/ft_atoi.c utils/ft_split.c utils/ft_strlen.c
+SRCS	= philo.c clean.c init.c main.c observer.c parse_args.c print_status.c timestamp.c utils/ft_atoi.c utils/ft_split.c utils/ft_strlen.c
 OBJS	= $(SRCS:.c=.o)
 
 .PHONY: all

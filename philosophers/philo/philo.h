@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:41:19 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/26 22:03:15 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/27 18:55:35 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,17 @@
 # include <pthread.h>
 
 typedef long	t_ms;
-
 typedef struct s_philo
 {
 	int				idx;
-	int				is_finished;
+	int				*is_finished;
 	int				eat_cnt;
 	int				last_eat_time;
 	pthread_t		thread;
 	pthread_mutex_t	*left;
 	pthread_mutex_t	*right;
 	pthread_mutex_t	*print_mutex;
-	pthread_mutex_t	finish_mutex;
+	pthread_mutex_t	*finish_mutex;
 	pthread_mutex_t	eat_mutex;
 	int				time_to_die;
 	int				time_to_eat;
@@ -39,6 +38,8 @@ typedef struct s_philo_general
 	t_philo			*philosophers;
 	pthread_mutex_t	*forks_mutex;
 	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	finish_mutex;
+	int				is_finished;
 	int				philo_count;
 	int				time_to_die;
 	int				time_to_eat;
@@ -53,9 +54,14 @@ void	clean_all(t_philo_general *data);
 /* timestamp */
 void	init_timestamp(void);
 t_ms	get_timestamp_ms(void);
+void	ft_msleep(t_ms ms);
 
 /* observe */
 void	*observe(void *arg);
+
+/* philo */
+void	*philo_lr(void *args);
+void	*philo_rl(void *args);
 
 /* print - with mutex lock */
 void	print_take_fork(t_philo *philo);
