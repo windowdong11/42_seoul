@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:40:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/28 16:15:01 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/28 17:03:14 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "utils/utils.h"
 #include <unistd.h>
 
-int	try_take_fork(pthread_mutex_t *mutex, int *owner_info, int my_info)
+static int	try_take_fork(pthread_mutex_t *mutex, int *owner_info, int my_info)
 {
 	pthread_mutex_lock(mutex);
 	{
@@ -29,37 +29,34 @@ int	try_take_fork(pthread_mutex_t *mutex, int *owner_info, int my_info)
 	return (1);
 }
 
-void	drop_fork(pthread_mutex_t *mutex, int *owner_info)
+static void	retry_take_fork(t_philo *me, pthread_mutex_t *mutex,
+	int *owner_info, int my_info)
+{
+	while (try_take_fork(mutex, owner_info, my_info) == 0)
+	{
+		usleep(100);
+		pthread_mutex_lock(&me->finish_mutex);
+		if (*me->is_finished)
+		{
+			pthread_mutex_unlock(&me->finish_mutex);
+			return ;
+		}
+		pthread_mutex_unlock(&me->finish_mutex);
+	}
+}
+
+static void	drop_fork(pthread_mutex_t *mutex, int *owner_info)
 {
 	pthread_mutex_lock(mutex);
 	*owner_info = 0;
 	pthread_mutex_unlock(mutex);
 }
+
 static void	eat_rl(t_philo *me)
 {
-	while (try_take_fork(me->right_mutex, me->right_fork, me->idx) == 0)
-	{
-		usleep(300);
-		pthread_mutex_lock(&me->finish_mutex);
-		if (*me->is_finished)
-		{
-			pthread_mutex_unlock(&me->finish_mutex);
-			return ;
-		}
-		pthread_mutex_unlock(&me->finish_mutex);
-	}
+	retry_take_fork(me, me->right_mutex, me->right_fork, me->idx);
 	print_take_fork(me);
-	while (try_take_fork(me->left_mutex, me->left_fork, me->idx) == 0)
-	{
-		usleep(300);
-		pthread_mutex_lock(&me->finish_mutex);
-		if (*me->is_finished)
-		{
-			pthread_mutex_unlock(&me->finish_mutex);
-			return ;
-		}
-		pthread_mutex_unlock(&me->finish_mutex);
-	}
+	retry_take_fork(me, me->left_mutex, me->left_fork, me->idx);
 	print_take_fork(me);
 	pthread_mutex_lock(&me->eat_mutex);
 	me->last_eat_time = get_timestamp_ms();

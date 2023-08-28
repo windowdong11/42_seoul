@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 17:04:40 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/28 15:12:57 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/28 16:59:55 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	run_philosophers(t_philo_general *data)
 			philo_rl, &data->philosophers[idx]);
 		idx += 2;
 	}
-	usleep(100);
+	usleep(data->time_to_eat * 1000 / 3);
 	idx = 2;
 	while (idx <= data->philo_count)
 	{

@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:41:19 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/28 16:14:34 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/28 16:42:22 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef struct s_philo
 	pthread_mutex_t	*left_mutex;
 	pthread_mutex_t	*right_mutex;
 	pthread_mutex_t	*print_mutex;
-	// pthread_mutex_t	*finish_mutex;
 	pthread_mutex_t	finish_mutex;
 	pthread_mutex_t	eat_mutex;
 	int				time_to_die;
@@ -41,7 +40,6 @@ typedef struct s_philo_general
 	t_philo			*philosophers;
 	pthread_mutex_t	*forks_mutex;
 	pthread_mutex_t	print_mutex;
-	// pthread_mutex_t	finish_mutex;
 	int				*forks;
 	int				is_finished;
 	int				philo_count;

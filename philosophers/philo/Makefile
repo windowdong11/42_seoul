@@ -1,6 +1,6 @@
 CC		= cc
-DEBUG   = -g
-SANITIZE_THREAD = -fsanitize=thread
+# DEBUG   = -g
+# SANITIZE_THREAD = -fsanitize=thread
 # SANITIZE_ADDRESS = -fsanitize=address
 CFLAGS	= $(DEBUG) $(SANITIZE_THREAD) $(SANITIZE_ADDRESS) -Wall -Wextra -Werror
 
