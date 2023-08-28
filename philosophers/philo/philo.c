@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:40:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/28 15:56:58 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/28 16:15:01 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,25 @@ static void	eat_rl(t_philo *me)
 	while (try_take_fork(me->right_mutex, me->right_fork, me->idx) == 0)
 	{
 		usleep(300);
-		pthread_mutex_lock(me->finish_mutex);
+		pthread_mutex_lock(&me->finish_mutex);
 		if (*me->is_finished)
 		{
-			pthread_mutex_unlock(me->finish_mutex);
+			pthread_mutex_unlock(&me->finish_mutex);
 			return ;
 		}
-		pthread_mutex_unlock(me->finish_mutex);
+		pthread_mutex_unlock(&me->finish_mutex);
 	}
 	print_take_fork(me);
 	while (try_take_fork(me->left_mutex, me->left_fork, me->idx) == 0)
 	{
 		usleep(300);
-		pthread_mutex_lock(me->finish_mutex);
+		pthread_mutex_lock(&me->finish_mutex);
 		if (*me->is_finished)
 		{
-			pthread_mutex_unlock(me->finish_mutex);
+			pthread_mutex_unlock(&me->finish_mutex);
 			return ;
 		}
-		pthread_mutex_unlock(me->finish_mutex);
+		pthread_mutex_unlock(&me->finish_mutex);
 	}
 	print_take_fork(me);
 	pthread_mutex_lock(&me->eat_mutex);
@@ -77,13 +77,13 @@ void	*philo_rl(void *args)
 
 	while (1)
 	{
-		pthread_mutex_lock(me->finish_mutex);
+		pthread_mutex_lock(&me->finish_mutex);
 		if (*me->is_finished)
 		{
-			pthread_mutex_unlock(me->finish_mutex);
+			pthread_mutex_unlock(&me->finish_mutex);
 			return (NULL);
 		}
-		pthread_mutex_unlock(me->finish_mutex);
+		pthread_mutex_unlock(&me->finish_mutex);
 		eat_rl(me);
 		print_sleep(me);
 		ft_msleep(me->time_to_sleep);
