@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:40:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/27 21:10:53 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/28 15:15:06 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 
 static void	eat_lr(t_philo *me)
 {
-	pthread_mutex_lock(me->left);
+	pthread_mutex_lock(me->left_mutex);
 	print_take_fork(me);
-	pthread_mutex_lock(me->right);
+	pthread_mutex_lock(me->right_mutex);
 	print_take_fork(me);
 	pthread_mutex_lock(&me->eat_mutex);
 	me->last_eat_time = get_timestamp_ms();
@@ -26,8 +26,8 @@ static void	eat_lr(t_philo *me)
 	pthread_mutex_unlock(&me->eat_mutex);
 	print_eat(me);
 	ft_msleep(me->time_to_eat);
-	pthread_mutex_unlock(me->left);
-	pthread_mutex_unlock(me->right);
+	pthread_mutex_unlock(me->left_mutex);
+	pthread_mutex_unlock(me->right_mutex);
 }
 
 void	*philo_lr(void *args)
@@ -48,16 +48,15 @@ void	*philo_lr(void *args)
 		print_sleep(me);
 		ft_msleep(me->time_to_sleep);
 		print_think(me);
-		usleep(100);
 	}
 	return (NULL);
 }
 
 static void	eat_rl(t_philo *me)
 {
-	pthread_mutex_lock(me->right);
+	pthread_mutex_lock(me->right_mutex);
 	print_take_fork(me);
-	pthread_mutex_lock(me->left);
+	pthread_mutex_lock(me->left_mutex);
 	print_take_fork(me);
 	pthread_mutex_lock(&me->eat_mutex);
 	me->last_eat_time = get_timestamp_ms();
@@ -65,8 +64,8 @@ static void	eat_rl(t_philo *me)
 	pthread_mutex_unlock(&me->eat_mutex);
 	print_eat(me);
 	ft_msleep(me->time_to_eat);
-	pthread_mutex_unlock(me->left);
-	pthread_mutex_unlock(me->right);
+	pthread_mutex_unlock(me->left_mutex);
+	pthread_mutex_unlock(me->right_mutex);
 }
 
 void	*philo_rl(void *args)
@@ -86,7 +85,6 @@ void	*philo_rl(void *args)
 		print_sleep(me);
 		ft_msleep(me->time_to_sleep);
 		print_think(me);
-		usleep(100);
 	}
 	return (NULL);
 }

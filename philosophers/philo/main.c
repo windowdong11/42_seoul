@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 17:04:40 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/27 19:23:16 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/28 15:12:57 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,12 @@ static void	run_philosophers(t_philo_general *data)
 			philo_rl, &data->philosophers[idx]);
 		idx += 2;
 	}
+	usleep(100);
 	idx = 2;
 	while (idx <= data->philo_count)
 	{
 		pthread_create(&data->philosophers[idx].thread, NULL,
-			philo_lr, &data->philosophers[idx]);
+			philo_rl, &data->philosophers[idx]);
 		idx += 2;
 	}
 }
