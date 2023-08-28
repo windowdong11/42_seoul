@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 17:04:40 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/28 16:59:55 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/28 17:20:41 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	parse_args(int argc, char *argv[], int result[], int *size);
 
 static void	print_usage(void)
 {
-	printf("usage: ./philosopher number_of_philosophers \
+	printf("usage: ./philo number_of_philosophers \
 time_to_die time_to_eat time_to_sleep \
 [number_of_times_each_philosopher_must_eat]\n");
 }
@@ -36,7 +36,10 @@ static void	run_philosophers(t_philo_general *data)
 			philo_rl, &data->philosophers[idx]);
 		idx += 2;
 	}
-	usleep(data->time_to_eat * 1000 / 3);
+	if (data->time_to_die > data->time_to_eat)
+		usleep(data->time_to_eat * 500);
+	else
+		usleep(data->time_to_die * 500);
 	idx = 2;
 	while (idx <= data->philo_count)
 	{
