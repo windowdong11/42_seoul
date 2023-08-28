@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:08:29 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/28 16:50:48 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/28 18:49:25 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	*observe(void *arg)
 {
 	t_philo_general*const	data = arg;
 
-	usleep(3000);
+	usleep(1000);
 	while (1)
 	{
 		if (anyone_dead(data))
