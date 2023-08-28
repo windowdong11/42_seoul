@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:40:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/28 15:15:06 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/28 15:56:58 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,49 +14,52 @@
 #include "utils/utils.h"
 #include <unistd.h>
 
-static void	eat_lr(t_philo *me)
+int	try_take_fork(pthread_mutex_t *mutex, int *owner_info, int my_info)
 {
-	pthread_mutex_lock(me->left_mutex);
-	print_take_fork(me);
-	pthread_mutex_lock(me->right_mutex);
-	print_take_fork(me);
-	pthread_mutex_lock(&me->eat_mutex);
-	me->last_eat_time = get_timestamp_ms();
-	++me->eat_cnt;
-	pthread_mutex_unlock(&me->eat_mutex);
-	print_eat(me);
-	ft_msleep(me->time_to_eat);
-	pthread_mutex_unlock(me->left_mutex);
-	pthread_mutex_unlock(me->right_mutex);
+	pthread_mutex_lock(mutex);
+	{
+		if (*owner_info)
+		{
+			pthread_mutex_unlock(mutex);
+			return (0);
+		}
+		*owner_info = my_info;
+	}
+	pthread_mutex_unlock(mutex);
+	return (1);
 }
 
-void	*philo_lr(void *args)
+void	drop_fork(pthread_mutex_t *mutex, int *owner_info)
 {
-	t_philo*const	me = (t_philo *)args;
-
-	ft_msleep(me->time_to_eat / 2);
-	while (1)
+	pthread_mutex_lock(mutex);
+	*owner_info = 0;
+	pthread_mutex_unlock(mutex);
+}
+static void	eat_rl(t_philo *me)
+{
+	while (try_take_fork(me->right_mutex, me->right_fork, me->idx) == 0)
 	{
+		usleep(300);
 		pthread_mutex_lock(me->finish_mutex);
 		if (*me->is_finished)
 		{
 			pthread_mutex_unlock(me->finish_mutex);
-			return (NULL);
+			return ;
 		}
 		pthread_mutex_unlock(me->finish_mutex);
-		eat_lr(me);
-		print_sleep(me);
-		ft_msleep(me->time_to_sleep);
-		print_think(me);
 	}
-	return (NULL);
-}
-
-static void	eat_rl(t_philo *me)
-{
-	pthread_mutex_lock(me->right_mutex);
 	print_take_fork(me);
-	pthread_mutex_lock(me->left_mutex);
+	while (try_take_fork(me->left_mutex, me->left_fork, me->idx) == 0)
+	{
+		usleep(300);
+		pthread_mutex_lock(me->finish_mutex);
+		if (*me->is_finished)
+		{
+			pthread_mutex_unlock(me->finish_mutex);
+			return ;
+		}
+		pthread_mutex_unlock(me->finish_mutex);
+	}
 	print_take_fork(me);
 	pthread_mutex_lock(&me->eat_mutex);
 	me->last_eat_time = get_timestamp_ms();
@@ -64,8 +67,8 @@ static void	eat_rl(t_philo *me)
 	pthread_mutex_unlock(&me->eat_mutex);
 	print_eat(me);
 	ft_msleep(me->time_to_eat);
-	pthread_mutex_unlock(me->left_mutex);
-	pthread_mutex_unlock(me->right_mutex);
+	drop_fork(me->left_mutex, me->left_fork);
+	drop_fork(me->right_mutex, me->right_fork);
 }
 
 void	*philo_rl(void *args)

@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 15:28:35 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/28 15:15:06 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/28 16:14:06 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 
 static void	init_philosophers(t_philo_general *data);
-static void	init_forks_mutex(t_philo_general *data);
+static void	init_forks(t_philo_general *data);
 
 void	init_general(t_philo_general *data, int result[6], int size)
 {
@@ -28,8 +28,9 @@ void	init_general(t_philo_general *data, int result[6], int size)
 		data->must_eat_cnt = result[4];
 	data->philosophers = malloc(sizeof(t_philo) * (result[0] + 1));
 	data->forks_mutex = malloc(sizeof(pthread_mutex_t) * (result[0] + 1));
+	data->forks = malloc(sizeof(int) * (result[0] + 1));
 	init_philosophers(data);
-	init_forks_mutex(data);
+	init_forks(data);
 	pthread_mutex_init(&data->print_mutex, NULL);
 	pthread_mutex_init(&data->finish_mutex, NULL);
 }
@@ -48,6 +49,9 @@ static void	init_philosophers(t_philo_general *data)
 		philosophers[idx].left_mutex = &data->forks_mutex[idx];
 		philosophers[idx].right_mutex
 			= &data->forks_mutex[idx % data->philo_count + 1];
+		philosophers[idx].left_fork = &data->forks[idx];
+		philosophers[idx].right_fork
+			= &data->forks[idx % data->philo_count + 1];
 		philosophers[idx].print_mutex = &data->print_mutex;
 		philosophers[idx].finish_mutex = &data->finish_mutex;
 		pthread_mutex_init(&philosophers[idx].eat_mutex, NULL);
@@ -60,7 +64,7 @@ static void	init_philosophers(t_philo_general *data)
 	}
 }
 
-static void	init_forks_mutex(t_philo_general *data)
+static void	init_forks(t_philo_general *data)
 {
 	pthread_mutex_t*const	forks = data->forks_mutex;
 	int						idx;
@@ -68,6 +72,7 @@ static void	init_forks_mutex(t_philo_general *data)
 	idx = 1;
 	while (idx <= data->philo_count)
 	{
+		data->forks[idx] = 0;
 		pthread_mutex_init(&forks[idx], NULL);
 		idx++;
 	}

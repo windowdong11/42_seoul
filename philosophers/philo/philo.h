@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:41:19 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/28 15:17:20 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/28 16:13:58 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ typedef struct s_philo
 {
 	int				idx;
 	int				*is_finished;
+	int				*left_fork;
+	int				*right_fork;
 	int				eat_cnt;
 	int				last_eat_time;
 	pthread_t		thread;
@@ -39,6 +41,7 @@ typedef struct s_philo_general
 	pthread_mutex_t	*forks_mutex;
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	finish_mutex;
+	int				*forks;
 	int				is_finished;
 	int				philo_count;
 	int				time_to_die;
@@ -60,7 +63,6 @@ void	ft_msleep(t_ms ms);
 void	*observe(void *arg);
 
 /* philo */
-void	*philo_lr(void *args);
 void	*philo_rl(void *args);
 
 /* print - with mutex lock */
@@ -68,6 +70,5 @@ void	print_take_fork(t_philo *philo);
 void	print_eat(t_philo *philo);
 void	print_sleep(t_philo *philo);
 void	print_think(t_philo *philo);
-void	print_died(t_philo *philo);
 
 #endif

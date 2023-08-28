@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:08:29 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/27 21:09:08 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/28 16:09:42 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,8 @@ static int	anyone_dead(t_philo_general *data)
 			pthread_mutex_unlock(&data->philosophers[idx].eat_mutex);
 			pthread_mutex_lock(&data->finish_mutex);
 			data->is_finished = 1;
-			pthread_mutex_unlock(&data->finish_mutex);
-			pthread_mutex_lock(&data->print_mutex);
 			printf("%ld %d died\n", get_timestamp_ms(), idx);
-			pthread_mutex_unlock(&data->print_mutex);
+			pthread_mutex_unlock(&data->finish_mutex);
 			return (1);
 		}
 		pthread_mutex_unlock(&data->philosophers[idx].eat_mutex);
