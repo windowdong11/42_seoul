@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:08:29 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/31 16:20:53 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/31 21:06:29 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	*observe(void *arg)
 			unlock_all_finish(data);
 			return (NULL);
 		}
-		usleep(1000);
+		usleep(100);
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 17:04:40 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/31 16:46:20 by dowon            ###   ########.fr       */
+/*   Updated: 2023/09/01 03:48:41 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,6 @@ static void	run_philosophers(t_philo_general *data)
 	}
 }
 
-void	foo(void)
-{
-	system("leaks philo");
-}
-
 int	main(int argc, char *argv[])
 {
 	int				result[6];
@@ -61,7 +56,6 @@ int	main(int argc, char *argv[])
 	pthread_t		observer;
 	t_philo_general	data;
 
-	atexit(foo);
 	if (parse_args(argc, argv, result, &size))
 	{
 		print_usage();

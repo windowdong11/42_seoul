@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:40:52 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/31 16:42:38 by dowon            ###   ########.fr       */
+/*   Updated: 2023/09/01 03:43:35 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	retry_take_fork(t_philo *me, pthread_mutex_t *mutex,
 {
 	while (try_take_fork(mutex, owner_info, my_info) == 0)
 	{
-		usleep(300);
+		usleep(200);
 		pthread_mutex_lock(me->finish_mutex);
 		if (*me->is_finished)
 		{
