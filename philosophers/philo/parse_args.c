@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 23:12:43 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/25 17:44:59 by dowon            ###   ########.fr       */
+/*   Updated: 2023/08/31 16:36:36 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,23 @@ static int	parse_int(char *str, int *result)
 	return (0);
 }
 
+int	parse_word(char **split, int result[6], int *size)
+{
+	int	s_idx;
+
+	s_idx = 0;
+	while (split[s_idx] != NULL && *size <= 5)
+	{
+		if (parse_int(split[s_idx++], result + *size))
+			return (-1);
+		(*size) += 1;
+	}
+	return (0);
+}
+
 int	parse_args(int argc, char *argv[], int result[6], int *size)
 {
 	int		idx;
-	int		s_idx;
 	char	**split;
 
 	*size = 0;
@@ -85,12 +98,10 @@ int	parse_args(int argc, char *argv[], int result[6], int *size)
 			ft_split_free(split);
 			return (-1);
 		}
-		s_idx = 0;
-		while (split[s_idx] != NULL && *size <= 5)
+		if (parse_word(split, result, size))
 		{
-			if (parse_int(split[s_idx++], result + *size))
-				return (-1);
-			(*size) += 1;
+			ft_split_free(split);
+			return (-1);
 		}
 		ft_split_free(split);
 		idx++;
