@@ -7,14 +7,15 @@
 ./philo 5 610 200 100
 
 ## hard
-./philo 199 610 200 200
-./philo 200 410 200 200
+./philo 199 800 200 200
+./philo 200 800 200 200
 
 ## 주금
 ./philo 1 500 200 200
 ./philo 4 400 200 300
 ./philo 4 400 300 200
 ./philo 4 400 500 200
+./philo 4 399 200 200
 
 
 ./philo number_of_philosophers time_to_die    time_to_eat     time_to_sleep [number_of_times_each_philosopher_must_eat]
@@ -34,3 +35,9 @@
 3 : 먹음 -> 잠 -> 먹음 -> 잠
 4 :     먹음 -> 잠
 5 :             먹음 -> 잠
+
+
+## Tester
+
+Test: [4 310 200 100] should die
+ㅁㅔ세지 엉엉ㅁ킴
