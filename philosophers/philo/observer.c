@@ -6,7 +6,7 @@
 /*   By: dowon <dowon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:08:29 by dowon             #+#    #+#             */
-/*   Updated: 2023/08/31 21:06:29 by dowon            ###   ########.fr       */
+/*   Updated: 2023/09/02 17:35:41 by dowon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_eat_all(t_philo_general *data)
 	if (data->must_eat_cnt < 0)
 		return (0);
 	idx = 1;
-	while (idx < data->philo_count)
+	while (idx <= data->philo_count)
 	{
 		pthread_mutex_lock(&data->philosophers[idx].eat_mutex);
 		if (data->philosophers[idx].eat_cnt < data->must_eat_cnt)
