@@ -1,7 +1,7 @@
 cc = c++
 cflags = -Wall -Wextra -Werror -std=c++98
-NAME = zombie
-SRCS = Zombie.cpp main.cpp zombieHorde.cpp
+NAME = string
+SRCS = main.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 .PHONY: all
