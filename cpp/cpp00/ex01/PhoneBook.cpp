@@ -1,6 +1,6 @@
 #include "PhoneBook.hpp"
 
-/* 
+/*
 • PhoneBook
 ◦ It has an array of contacts.
 ◦ It can store a maximum of 8 contacts. If the user tries to add a 9th contact,
@@ -16,6 +16,7 @@ void PhoneBook::add_contact(Contact contact)
 	this->contact[count] = contact;
 	count++;
 }
+
 void PhoneBook::print_contact(int index)
 {
 	if (index < 0 || index >= count)
@@ -23,14 +24,16 @@ void PhoneBook::print_contact(int index)
 		std::cout << "There is no contact." << std::endl;
 		return;
 	}
+	std::cout << "  index   |first name|last name | nickname " << std::endl;
 	contact[index].print_contact();
 }
+
 void PhoneBook::print_contact_list()
 {
 	std::cout << "  index   |first name|last name | nickname " << std::endl;
 	for (int i = 0; i < count; i++)
 	{
 		std::cout << std::setfill(' ') << std::setw(10) << i << '|';
-		print_contact(i);
+		contact[i].print_contact();
 	}
 }
