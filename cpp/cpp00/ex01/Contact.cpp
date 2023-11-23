@@ -24,7 +24,7 @@ void Contact::set_last_name(std::string last_name) { this->last_name = last_name
 void Contact::set_nickname(std::string nickname) { this->nickname = nickname; }
 void Contact::set_phone_number(std::string phone_number) { this->phone_number = phone_number; }
 void Contact::set_darkest_secret(std::string darkest_secret) { this->darkest_secret = darkest_secret; }
-void Contact::print_contact()
+void Contact::print()
 {
 	formatted_print(first_name);
 	std::cout << '|';
@@ -32,4 +32,13 @@ void Contact::print_contact()
 	std::cout << '|';
 	formatted_print(nickname);
 	std::cout << std::endl;
+}
+
+void Contact::print_all()
+{
+	std::cout << "first name : "<< first_name << std::endl;
+	std::cout << "last name : "<< last_name << std::endl;
+	std::cout << "nickname : "<< nickname << std::endl;
+	std::cout << "phone number : "<< phone_number << std::endl;
+	std::cout << "darkest secret : "<< darkest_secret << std::endl;
 }

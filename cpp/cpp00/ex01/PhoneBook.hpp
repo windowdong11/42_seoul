@@ -13,13 +13,15 @@ replace the oldest one by the new one.
 class PhoneBook {
 	private:
 		Contact contact[8];
-		int count;
+		int next_index;
+		int capacity;
+		void print_contact(int index);
+		void print_contact_list();
 	public:
 		PhoneBook();
 		~PhoneBook();
-		void add_contact(Contact contact);
-		void print_contact(int index);
-		void print_contact_list();
+		bool add_contact();
+		bool search();
 };
 
 #endif

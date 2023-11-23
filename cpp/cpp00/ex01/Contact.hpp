@@ -31,7 +31,8 @@ public:
 	void set_nickname(std::string nickname);
 	void set_phone_number(std::string phone_number);
 	void set_darkest_secret(std::string darkest_secret);
-	void print_contact();
+	void print();
+	void print_all();
 };
 
 #endif
