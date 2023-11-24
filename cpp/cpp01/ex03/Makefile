@@ -1,7 +1,7 @@
 cc = c++
 cflags = -Wall -Wextra -Werror -std=c++98
-NAME = string
-SRCS = main.cpp
+NAME = humans
+SRCS = HumanA.cpp HumanB.cpp Weapon.cpp main.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 .PHONY: all
@@ -17,7 +17,6 @@ $(NAME): $(OBJS)
 .PHONY: clean
 clean:
 	rm -f $(OBJS)
-
 
 .PHONY: fclean
 fclean: clean
