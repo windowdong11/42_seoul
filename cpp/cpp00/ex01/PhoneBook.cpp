@@ -99,7 +99,10 @@ void PhoneBook::print_contact(int index)
 
 void PhoneBook::print_contact_list()
 {
-	std::cout << "index     |first name|last name |nickname  " << std::endl;
+	std::cout << std::setfill(' ') << std::setw(10) << std::left << "index" << '|';
+	std::cout << std::setfill(' ') << std::setw(10) << std::left << "first name" << '|';
+	std::cout << std::setfill(' ') << std::setw(10) << std::left << "last name" << '|';
+	std::cout << std::setfill(' ') << std::setw(10) << std::left << "nickname" << std::endl;
 	for (int i = 0; i < capacity; i++)
 	{
 		std::cout << std::setfill(' ') << std::setw(10) << i << '|';
