@@ -2,7 +2,7 @@
 #include <iostream>
 
 HumanB::HumanB(std::string name)
-	: weapon(nullptr), name(name)
+	: weapon(NULL), name(name)
 {
 }
 

@@ -1,7 +1,7 @@
 cc = c++
 cflags = -Wall -Wextra -Werror -std=c++98
-NAME = nahsed
-SRCS = main.cpp
+NAME = harl
+SRCS = Harl.cpp main.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 .PHONY: all

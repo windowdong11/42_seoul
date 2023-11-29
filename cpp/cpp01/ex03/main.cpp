@@ -28,7 +28,7 @@ int main()
 		std::cout << "club : " << club << std::endl;
 		bob.attack();
 		delete club;
-		club = nullptr;
+		club = NULL;
 
 		int *dummy = new int[sizeof(Weapon) / sizeof(int) + 1];
 		std::memset(dummy, 0, sizeof(Weapon) / sizeof(int) + 1);
@@ -39,7 +39,7 @@ int main()
 		std::cout << "club : " << club << std::endl;
 		bob.attack();
 		delete club;
-		club = nullptr;
+		club = NULL;
 
 		delete[] dummy;
 	}
