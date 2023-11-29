@@ -55,10 +55,13 @@ void Harl::complain(std::string level)
 	{
 		case loglv_debug:
 			debug();
+			// FALLTHROUGH
 		case loglv_info:
 			info();
+			// FALLTHROUGH
 		case loglv_warning:
 			warning();
+			// FALLTHROUGH
 		case loglv_error:
 			error();
 			break;
