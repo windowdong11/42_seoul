@@ -38,3 +38,21 @@ void Fixed::setRawBits(int const raw)
 {
 	raw_fixed = raw;
 }
+
+// ----------------- ex01 -----------------
+
+Fixed::Fixed(const int integer)
+{
+}
+
+Fixed::Fixed(const float floating)
+{
+}
+
+float Fixed::toFloat(void) const
+{
+}
+
+int Fixed::toInt(void) const
+{
+}

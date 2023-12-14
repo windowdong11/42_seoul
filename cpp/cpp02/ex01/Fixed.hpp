@@ -19,4 +19,10 @@ public:
 
 	int getRawBits(void) const;
 	void setRawBits(int const raw);
+
+	// ----------------- ex01 -----------------
+	Fixed(const int integer);
+	Fixed(const float floating);
+	float toFloat(void) const;
+	int toInt(void) const;
 };
