@@ -26,7 +26,7 @@ Fixed& Fixed::operator=(const Fixed& other)
 
 Fixed::~Fixed()
 {
-	std::cout << COLOR_RED << "-[Destuctor] Destructor called" << COLOR_RED << std::endl;
+	std::cout << COLOR_RED << "-[Destuctor] Destructor called" << COLOR_RESET << std::endl;
 }
 
 int Fixed::getRawBits(void) const

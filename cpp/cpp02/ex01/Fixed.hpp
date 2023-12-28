@@ -5,7 +5,7 @@
 #define COLOR_YELLOW "\033[33m"
 #define COLOR_MAGENTA "\033[35m"
 #define COLOR_BLUE "\033[34m"
-
+#include <ostream>
 class Fixed
 {
 private:
@@ -26,3 +26,5 @@ public:
 	float toFloat(void) const;
 	int toInt(void) const;
 };
+
+std::ostream& operator<<(std::ostream& out, const Fixed& fixed);
