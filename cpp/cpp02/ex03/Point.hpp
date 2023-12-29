@@ -8,8 +8,8 @@
 class Point
 {
 private:
-public:
 	const Fixed x, y;
+public:
 	Point();
 	Point(const Point& other);
 	Point &operator=(const Point& other);

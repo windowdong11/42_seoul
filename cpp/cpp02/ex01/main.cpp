@@ -31,5 +31,7 @@ int main()
 	std::cout << "f: " << f.toInt() << std::endl;
 	std::cout << "g: " << g.toInt() << std::endl;
 	std::cout << "h: " << h.toInt() << std::endl;
+	std::bitset<32> bit(1 << 7);
+	std::cout << bit;
 	return 0;
 }
