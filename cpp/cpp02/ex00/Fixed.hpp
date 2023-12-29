@@ -1,3 +1,6 @@
+#ifndef FIXED_HPP
+# define FIXED_HPP
+
 #define COLOR_RESET "\033[0m"
 #define COLOR_CYAN "\033[36m"
 #define COLOR_GREEN "\033[32m"
@@ -5,6 +8,9 @@
 #define COLOR_YELLOW "\033[33m"
 #define COLOR_MAGENTA "\033[35m"
 #define COLOR_BLUE "\033[34m"
+/* include headers */
+
+/* code */
 
 class Fixed
 {
@@ -20,3 +26,5 @@ public:
 	int getRawBits(void) const;
 	void setRawBits(int const raw);
 };
+
+#endif

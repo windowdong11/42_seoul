@@ -1,3 +1,6 @@
+#ifndef FIXED_HPP
+# define FIXED_HPP
+
 #define COLOR_RESET "\033[0m"
 #define COLOR_CYAN "\033[36m"
 #define COLOR_GREEN "\033[32m"
@@ -28,3 +31,5 @@ public:
 };
 
 std::ostream& operator<<(std::ostream& out, const Fixed& fixed);
+
+#endif
