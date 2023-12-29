@@ -1,17 +1,17 @@
 cc = c++
-cflags = -Wall -Wextra -Werror -std=c++98
-NAME = zombie
-SRCS = Zombie.cpp main.cpp newZombie.cpp randomChump.cpp
+CFLAGS = -Wall -Wextra -Werror -std=c++98
+NAME = fixed
+SRCS = Fixed.cpp Point.cpp bsp.cpp main.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 .PHONY: all
 all: $(NAME)
 
 %.o: %.cpp
-	$(cc) $(cflags) -c $^ -o $@
+	$(cc) $(CFLAGS) -c $^ -o $@
 
 $(NAME): $(OBJS)
-	$(cc) $(cflags) $^ -o $@
+	$(cc) $(CFLAGS) $^ -o $@
 
 
 .PHONY: clean
