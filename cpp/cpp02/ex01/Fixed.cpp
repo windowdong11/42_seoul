@@ -1,5 +1,6 @@
 #include "Fixed.hpp"
 #include <iostream>
+#include <cmath>
 
 const int Fixed::fraction = 8;
 
@@ -48,7 +49,7 @@ Fixed::Fixed(const int integer)
 }
 
 Fixed::Fixed(const float floating)
-	: raw_fixed(roundf(floating * static_cast<float>(1 << fraction)))
+	: raw_fixed(std::roundf(floating * static_cast<float>(1 << fraction)))
 {
 	std::cout << COLOR_GREEN << "+[Constructor] Constructor with param called (param: float)" << COLOR_RESET << std::endl;
 }

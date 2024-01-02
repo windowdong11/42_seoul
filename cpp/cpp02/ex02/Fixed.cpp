@@ -54,7 +54,7 @@ Fixed::Fixed(const int integer)
 }
 
 Fixed::Fixed(const float floating)
-	: raw_fixed(roundf(floating * static_cast<float>(1 << fraction)))
+	: raw_fixed(std::roundf(floating * static_cast<float>(1 << fraction)))
 {
 	if (PRINT_STRUCTOR_LOGS)
 		std::cout << COLOR_GREEN << "+[Constructor] Constructor with param called (param: float)" << COLOR_RESET << std::endl;
