@@ -2,7 +2,7 @@
 #include <iostream>
 
 DiamondTrap::DiamondTrap()
-	: ClapTrap("annon_clap_name"), name("annon")
+		: ClapTrap("annon_clap_name"), FragTrap("annon_clap_name"), ScavTrap("annon_clap_name"), name("annon")
 {
 	std::cout << COLOR_BLUE << "diamond " << COLOR_YELLOW << "[Constructor] Default " << name << COLOR_RESET << std::endl;
 	health = 100;
@@ -10,13 +10,13 @@ DiamondTrap::DiamondTrap()
 	damage = 30;
 }
 
-DiamondTrap::DiamondTrap(const DiamondTrap& other)
-	: ClapTrap(other), FragTrap(other), ScavTrap(other), name(other.name)
+DiamondTrap::DiamondTrap(const DiamondTrap &other)
+		: ClapTrap(other), FragTrap(other), ScavTrap(other), name(other.name)
 {
 	std::cout << COLOR_BLUE << "diamond " << COLOR_YELLOW << "[Constructor] Copy " << name << COLOR_RESET << std::endl;
 }
 
-DiamondTrap& DiamondTrap::operator=(const DiamondTrap& other)
+DiamondTrap &DiamondTrap::operator=(const DiamondTrap &other)
 {
 	if (this == &other)
 		return *this;
@@ -32,7 +32,7 @@ DiamondTrap::~DiamondTrap()
 }
 
 DiamondTrap::DiamondTrap(const std::string &name)
-	:  ClapTrap(name + "_clap_name"), FragTrap(name + "_clap_name"), ScavTrap(name + "_clap_name"), name(name)
+		: ClapTrap(name + "_clap_name"), FragTrap(name + "_clap_name"), ScavTrap(name + "_clap_name"), name(name)
 {
 	std::cout << COLOR_BLUE << "diamond " << COLOR_YELLOW << "[Constructor] name : " << name << COLOR_RESET << std::endl;
 	health = 100;
@@ -42,10 +42,12 @@ DiamondTrap::DiamondTrap(const std::string &name)
 
 void DiamondTrap::attack(const std::string &target)
 {
+	std::cout << COLOR_BLUE << "diamond " << COLOR_BLUE << "[attack]" << COLOR_RESET << std::endl;
 	ScavTrap::attack(target);
 }
 
 void DiamondTrap::whoAmI()
 {
-	std::cout << COLOR_BLUE << "diamond " << "[whoAmI] name: " << name << " clapTrap-name: " << ClapTrap::name << COLOR_RESET << std::endl;
+	std::cout << COLOR_BLUE << "diamond "
+						<< "[whoAmI] name: " << name << " clapTrap-name: " << ClapTrap::name << COLOR_RESET << std::endl;
 }
