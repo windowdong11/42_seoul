@@ -20,7 +20,7 @@ ScavTrap& ScavTrap::operator=(const ScavTrap& other)
 {
 	if (this == &other)
 		return *this;
-		std::cout << COLOR_GREEN << "scav " << COLOR_MAGENTA << "<op> copy " << other.name << COLOR_RESET << std::endl;
+	std::cout << COLOR_GREEN << "scav " << COLOR_MAGENTA << "<op> copy " << other.name << COLOR_RESET << std::endl;
 	ClapTrap::operator=(other);
 	return *this;
 }
