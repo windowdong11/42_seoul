@@ -59,7 +59,6 @@ void ClapTrap::takeDamage(unsigned int amount)
 		health -= amount;
 }
 
-
 void ClapTrap::beRepaired(unsigned int amount)
 {
 	std::cout << COLOR_BLUE << "[method] beRepaired, name : " << name << COLOR_RESET << std::endl;

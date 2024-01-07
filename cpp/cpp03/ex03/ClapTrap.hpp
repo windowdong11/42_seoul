@@ -15,7 +15,7 @@
 /* code */
 class ClapTrap
 {
-private:
+protected:
 	std::string name;
 	unsigned int health, energy, damage;
 public:
