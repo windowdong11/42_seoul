@@ -9,17 +9,22 @@ Dog::Dog()
 	type = "Dog";
 }
 
-Dog::Dog(const Dog& rhs)
+Dog::Dog(const Dog &rhs)
 {
 	std::cout << COLOR_GREEN << "Dog" << COLOR_RESET << "[Constructor] copy" << std::endl;
+
 	*this = rhs;
 }
 
-Dog& Dog::operator=(const Dog& rhs)
+Dog &Dog::operator=(const Dog &rhs)
 {
 	std::cout << COLOR_GREEN << "Dog" << COLOR_RESET << "<op> =" << std::endl;
 	if (this == &rhs)
+	{
+		std::cout << "\tnot copied (same object)" << std::endl;
 		return *this;
+	}
+	std::cout << "\tcopied" << std::endl;
 	type = rhs.type;
 	return *this;
 }
@@ -31,5 +36,6 @@ Dog::~Dog()
 
 void Dog::makeSound() const
 {
-	std::cout << COLOR_GREEN << "Dog" << COLOR_RESET << "[makeSound] bark" << std::endl;
+	std::cout << COLOR_GREEN << "Dog" << COLOR_RESET << "{makeSound}" << std::endl;
+	std::cout << "\tbark" << std::endl;
 }

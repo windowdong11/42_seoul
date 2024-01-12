@@ -9,17 +9,21 @@ Cat::Cat()
 	type = "Cat";
 }
 
-Cat::Cat(const Cat& rhs)
+Cat::Cat(const Cat &rhs)
 {
 	std::cout << COLOR_YELLOW << "Cat" << COLOR_RESET << "[Constructor] copy" << std::endl;
 	*this = rhs;
 }
 
-Cat& Cat::operator=(const Cat& rhs)
+Cat &Cat::operator=(const Cat &rhs)
 {
 	std::cout << COLOR_YELLOW << "Cat" << COLOR_RESET << "<op> =" << std::endl;
 	if (this == &rhs)
+	{
+		std::cout << "not copied (same object)" << std::endl;
 		return *this;
+	}
+	std::cout << "copied" << std::endl;
 	type = rhs.type;
 	return *this;
 }
@@ -31,5 +35,6 @@ Cat::~Cat()
 
 void Cat::makeSound() const
 {
-	std::cout << COLOR_YELLOW << "Cat" << COLOR_RESET << "[makeSound] meow" << std::endl;
+	std::cout << COLOR_YELLOW << "Cat" << COLOR_RESET << "{makeSound}" << std::endl;
+	std::cout << "\tmeow" << std::endl;
 }

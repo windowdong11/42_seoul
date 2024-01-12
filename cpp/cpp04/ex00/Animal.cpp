@@ -8,17 +8,24 @@ Animal::Animal()
 	std::cout << COLOR_BLUE << "Animal" << COLOR_RESET << "[Constructor] default" << std::endl;
 }
 
-Animal::Animal(const Animal& rhs)
+Animal::Animal(const Animal &rhs)
 {
 	std::cout << COLOR_BLUE << "Animal" << COLOR_RESET << "[Constructor] copy" << std::endl;
+
 	*this = rhs;
 }
 
-Animal& Animal::operator=(const Animal& rhs)
+Animal &Animal::operator=(const Animal &rhs)
 {
 	std::cout << COLOR_BLUE << "Animal" << COLOR_RESET << "<op> =" << std::endl;
 	if (this == &rhs)
+	{
+		std::cout << "\tnot copied (same object)" << std::endl;
+
 		return *this;
+	}
+	std::cout << "\tcopied" << std::endl;
+
 	type = rhs.type;
 	return *this;
 }
@@ -30,18 +37,12 @@ Animal::~Animal()
 
 std::string Animal::getType() const
 {
+	std::cout << COLOR_BLUE << "Animal" << COLOR_RESET << "{getType}" << std::endl;
 	return type;
 }
 
 void Animal::makeSound() const
 {
-	std::cout << COLOR_RED << "Animal" << COLOR_RESET << "[makeSound] Does not make any sound." << std::endl;
+	std::cout << COLOR_BLUE << "Animal" << COLOR_RESET << "{makeSound}" << std::endl;
+	std::cout << "\tDoes not make any sound." << std::endl;
 }
-
-/*
-가상 함수와 순수가상함수의 차이점
-
-한줄 요약 : 가상함수에 정의가 없으면 순수가상함수가 된다.
-
-
-*/
