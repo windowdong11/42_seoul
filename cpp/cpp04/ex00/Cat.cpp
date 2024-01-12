@@ -29,11 +29,6 @@ Cat::~Cat()
 	std::cout << COLOR_YELLOW << "Cat" << COLOR_RESET << "[Destructor]" << std::endl;
 }
 
-std::string Cat::getType() const
-{
-	return type;
-}
-
 void Cat::makeSound() const
 {
 	std::cout << COLOR_YELLOW << "Cat" << COLOR_RESET << "[makeSound] meow" << std::endl;

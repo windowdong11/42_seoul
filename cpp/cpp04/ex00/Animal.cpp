@@ -37,3 +37,11 @@ void Animal::makeSound() const
 {
 	std::cout << COLOR_RED << "Animal" << COLOR_RESET << "[makeSound] Does not make any sound." << std::endl;
 }
+
+/*
+가상 함수와 순수가상함수의 차이점
+
+한줄 요약 : 가상함수에 정의가 없으면 순수가상함수가 된다.
+
+
+*/

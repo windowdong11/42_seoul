@@ -29,11 +29,6 @@ Dog::~Dog()
 	std::cout << COLOR_GREEN << "Dog" << COLOR_RESET << "[Destructor]" << std::endl;
 }
 
-std::string Dog::getType() const
-{
-	return type;
-}
-
 void Dog::makeSound() const
 {
 	std::cout << COLOR_GREEN << "Dog" << COLOR_RESET << "[makeSound] bark" << std::endl;
