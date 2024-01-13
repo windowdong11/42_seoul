@@ -10,7 +10,7 @@ Dog::Dog()
 }
 
 Dog::Dog(const Dog &rhs)
-	: brain(new Brain())
+	: Animal(rhs), brain(new Brain())
 {
 	std::cout << COLOR_GREEN << "Dog" << COLOR_RESET << "[Constructor] copy" << std::endl;
 	*this = rhs;

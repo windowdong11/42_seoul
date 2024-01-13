@@ -10,6 +10,7 @@ Cat::Cat()
 }
 
 Cat::Cat(const Cat &rhs)
+	: Animal(rhs)
 {
 	std::cout << COLOR_YELLOW << "Cat" << COLOR_RESET << "[Constructor] copy" << std::endl;
 	*this = rhs;

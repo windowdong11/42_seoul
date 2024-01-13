@@ -2,16 +2,12 @@
 #include <iostream>
 
 Cure::Cure()
-	: AMateria()
-{
-	materiaType = "cure";
-}
+	: AMateria("cure")
+{}
 
 Cure::Cure(const Cure& rhs)
 	: AMateria(rhs)
-{
-	materiaType = rhs.getType();
-}
+{}
 
 Cure& Cure::operator=(const Cure& rhs)
 {

@@ -2,14 +2,12 @@
 #include <iostream>
 
 Ice::Ice()
-{
-	materiaType = "ice";
-}
+	: AMateria("ice")
+{}
 
 Ice::Ice(const Ice& rhs)
-{
-	materiaType = rhs.getType();
-}
+	: AMateria(rhs)
+{}
 
 Ice& Ice::operator=(const Ice& rhs)
 {
