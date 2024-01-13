@@ -25,7 +25,6 @@ Animal &Animal::operator=(const Animal &rhs)
 		return *this;
 	}
 	std::cout << "\tcopied" << std::endl;
-
 	type = rhs.type;
 	return *this;
 }

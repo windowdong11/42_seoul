@@ -12,7 +12,6 @@ Dog::Dog()
 Dog::Dog(const Dog &rhs)
 {
 	std::cout << COLOR_GREEN << "Dog" << COLOR_RESET << "[Constructor] copy" << std::endl;
-
 	*this = rhs;
 }
 
@@ -24,8 +23,8 @@ Dog &Dog::operator=(const Dog &rhs)
 		std::cout << "\tnot copied (same object)" << std::endl;
 		return *this;
 	}
-	std::cout << "\tcopied" << std::endl;
-	type = rhs.type;
+	std::cout << "\tcopy" << std::endl;
+	Animal::operator=(rhs);
 	return *this;
 }
 

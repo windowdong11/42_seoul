@@ -40,8 +40,8 @@ std::string Animal::getType() const
 	return type;
 }
 
-void Animal::makeSound() const
-{
-	std::cout << COLOR_BLUE << "Animal" << COLOR_RESET << "{makeSound}" << std::endl;
-	std::cout << "\tDoes not make any sound." << std::endl;
-}
+// void Animal::makeSound() const
+// {
+// 	std::cout << COLOR_BLUE << "Animal" << COLOR_RESET << "{makeSound}" << std::endl;
+// 	std::cout << "\tDoes not make any sound." << std::endl;
+// }

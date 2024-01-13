@@ -17,6 +17,7 @@ Brain::Brain(const Brain& rhs)
 
 Brain& Brain::operator=(const Brain& rhs)
 {
+	(void)rhs;
 	std::cout << "Brain operator= called" << std::endl;
 	if (this == &rhs)
 	{
