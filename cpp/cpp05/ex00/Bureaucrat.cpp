@@ -1,7 +1,7 @@
 #include "Bureaucrat.hpp"
 
 Bureaucrat::Bureaucrat()
-	: name("default"), grade(gradeLow)
+	: name("Bureaucrat"), grade(gradeLow)
 {
 }
 

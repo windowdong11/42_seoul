@@ -1,8 +1,8 @@
 cc = c++
 DEBUG=-g
 cflags = -Wall -Wextra -Werror -std=c++98 $(CPPFLAGS) $(DEBUG)
-NAME = bureaucrat
-SRCS = Bureaucrat.cpp main.cpp
+NAME = form
+SRCS = Bureaucrat.cpp Form.cpp main.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 .PHONY: all

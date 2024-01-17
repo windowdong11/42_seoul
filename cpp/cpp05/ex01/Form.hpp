@@ -4,6 +4,8 @@
 #include "Bureaucrat.hpp"
 #include <string>
 
+class Bureaucrat;
+
 class Form
 {
 private:
@@ -12,6 +14,12 @@ private:
 	bool isSigned;
 	const int gradeToSign;
 	const int gradeToExecute;
+	/*
+	Do not call this function.
+	Copying a form to another existing form is not allowed.
+	If you want to copy a form, use the copy constructor.
+	*/
+	Form& operator=(const Form& rhs);
 public:
 	class GradeTooHighException : public std::exception
 	{
@@ -33,7 +41,6 @@ public:
 
 	Form();
 	Form(const Form& rhs);
-	Form& operator=(const Form& rhs);
 	~Form();
 
 	Form(std::string name, int gradeToSign, int gradeToExecute) throw(Form::GradeTooHighException, Form::GradeTooLowException);

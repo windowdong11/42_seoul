@@ -2,8 +2,11 @@
 # define BUREAUCRAT_HPP
 
 /* include headers */
+#include "Form.hpp"
 #include <string>
 #include <ostream>
+
+class Form;
 
 class Bureaucrat
 {
@@ -41,6 +44,7 @@ public:
 
 	void incrementGrade() throw(Bureaucrat::GradeTooHighException);
 	void decrementGrade() throw(Bureaucrat::GradeTooLowException);
+	void signForm(Form &form) const;
 };
 
 std::ostream& operator<<(std::ostream& os, const Bureaucrat& bureaucrat);
