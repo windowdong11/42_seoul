@@ -2,7 +2,7 @@ cc = c++
 # DEBUG=-g
 cflags = -Wall -Wextra -Werror -std=c++98 $(CPPFLAGS) $(DEBUG)
 NAME = form
-SRCS = Bureaucrat.cpp Form.cpp main.cpp
+SRCS = AForm.cpp Bureaucrat.cpp Intern.cpp PresidentialPardonForm.cpp RobotomyRequestForm.cpp ShrubberyCreationForm.cpp main.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 .PHONY: all

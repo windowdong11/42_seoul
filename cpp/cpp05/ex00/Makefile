@@ -1,5 +1,5 @@
 cc = c++
-DEBUG=-g
+# DEBUG=-g
 cflags = -Wall -Wextra -Werror -std=c++98 $(CPPFLAGS) $(DEBUG)
 NAME = bureaucrat
 SRCS = Bureaucrat.cpp main.cpp
