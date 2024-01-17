@@ -4,6 +4,8 @@
 #include "RobotomyRequestForm.hpp"
 #include "PresidentialPardonForm.hpp"
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 #define COLOR_RESET "\033[0m"
 #define COLOR_CYAN "\033[36m"
@@ -15,6 +17,7 @@
 
 int main()
 {
+	std::srand(std::time(NULL));
 	// Tests for all the forms
 	{
 		std::cout << COLOR_CYAN << "----- Test operator<<()" << COLOR_RESET << std::endl;
