@@ -13,7 +13,7 @@ private:
 	struct FormCreateTable {
 		std::string formName;
 		AForm* (Intern::*formMaker)(std::string target) const;
-	} formCreateTable[3];
+	};
 public:
 	Intern();
 	Intern(const Intern& rhs);

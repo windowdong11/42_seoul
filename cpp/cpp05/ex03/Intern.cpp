@@ -21,25 +21,17 @@ AForm *Intern::makeShrubberyCreationForm(std::string target) const
 
 Intern::Intern()
 {
-
-	formCreateTable[0].formName = "PresidentialPardon";
-	formCreateTable[0].formMaker = &Intern::makePresidentialPardonForm;
-	formCreateTable[1].formName = "RobotomyRequest";
-	formCreateTable[1].formMaker = &Intern::makeRobotomyRequestForm;
-	formCreateTable[2].formName = "ShrubberyCreation";
-	formCreateTable[2].formMaker = &Intern::makeShrubberyCreationForm;
 }
 
 Intern::Intern(const Intern& rhs)
-	: formCreateTable(rhs.formCreateTable)
-{}
+{
+	(void)rhs;
+}
 
 Intern& Intern::operator=(const Intern& rhs)
 {
 	if (this == &rhs)
 		return *this;
-	for (int i = 0; i < 3; i++)
-		formCreateTable[i] = rhs.formCreateTable[i];
 	return *this;
 }
 
@@ -48,6 +40,11 @@ Intern::~Intern()
 
 AForm *Intern::makeForm(std::string formName, std::string target) const
 {
+	FormCreateTable formCreateTable[3] = {
+		{"PresidentialPardon", &Intern::makePresidentialPardonForm},
+		{"RobotomyRequest", &Intern::makeRobotomyRequestForm},
+		{"ShrubberyCreation", &Intern::makeShrubberyCreationForm}
+	};
 	for (int i = 0; i < 3; i++)
 	{
 		if (formName == formCreateTable[i].formName)
