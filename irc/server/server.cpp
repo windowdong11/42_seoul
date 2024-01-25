@@ -12,8 +12,6 @@
 
 using namespace std;
 
-
-
 // class User {
 //     public:
 //     enum eRole
@@ -29,23 +27,70 @@ using namespace std;
 //     public:
 // };
 
-class IRCSocket
+class ServerSocket
 {
 private:
-    int mfd;
+    int mSocket;
+    ServerSocket(){};
 
 public:
-    IRCSocket(int _fd) : mfd(_fd) {}
-    ~IRCSocket()
+    class SocketInitException : public std::exception
     {
-        close(mfd);
+    public:
+        virtual char *what() const throw()
+        {
+            return "Failed to open socket";
+        }
+    };
+    class BindFailedException : public std::exception
+    {
+    public:
+        virtual char *what() const throw()
+        {
+            return "Failed to bind";
+        }
+    };
+    class ListenFailedException : public std::exception
+    {
+    public:
+        virtual char *what() const throw()
+        {
+            return "Failed to listen";
+        }
+    };
+    ServerSocket(int port) : mSocket(socket(PF_INET, SOCK_STREAM, 0))
+    {
+        if (mSocket == -1)
+            throw SocketInitException();
+
+        sockaddr_in mServerAddr;
+        memset(&mServerAddr, 0, sizeof(mServerAddr));
+        mServerAddr.sin_family = AF_INET;
+        mServerAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+        mServerAddr.sin_port = htons(port);
+        if (bind(mSocket, (struct sockaddr *)&mServerAddr, sizeof(mServerAddr)) == -1)
+            throw BindFailedException();
+        // exit_with_perror("bind() error\n" + string(strerror(errno)));
+
+        if (listen(mSocket, 5) == -1)
+            throw ListenFailedException();
+        // exit_with_perror("listen() error\n" + string(strerror(errno)));
+    }
+    ~ServerSocket()
+    {
+        close(mSocket);
+    }
+    int getSocket() const
+    {
+        return mSocket;
     }
 };
 
 class EventQueue
 {
 private:
-    int fd;
+    int mKq;
+    std::vector<struct kevent> mChangeList;
 
 public:
     class InitFailedException : public std::exception
@@ -57,30 +102,73 @@ public:
         }
     };
     EventQueue()
-        : fd(kqueue())
+        : mKq(kqueue())
     {
-        if (fd == -1)
+        if (mKq == -1)
             throw InitFailedException();
+    }
+
+    void addReadEvent(int target)
+    {
+        struct kevent new_event;
+        EV_SET(&new_event, target, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
+        mChangeList.push_back(new_event);
+    }
+    void addWriteEvent(int target)
+    {
+        struct kevent new_event;
+        EV_SET(&new_event, target, EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, NULL);
+        mChangeList.push_back(new_event);
+    }
+    int getEvents(struct kevent *event_buf, int size)
+    {
+        return kevent(mKq, &mChangeList[0], mChangeList.size(), event_buf, size, NULL);
     }
 };
 
 // on('event', doSomething)
 // -> doSomething에서 서버의 상태를 바꿔야한다면?
 
-class IEvent {};
+class IEvent
+{
+};
 
-class IEventHandler {
-    private:
-        EventQueue mEventQueue;
-    public:
-        virtual bool handler(IEvent &event) const = 0;
+class IEventHandler
+{
+private:
+    EventQueue mEventQueue;
+
+public:
+    virtual bool handler(IEvent &event) const = 0;
 };
 
 class Server
 {
-    private:
-    void addEventListener(std::string &event, IEventHandler handler);
-    void run();
+private:
+    EventQueue mQ;
+    ServerSocket sock;
+public:
+    Server()
+        : sock(3000)
+    {
+        mQ.addReadEvent(sock.getSocket());
+    }
+    void addEventListener(IEvent &event, IEventHandler &handler)
+    {
+        handler.handler(event);
+    }
+    void run()
+    {
+        while (true)
+        {
+            struct kevent event_buffer[10];
+            int eventCount = mQ.getEvents(event_buffer, 10);
+            for (int i = 0; i < eventCount; ++i)
+            {
+                // handleEvent(event_buffer[i]);
+            }
+        }
+    }
 };
 
 void exit_with_perror(const string &msg)
@@ -123,7 +211,7 @@ int main()
 
     if (listen(server_socket, 5) == -1)
         exit_with_perror("listen() error\n" + string(strerror(errno)));
-    fcntl(server_socket, F_SETFL, O_NONBLOCK);
+    // fcntl(server_socket, F_SETFL, O_NONBLOCK);
 
     /* init kqueue */
     int kq;
