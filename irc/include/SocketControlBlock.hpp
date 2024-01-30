@@ -20,7 +20,7 @@ private:
 public:
 	~SocketControlBlock(){};
 	SocketControlBlock(int socket_fd) : mSocket(socket_fd), mRefCnt(1){};
-	t_refCnt getRefCnt()
+	t_refCnt getRefCnt() const
 	{
 		return mRefCnt;
 	}
@@ -32,7 +32,7 @@ public:
 	{
 		--mRefCnt;
 	}
-	int getSocket()
+	int getSocket() const
 	{
 		return mSocket;
 	}

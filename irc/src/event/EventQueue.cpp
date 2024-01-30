@@ -35,6 +35,11 @@ void EventQueue::removeWriteEvent(int target_fd)
 	mChangeList.push_back(new_event);
 }
 
+EventQueue::~EventQueue()
+{
+	close(mKq);
+}
+
 void EventQueue::dispatchEvent()
 {
 	struct kevent event_list[10];
@@ -54,5 +59,7 @@ void EventQueue::dispatchEvent()
 
 int EventQueue::getEvents(struct kevent *event_buf, int size)
 {
-	return kevent(mKq, &mChangeList[0], mChangeList.size(), event_buf, size, NULL);
+	int result = kevent(mKq, &mChangeList[0], mChangeList.size(), event_buf, size, NULL);
+	mChangeList.clear();
+	return result;
 }

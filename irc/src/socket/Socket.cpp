@@ -45,21 +45,19 @@ Socket::~Socket()
 	mControlBlock = NULL;
 }
 
-void Socket::bind(int port)
+int Socket::bind(int port)
 {
 	sockaddr_in mServerAddr;
 	std::memset(&mServerAddr, 0, sizeof(mServerAddr));
 	mServerAddr.sin_family = AF_INET;
 	mServerAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	mServerAddr.sin_port = htons(port);
-	if (::bind(mControlBlock->getSocket(), (struct sockaddr *)&mServerAddr, sizeof(mServerAddr)) == -1)
-		throw std::runtime_error("Failed to bind socket.");
+	return ::bind(mControlBlock->getSocket(), (struct sockaddr *)&mServerAddr, sizeof(mServerAddr));
 }
 
-void Socket::listen(int backlog)
+int Socket::listen(int backlog)
 {
-	if (::listen(mControlBlock->getSocket(), 5) == -1)
-		throw std::runtime_error("Failed to listen socket");
+	return ::listen(mControlBlock->getSocket(), 5);
 }
 
 void Socket::close()
@@ -76,4 +74,19 @@ bool Socket::isOpen()
 int Socket::getSocketFd()
 {
 	return mControlBlock->getSocket();
+}
+
+int Socket::accept()
+{
+	return ::accept(mControlBlock->getSocket(), NULL, NULL);
+}
+
+int Socket::read(char *buffer, int size)
+{
+	return ::read(mControlBlock->getSocket(), buffer, size);
+}
+
+int Socket::write(const char *buffer, int size)
+{
+	return ::write(mControlBlock->getSocket(), buffer, size);
 }

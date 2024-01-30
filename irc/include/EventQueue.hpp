@@ -32,6 +32,7 @@ class EventQueue
 {
 public:
   EventQueue();
+  ~EventQueue();
   void addReadEvent(int target_fd);
   void addWriteEvent(int target_fd);
   void removeReadEvent(int target_fd);

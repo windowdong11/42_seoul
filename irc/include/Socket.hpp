@@ -8,8 +8,6 @@ class SocketControlBlock;
 class Socket
 {
 private:
-	SocketControlBlock *mControlBlock;
-
 	/* DO NOT CALL THIS */
 	Socket();
 
@@ -18,11 +16,17 @@ public:
 	Socket(const Socket &other);
 	Socket &operator=(const Socket &other);
 	~Socket();
-	void bind(int port);
-	void listen(int backlog);
+	int bind(int port);
+	int listen(int backlog);
 	void close();
 	bool isOpen();
 	int getSocketFd();
+	int accept();
+	int read(char *buffer, int size);
+	int write(const char *buffer, int size);
+
+private:
+	SocketControlBlock *mControlBlock;
 };
 
 #endif

@@ -3,14 +3,15 @@
 
 /* include headers */
 #include <string>
+#include "../socket/Socket.hpp"
 
 class User
 {
 public:
 	enum eRole
 	{
-		op = 0,
-		normal = 1
+		ROLE_OP = 0,
+		ROLE_NORMAL = 1
 	};
 
 public:
@@ -21,17 +22,20 @@ public:
 	std::string getUsername() const;
 	std::string getNickname() const;
 	std::string getPassword() const;
-	eRole getRole() const;
+	User::eRole getRole() const;
 	void setUsername(std::string username);
 	void setNickname(std::string nickname);
 	void setPassword(std::string password);
-	void setRole(eRole role);
+	void setRole(User::eRole role);
+
+	void setSocket(Socket *socket);
 
 private:
 	std::string mUsername;
 	std::string mNickname;
 	std::string mPassword;
-	eRole mRole;
+	User::eRole mRole;
+	Socket *mSocket;
 };
 
 #endif
