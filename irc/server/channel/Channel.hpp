@@ -3,6 +3,9 @@
 
 /* include headers */
 #include <string>
+#include <vector>
+
+class User;
 
 class Channel
 {
@@ -14,6 +17,7 @@ public:
 
 private:
 	std::string mChannelName;
+	std::vector<User *> mUsers;
 };
 
 #endif

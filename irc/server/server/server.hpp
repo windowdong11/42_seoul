@@ -220,9 +220,7 @@ private:
 	EventQueue mEventQueue;
 	Socket mSock;
 	std::map<IRC_COMMAND::EventType, std::vector<IEventHandler>> mEventHandlerMap;
-	std::map<int, Client*> clients;
-	std::map<std::string, Channel*> channels;
-	std::map<std::string, User*> users;
+	// Ch(n) - User(1) - Sock(1)
 
 public:
 	Server();
@@ -260,7 +258,7 @@ void Server::run()
 
 					fcntl(client_sock, F_SETFL, O_NONBLOCK);
 					mEventQueue.addReadEvent(client_sock);
-					clients[client_sock] = Client(client_sock);
+					// clients[client_sock] = Client(client_sock);
 				}
 				else
 				{

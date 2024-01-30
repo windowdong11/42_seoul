@@ -5,9 +5,9 @@
 #include <cstring>
 #include <unistd.h>
 
-Socket::Socket(int port) : mControlBlock(new SocketControlBlock(::socket(PF_INET, SOCK_STREAM, 0)))
+Socket::Socket(int socketFd) : mControlBlock(new SocketControlBlock(socketFd))
 {
-	if (mControlBlock->getSocket() == -1)
+	if (mControlBlock->getSocket() < 0)
 	{
 		delete mControlBlock;
 		throw std::runtime_error("Failed to initialize socket. socket().");
