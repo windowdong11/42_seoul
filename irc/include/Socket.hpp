@@ -1,5 +1,6 @@
 #ifndef SOCKET_HPP
 #define SOCKET_HPP
+#include <type_traits>
 
 /* include headers */
 #include "SocketControlBlock.hpp"
@@ -25,7 +26,13 @@ public:
 	int accept();
 	int read(char *buffer, int size);
 	int write(const char *buffer, int size);
+<<<<<<< Updated upstream
 	bool operator==(uintptr_t fd) const;
+=======
+	bool operator==(uintptr_t fd) {
+		return ((uintptr_t)mControlBlock->getSocket() == fd);
+	}
+>>>>>>> Stashed changes
 
 private:
 	SocketControlBlock *mControlBlock;

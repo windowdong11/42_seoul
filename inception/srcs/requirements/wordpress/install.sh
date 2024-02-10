@@ -12,4 +12,6 @@ else
 	wp user create ${USER_NAME} ${USER_EMAIL} --user_pass=${USER_PASSWORD}
 fi
 
+
+echo "[inception] Starting php-fpm7.4"
 exec php-fpm7.4 -F

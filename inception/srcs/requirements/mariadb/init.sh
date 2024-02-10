@@ -5,10 +5,10 @@ chown -R mysql:mysql /run/mysqld
 chown -R mysql:mysql /var/lib/mysql
 
 
-if [ -d "/var/lib/mysql/wordpress" ]; then
-  echo "/var/lib/mysql/wordpress directory exists";
+if [ -d "/var/lib/mysql/$MYSQL_DATABASE" ]; then
+  echo "/var/lib/mysql/$MYSQL_DATABASE directory exists";
 else
-  echo "/var/lib/mysql/wordpress directory doesnt exist";
+  echo "/var/lib/mysql/$MYSQL_DATABASE directory doesnt exist";
 
 
   # service mariadb start;
@@ -27,5 +27,5 @@ else
 fi
 
 
-echo "running mariadbd";
+echo "[inception] Starting mariadbd";
 exec mysqld --user=root

@@ -2,8 +2,12 @@
 #define USER_HPP
 
 /* include headers */
-#include <string>
 #include "Socket.hpp"
+#include <string>
+<<<<<<< Updated upstream
+#include "Socket.hpp"
+=======
+>>>>>>> Stashed changes
 
 class User
 {
@@ -16,7 +20,11 @@ public:
 
 public:
 	User();
+<<<<<<< Updated upstream
 	User(int fd);
+=======
+	User(Socket &socket);
+>>>>>>> Stashed changes
 	User(const User &other);
 	User &operator=(const User &other);
 	~User();
@@ -30,6 +38,11 @@ public:
 	void setPassword(std::string password);
 	void setRole(User::eRole role);
 
+<<<<<<< Updated upstream
+=======
+	int getSocketFd();
+
+>>>>>>> Stashed changes
 private:
 	std::string mUsername;
 	std::string mNickname;

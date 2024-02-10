@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   mariadb:
@@ -12,8 +12,14 @@ services:
     networks:
       - inception-bridge-net
     healthcheck:
-      test: ["CMD", "sh", "-c", "mysqladmin ping && mysqladmin variables | grep skip_networking | grep -q OFF"]
-      interval: 5s
+      test:
+        [
+          "CMD",
+          "sh",
+          "-c",
+          "mysqladmin ping && mysqladmin variables | grep skip_networking | grep -q OFF",
+        ]
+      interval: 3s
       timeout: 3s
       retries: 5
 
@@ -27,6 +33,9 @@ services:
       - wordpress
     networks:
       - inception-bridge-net
+    environment:
+      CERT_PEM: ${CERT_PEM}
+      KEY_PEM: ${KEY_PEM}
 
   wordpress:
     build: ./requirements/wordpress
@@ -52,7 +61,12 @@ services:
 
 volumes:
   mariadb_data:
+  # write volume setting to mount /Users/yourname/wordpress_files to /var/www/html
   wordpress_files:
+    driver_opts:
+      type: none
+      device: /Users/yourname/wordpress_files
+      o: bind
 
 networks:
   inception-bridge-net:

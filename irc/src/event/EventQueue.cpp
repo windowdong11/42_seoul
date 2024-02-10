@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include "EventQueue.hpp"
 #include <unistd.h>
 
@@ -43,6 +44,7 @@ EventQueue::~EventQueue()
 
 void EventQueue::dispatchEvent()
 {
+<<<<<<< Updated upstream
 	struct kevent event_list[10];
 	int eventCnt = getEvents(event_list, 10);
 	for (int i = 0; i < eventCnt; ++i)
@@ -56,6 +58,21 @@ void EventQueue::dispatchEvent()
 			// notifyObservers(q_write, event_list[i]);
 		}
 	}
+=======
+	// struct kevent event_list[10];
+	// int eventCnt = getEvents(event_list, 10);
+	// for (int i = 0; i < eventCnt; ++i)
+	// {
+	// 	if (event_list[i].filter == EVFILT_READ)
+	// 	{
+	// 		notifyObservers(q_read, event_list[i]);
+	// 	}
+	// 	else if (event_list[i].filter == EVFILT_WRITE)
+	// 	{
+	// 		notifyObservers(q_write, event_list[i]);
+	// 	}
+	// }
+>>>>>>> Stashed changes
 }
 
 int EventQueue::getEvents(struct kevent *event_buf, int size)

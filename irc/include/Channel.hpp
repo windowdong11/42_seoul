@@ -14,8 +14,8 @@ public:
 	enum eChannelMode
 	{
 		CHANNEL_MODE_NORMAL = 0,
-		CHANNEL_MODE_SECRET = 1,
-		CHANNEL_MODE_INVITE = 2,
+		CHANNEL_MODE_SECRET = 1 << 0,
+		CHANNEL_MODE_INVITE = 1 << 1,
 	};
 
 public:
@@ -25,20 +25,22 @@ public:
 	Channel &operator=(const Channel &other);
 	~Channel();
 	void setChannelName(std::string channelName);
-	void setOperator(User *user);
-	void addUser(User *user);
-	void removeUser(const std::string& nickname);
-	void changeMode(Channel::eChannelMode mode);
-	
+	void addOperator(User *user);
+	bool removeOperator(User *user);
+
 	std::string getChannelName() const;
-	User *findUser(const std::string& nickname) const;
-	User *getOperator() const;
+	void addUser(User *user);
+	bool removeUser(User *user);
+	User *findUser(const User *const user) const;
+	std::vector<User *> getOperators() const;
+	void addMode(Channel::eChannelMode mode);
+	void removeMode(Channel::eChannelMode mode);
 	Channel::eChannelMode getMode() const;
 
 private:
 	std::string mChannelName;
-	std::vector<User*> mUsers;
-	User *mOperator;
+	std::vector<User *> mUsers;
+	std::vector<User *> mOperators;
 	Channel::eChannelMode mMode;
 };
 
