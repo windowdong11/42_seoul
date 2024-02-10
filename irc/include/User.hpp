@@ -5,7 +5,10 @@
 #include "Socket.hpp"
 #include <string>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 #include "Socket.hpp"
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 
@@ -21,7 +24,11 @@ public:
 public:
 	User();
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	User(int fd);
+=======
+	User(Socket &socket);
+>>>>>>> Stashed changes
 =======
 	User(Socket &socket);
 >>>>>>> Stashed changes
@@ -39,7 +46,10 @@ public:
 	void setRole(User::eRole role);
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 	int getSocketFd();
 
 >>>>>>> Stashed changes

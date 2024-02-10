@@ -45,6 +45,7 @@ EventQueue::~EventQueue()
 void EventQueue::dispatchEvent()
 {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	struct kevent event_list[10];
 	int eventCnt = getEvents(event_list, 10);
 	for (int i = 0; i < eventCnt; ++i)
@@ -59,6 +60,8 @@ void EventQueue::dispatchEvent()
 		}
 	}
 =======
+=======
+>>>>>>> Stashed changes
 	// struct kevent event_list[10];
 	// int eventCnt = getEvents(event_list, 10);
 	// for (int i = 0; i < eventCnt; ++i)
@@ -72,6 +75,9 @@ void EventQueue::dispatchEvent()
 	// 		notifyObservers(q_write, event_list[i]);
 	// 	}
 	// }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }
 

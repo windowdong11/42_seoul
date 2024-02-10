@@ -19,7 +19,7 @@ services:
           "-c",
           "mysqladmin ping && mysqladmin variables | grep skip_networking | grep -q OFF",
         ]
-      interval: 3s
+      interval: 2s
       timeout: 3s
       retries: 5
 
@@ -61,11 +61,15 @@ services:
 
 volumes:
   mariadb_data:
-  # write volume setting to mount /Users/yourname/wordpress_files to /var/www/html
+    driver_opts:
+      type: none
+      device: /Users/dowon/data/mariadb
+      o: bind
+  # write volume setting to mount /Users/dowon/wordpress_files to /var/www/html
   wordpress_files:
     driver_opts:
       type: none
-      device: /Users/yourname/wordpress_files
+      device: /Users/dowon/data/wordpress
       o: bind
 
 networks:
