@@ -1,7 +1,7 @@
 cc = c++
 # DEBUG=-g
 cflags = -Wall -Wextra -Werror -std=c++98 $(CPPFLAGS) $(DEBUG)
-NAME = server
+NAME = ft_irc
 SRCS = server.cpp
 OBJS = $(SRCS:.cpp=.o)
 
