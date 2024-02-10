@@ -1,6 +1,7 @@
 #include "User.hpp"
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 User::User() : mRole(ROLE_NORMAL), mSocket(-1)
 {
 }
@@ -10,12 +11,19 @@ User::User(int fd)
 =======
 User::User() : mRole(ROLE_NORMAL)
 >>>>>>> Stashed changes
+=======
+User::User() : mRole(ROLE_NORMAL)
+>>>>>>> Stashed changes
 {
 }
 
 User::User(const User &other)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		: mUsername(other.mUsername), mNickname(other.mNickname), mPassword(other.mPassword), mRole(other.mRole), mSocket(other.mSocket)
+=======
+		: mUsername(other.mUsername), mNickname(other.mNickname), mPassword(other.mPassword), mRole(other.mRole)
+>>>>>>> Stashed changes
 =======
 		: mUsername(other.mUsername), mNickname(other.mNickname), mPassword(other.mPassword), mRole(other.mRole)
 >>>>>>> Stashed changes
@@ -40,6 +48,7 @@ User::~User()
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 std::string User::getUsername() const
 {
 	return mUsername;
@@ -61,11 +70,26 @@ std::string User::getUsername() const
 	return mUsername;
 }
 
+=======
+User::User(Socket &socket)
+	: mSocket(socket)
+{
+}
+
+std::string User::getUsername() const
+{
+	return mUsername;
+}
+
+>>>>>>> Stashed changes
 std::string User::getNickname() const
 {
 	return mNickname;
 }
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 std::string User::getPassword() const
 {
@@ -78,11 +102,14 @@ User::eRole User::getRole() const
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 Socket &User::getSocket()
 {
 	return mSocket;
 }
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 void User::setUsername(std::string username)

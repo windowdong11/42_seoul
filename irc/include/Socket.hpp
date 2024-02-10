@@ -27,7 +27,13 @@ public:
 	int read(char *buffer, int size);
 	int write(const char *buffer, int size);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	bool operator==(uintptr_t fd) const;
+=======
+	bool operator==(uintptr_t fd) {
+		return ((uintptr_t)mControlBlock->getSocket() == fd);
+	}
+>>>>>>> Stashed changes
 =======
 	bool operator==(uintptr_t fd) {
 		return ((uintptr_t)mControlBlock->getSocket() == fd);

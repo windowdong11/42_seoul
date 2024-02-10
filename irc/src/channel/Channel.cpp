@@ -2,6 +2,7 @@
 #include "Channel.hpp"
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 Channel::Channel()
 		: mOperator(NULL), mMode(CHANNEL_MODE_NORMAL)
 {
@@ -122,6 +123,44 @@ void Channel::Channel::addUser(User *user)
 	mUsers.push_back(user);
 }
 
+=======
+Channel::Channel::Channel(const Channel &other)
+{
+}
+
+Channel &Channel::operator=(const Channel &other)
+{
+}
+
+Channel::Channel::~Channel()
+{
+}
+
+void Channel::Channel::setChannelName(std::string channelName)
+{
+}
+
+void Channel::Channel::addOperator(User *user)
+{
+	mOperators.push_back(user);
+}
+
+bool Channel::removeOperator(User *user)
+{
+	std::vector<User *>::const_iterator opIter = std::find(mOperators.begin(), mOperators.end(), user);
+	if (opIter != mOperators.end())
+	{
+		mOperators.erase(opIter);
+	}
+	return opIter != mOperators.end();
+}
+
+void Channel::Channel::addUser(User *user)
+{
+	mUsers.push_back(user);
+}
+
+>>>>>>> Stashed changes
 bool Channel::removeUser(User *user)
 {
 	std::vector<User *>::const_iterator userIter = std::find(mUsers.begin(), mUsers.end(), user);
@@ -160,6 +199,9 @@ std::vector<User *> Channel::getOperators() const
 	return mOperators;
 }
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 Channel::eChannelMode Channel::getMode() const
 {

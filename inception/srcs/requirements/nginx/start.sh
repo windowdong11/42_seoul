@@ -1,5 +1,7 @@
 #!/bin/bash
 
+mkdir -p /etc/ssl/certs
+mkdir -p /etc/ssl/private
 echo -e "$CERT_PEM" > /etc/ssl/certs/cert.pem && chmod 644 /etc/ssl/certs/cert.pem
 echo -e "$KEY_PEM" > /etc/ssl/private/key.pem && chmod 600 /etc/ssl/private/key.pem
 

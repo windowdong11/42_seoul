@@ -14,6 +14,7 @@
 #include "Socket.hpp"
 #include "EventQueue.hpp"
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 #include "User.hpp"
 #include "Channel.hpp"
 
@@ -77,6 +78,8 @@ private:
     std::vector<Channel> mChannelList;
 };
 =======
+=======
+>>>>>>> Stashed changes
 #include "Hooks.hpp"
 #include "User.hpp"
 #include "Channel.hpp"
@@ -213,6 +216,9 @@ void	Message::ClearData(void)
 	mMessage.clear();
 	mRawMessage.clear();
 }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 int main()
@@ -236,16 +242,22 @@ int main()
     /* init kqueue */
     EventQueue kq;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     std::map<int, string> clients;      // map for client socket:data
     // std::vector<User> userRepository; // vector for client socket
     // std::vector<User> userRepository;    // vector for user repository
     UserRepository userRepository;
 =======
+=======
+>>>>>>> Stashed changes
     std::map<int, std::string> read_buffer; // map for client socket:data
     std::map<int, std::string> write_buffer;
     std::vector<Socket> client_sockets;     // vector for client socket
     std::vector<User> users;
     std::vector<Channel> channels;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
     /* add event for server socket */
@@ -279,7 +291,11 @@ int main()
                 if (curr_event.ident == (uintptr_t)server_socket.getSocketFd())
                 {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                     cerr << "server socket error" << endl;
+=======
+                    std::cout << "server socket error" << std::endl;
+>>>>>>> Stashed changes
 =======
                     std::cout << "server socket error" << std::endl;
 >>>>>>> Stashed changes
@@ -288,8 +304,11 @@ int main()
                 else
                 {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                     cerr << "client socket error" << endl;
 =======
+=======
+>>>>>>> Stashed changes
                     std::cout << "client socket error" << std::endl;
                     std::vector<Socket>::iterator cur_client = std::find(client_sockets.begin(), client_sockets.end(), curr_event.ident);
                     if (cur_client != client_sockets.end())
@@ -306,14 +325,21 @@ int main()
                 {
                     cur_client->close();
                     client_sockets.erase(cur_client);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                 }
             }
             else if (curr_event.filter == EVFILT_READ)
             {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 // check if ev_eof is set
                 if (curr_event.flags & EV_EOF)
+=======
+                if (curr_event.ident == (uintptr_t)server_socket.getSocketFd())
+>>>>>>> Stashed changes
 =======
                 if (curr_event.ident == (uintptr_t)server_socket.getSocketFd())
 >>>>>>> Stashed changes
@@ -340,6 +366,7 @@ int main()
                     if ((client_socket = server_socket.accept()) == -1)
                     {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                         cerr << "accept error!" << endl;
                         return (1);
                     }
@@ -351,10 +378,18 @@ int main()
                         std::cout << "accept error!" << std::endl;
                         return 1;
                     }
+=======
+                        std::cout << "accept error!" << std::endl;
+                        return 1;
+                    }
+>>>>>>> Stashed changes
                     Socket newSocket(client_socket);
                     client_sockets.push_back(newSocket);
                     users.push_back(newSocket);
                     fcntl(client_socket, F_SETFL, O_NONBLOCK);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                     /* add event for client socket - add read && write event */
                     kq.addReadEvent(client_socket);
@@ -371,9 +406,12 @@ int main()
                     {
                         if (n < 0)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                             cerr << "client read error!" << endl;
                         userRepository.removeUserBySocket(curr_event.ident);
 =======
+=======
+>>>>>>> Stashed changes
                             std::cout << "client read error!" << std::endl;
                         std::vector<Socket>::iterator cur_client = std::find(client_sockets.begin(), client_sockets.end(), curr_event.ident);
                         if (cur_client != client_sockets.end())
@@ -381,11 +419,15 @@ int main()
                             cur_client->close();
                             client_sockets.erase(cur_client);
                         }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                     }
                     else
                     {
                         buf[n] = '\0';
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
                         if (std::string("end") == buf)
                         {
@@ -412,6 +454,8 @@ int main()
                         }
                         cout << "received data from " << curr_event.ident << ": " << clients[curr_event.ident] << endl;
 =======
+=======
+>>>>>>> Stashed changes
                         read_buffer[curr_event.ident] += buf;
                         std::cout << "received data from " << curr_event.ident << ": " << read_buffer[curr_event.ident] << std::endl;
                         // TODO : parse message
@@ -460,6 +504,9 @@ int main()
                             continue;
                         } */
                         // TODO 2 : handle message
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                     }
                 }
@@ -470,6 +517,7 @@ int main()
                 std::map<int, std::string>::iterator it = read_buffer.find(curr_event.ident);
                 if (it != read_buffer.end())
                 {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
                     int n;
                     if ((n = write(curr_event.ident, clients[curr_event.ident].c_str(), clients[curr_event.ident].length() + 1) == -1))
@@ -484,6 +532,8 @@ int main()
                         {
                             kq.removeWriteEvent(curr_event.ident);
 =======
+=======
+>>>>>>> Stashed changes
                     if (read_buffer[curr_event.ident] != "")
                     {
                         int n;
@@ -497,6 +547,9 @@ int main()
                         else
                         {
                             read_buffer[curr_event.ident].clear();
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                         }
                     }

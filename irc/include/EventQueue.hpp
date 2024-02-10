@@ -6,7 +6,10 @@
 #include <sys/event.h>
 #include <exception>
 #include <vector>
+<<<<<<< Updated upstream
 // #include "Subject.hpp"
+=======
+>>>>>>> Stashed changes
 
 
 
