@@ -86,11 +86,19 @@ public:
     }
 };
 
+class Event
+{
+};
+
 class EventQueue
 {
 private:
     int mKq;
     std::vector<struct kevent> mChangeList;
+    Event mapKeventToEvent(struct kevent &kevent)
+    {
+        return Event();
+    }
 
 public:
     class InitFailedException : public std::exception
@@ -120,23 +128,18 @@ public:
         EV_SET(&new_event, target, EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, NULL);
         mChangeList.push_back(new_event);
     }
-    int getEvents(struct kevent *event_buf, int size)
+    std::vector<Event> getEvents(int size)
     {
-        return kevent(mKq, &mChangeList[0], mChangeList.size(), event_buf, size, NULL);
+        // return kevent(mKq, &mChangeList[0], mChangeList.size(), event_buf, size, NULL);
     }
 };
 
 // on('event', doSomething)
 // -> doSomething에서 서버의 상태를 바꿔야한다면?
 
-class IEvent
-{
-};
-
 class IEventHandler
 {
 private:
-    EventQueue mEventQueue;
 
 public:
     virtual bool handler(IEvent &event) const = 0;
@@ -147,6 +150,7 @@ class Server
 private:
     EventQueue mQ;
     ServerSocket sock;
+    // EventTable eventHandlerTable
 public:
     Server()
         : sock(3000)
@@ -155,7 +159,7 @@ public:
     }
     void addEventListener(IEvent &event, IEventHandler &handler)
     {
-        handler.handler(event);
+        // eventHandlerTable[event].append(handler);
     }
     void run()
     {
@@ -165,6 +169,7 @@ public:
             int eventCount = mQ.getEvents(event_buffer, 10);
             for (int i = 0; i < eventCount; ++i)
             {
+                struct kevent &event = event_buffer[i];
                 // handleEvent(event_buffer[i]);
             }
         }
