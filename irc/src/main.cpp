@@ -5,20 +5,80 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include 
 
 #include <iostream>
 #include <map>
 #include <vector>
 
-#include "server/socket/Socket.hpp"
-#include "server/event/EventQueue.hpp"
+#include "Socket.hpp"
+#include "EventQueue.hpp"
+#include "User.hpp"
+#include "Channel.hpp"
+
+using namespace std;
+
+class UserRepository
+{
+public:
+    UserRepository(){};
+    ~UserRepository(){};
+    void addUser(User user)
+    {
+        mUserList.push_back(user);
+    }
+    bool removeUserBySocket(int socket)
+    {
+        for (std::vector<User>::iterator it = mUserList.begin(); it != mUserList.end(); ++it)
+        {
+            if (it->getSocket().getSocketFd() == socket)
+            {
+                mUserList.erase(it);
+                return true;
+            }
+        }
+        return false;
+    }
+    std::vector<User>& getUserList()
+    {
+        return mUserList;
+    }
+private:
+    std::vector<User> mUserList;
+};
+
+class ChannelRepository
+{
+public:
+    ChannelRepository(){};
+    ~ChannelRepository(){};
+    void addChannel(Channel channel)
+    {
+        mChannelList.push_back(channel);
+    }
+    bool removeChannelBySocket(int socket)
+    {
+        for (std::vector<Channel>::iterator it = mChannelList.begin(); it != mChannelList.end(); ++it)
+        {
+            if (it->getSocket().getSocketFd() == socket)
+            {
+                mChannelList.erase(it);
+                return true;
+            }
+        }
+        return false;
+    }
+    std::vector<Channel>& getChannelList()
+    {
+        return mChannelList;
+    }
+private:
+    std::vector<Channel> mChannelList;
+};
 
 int main()
 {
     /* init server socket and listen */
     Socket server_socket(socket(PF_INET, SOCK_STREAM, 0));
-    struct sockaddr_in server_addr;
 
     if (server_socket.bind(3000) == -1)
     {
@@ -36,7 +96,9 @@ int main()
     /* init kqueue */
     EventQueue kq;
     std::map<int, string> clients;      // map for client socket:data
-    std::vector<Socket> client_sockets; // vector for client socket
+    // std::vector<User> userRepository; // vector for client socket
+    // std::vector<User> userRepository;    // vector for user repository
+    UserRepository userRepository;
 
     /* add event for server socket */
     kq.addReadEvent(server_socket.getSocketFd());
@@ -48,12 +110,8 @@ int main()
         int eventCnt;
         struct kevent eventList[8];
         eventCnt = kq.getEvents(eventList, 8);
-        if (eventCnt == -1)
-        {
-            cerr << "kevent error!" << endl;
-            return (1);
-        }
 
+        std::cout << eventCnt << " events fetched" << std::endl;
         for (int i = 0; i < eventCnt; ++i)
         {
             struct kevent &curr_event = eventList[i];
@@ -61,25 +119,48 @@ int main()
             /* check error event return */
             if (curr_event.flags & EV_ERROR)
             {
-                if (curr_event.ident == (uintptr_t)server_socket)
-                    else
-                    {
-                        cerr << "client socket error" << endl;
-                        disconnect_client(curr_event.ident, clients);
-                    }
+                if (curr_event.ident == (uintptr_t)server_socket.getSocketFd())
+                {
+                    cerr << "server socket error" << endl;
+                    return (1);
+                }
+                else
+                {
+                    cerr << "client socket error" << endl;
+                }
             }
             else if (curr_event.filter == EVFILT_READ)
             {
-                if (curr_event.ident == (uintptr_t)server_socket)
+                // check if ev_eof is set
+                if (curr_event.flags & EV_EOF)
                 {
+                    std::cout << "EOF" << std::endl;
+                    if (userRepository.removeUserBySocket(curr_event.ident))
+                    {
+                        std::cout << "erase" << std::endl;
+                        clients.erase(curr_event.ident);
+                    }
+                    else
+                    {
+                        std::cout << "socket not found" << std::endl;
+                        return (1);
+                    }
+                }
+                std::cout << "read event : " << curr_event.ident << std::endl;
+                if (curr_event.ident == (uintptr_t)server_socket.getSocketFd())
+                {
+                    std::cout << "server" << std::endl;
                     /* accept new client */
                     int client_socket;
 
                     if ((client_socket = server_socket.accept()) == -1)
                     {
-                        client_sockets.push_back(Socket(client_socket));
-                        fcntl(client_socket, F_SETFL, O_NONBLOCK);
+                        cerr << "accept error!" << endl;
+                        return (1);
                     }
+                    std::cout << "accept new client: " << client_socket << std::endl;
+                    userRepository.addUser(User(client_socket));
+                    fcntl(client_socket, F_SETFL, O_NONBLOCK);
 
                     /* add event for client socket - add read && write event */
                     kq.addReadEvent(client_socket);
@@ -87,6 +168,7 @@ int main()
                 }
                 else if (clients.find(curr_event.ident) != clients.end())
                 {
+                    std::cout << "client" << std::endl;
                     /* read data from client */
                     char buf[1024];
                     int n = read(curr_event.ident, buf, sizeof(buf));
@@ -95,14 +177,34 @@ int main()
                     {
                         if (n < 0)
                             cerr << "client read error!" << endl;
-                        std::vector::iterator it = std::find(client_sockets.begin(), client_sockets.end(), curr_event.ident);
-                        if (it != client_sockets.end())
-                            client_sockets.erase(it);
+                        userRepository.removeUserBySocket(curr_event.ident);
                     }
                     else
                     {
                         buf[n] = '\0';
-                        clients[curr_event.ident] += buf;
+                        if (std::string("end") == buf)
+                        {
+                            std::cout << "end!!" << std::endl;
+
+                            if (userRepository.removeUserBySocket(curr_event.ident))
+                            {
+                                std::cout << "erase" << std::endl;
+                            }
+                            else
+                            {
+                                std::cout << "socket not found" << std::endl;
+                                return (1);
+                            }
+                            clients.erase(curr_event.ident);
+                        }
+                        else if (std::string("send") == buf)
+                        {
+                            kq.addWriteEvent(curr_event.ident);
+                        }
+                        else
+                        {
+                            clients[curr_event.ident] += buf;
+                        }
                         cout << "received data from " << curr_event.ident << ": " << clients[curr_event.ident] << endl;
                     }
                 }
@@ -113,25 +215,29 @@ int main()
                 map<int, string>::iterator it = clients.find(curr_event.ident);
                 if (it != clients.end())
                 {
-                    if (clients[curr_event.ident] != "")
+                    int n;
+                    if ((n = write(curr_event.ident, clients[curr_event.ident].c_str(), clients[curr_event.ident].length() + 1) == -1))
                     {
-                        int n;
-                        if ((n = write(curr_event.ident, clients[curr_event.ident].c_str(), clients[curr_event.ident].size()) == -1))
+                        cerr << "client write error!" << endl;
+                        userRepository.removeUserBySocket(curr_event.ident);
+                    }
+                    else
+                    {
+                        clients[curr_event.ident].erase(n);
+                        if (clients[curr_event.ident].empty())
                         {
-                            cerr << "client write error!" << endl;
-                            std::vector::iterator it = std::find(client_sockets.begin(), client_sockets.end(), curr_event.ident);
-                            if (it != client_sockets.end())
-                                client_sockets.erase(it);
-                        }
-                        else
-                        {
-                            clients[curr_event.ident].clear();
-                            // disconnect_client(curr_event->ident, clients);
+                            kq.removeWriteEvent(curr_event.ident);
                         }
                     }
                 }
             }
         }
+        std::cout << "> user list : " << userRepository.getUserList().size() << std::endl;
+        for (std::vector<User>::iterator it = userRepository.getUserList().begin(); it != userRepository.getUserList().end(); ++it)
+        {
+            std::cout << "user : " << it->getSocket().getSocketFd() << std::endl;
+        }
+        std::cout << std::endl;
     }
     return (0);
 }
