@@ -6,11 +6,24 @@
 class ScalarConverter
 {
 private:
-public:
+  enum eType
+	{
+		NONE,
+		CHAR,
+		INT,
+		FLOAT,
+		DOUBLE,
+	};
 	ScalarConverter();
 	ScalarConverter(const ScalarConverter& rhs);
 	ScalarConverter& operator=(const ScalarConverter& rhs);
-	virtual ~ScalarConverter() = 0;
+	~ScalarConverter();
+	static eType detectType(std::string str);
+	static char toChar(std::string str);
+	static int toInt(std::string str);
+	static float toFloat(std::string str);
+	static double toDouble(std::string str);
+public:
 	static void convert(std::string str);
 };
 
