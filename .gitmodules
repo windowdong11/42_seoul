@@ -4,3 +4,6 @@
 [submodule "minirt"]
 	path = minirt
 	url = git@github.com:BeomJinNa/miniRT.git
+[submodule "ft_irc"]
+	path = ft_irc
+	url = https://github.com/beomjinna/ft_irc

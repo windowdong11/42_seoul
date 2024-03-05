@@ -3,6 +3,7 @@
 
 /* include headers */
 #include "SocketControlBlock.hpp"
+#include <unistd.h>
 class SocketControlBlock;
 
 class Socket
@@ -24,6 +25,7 @@ public:
 	int accept();
 	int read(char *buffer, int size);
 	int write(const char *buffer, int size);
+	bool operator==(uintptr_t fd) const;
 
 private:
 	SocketControlBlock *mControlBlock;

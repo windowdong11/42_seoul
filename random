@@ -1,1 +1,0 @@
-seq 500 | sort -R | xargs | pbcopy

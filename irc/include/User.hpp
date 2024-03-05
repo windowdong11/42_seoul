@@ -3,7 +3,7 @@
 
 /* include headers */
 #include <string>
-#include "../socket/Socket.hpp"
+#include "Socket.hpp"
 
 class User
 {
@@ -16,6 +16,7 @@ public:
 
 public:
 	User();
+	User(int fd);
 	User(const User &other);
 	User &operator=(const User &other);
 	~User();
@@ -23,19 +24,18 @@ public:
 	std::string getNickname() const;
 	std::string getPassword() const;
 	User::eRole getRole() const;
+	Socket &getSocket();
 	void setUsername(std::string username);
 	void setNickname(std::string nickname);
 	void setPassword(std::string password);
 	void setRole(User::eRole role);
-
-	void setSocket(Socket *socket);
 
 private:
 	std::string mUsername;
 	std::string mNickname;
 	std::string mPassword;
 	User::eRole mRole;
-	Socket *mSocket;
+	Socket mSocket;
 };
 
 #endif

@@ -20,6 +20,7 @@ public:
 
 public:
 	Channel();
+	Channel(User *op, std::string channelName);
 	Channel(const Channel &other);
 	Channel &operator=(const Channel &other);
 	~Channel();

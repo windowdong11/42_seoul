@@ -15,7 +15,7 @@ private:
 	/* DO NOT CALL THIS */
 	SocketControlBlock(const SocketControlBlock &rhs) { (void)rhs; };
 	/* DO NOT CALL THIS */
-	SocketControlBlock &operator=(const SocketControlBlock &rhs) { (void)rhs; };
+	SocketControlBlock &operator=(const SocketControlBlock &rhs) { (void)rhs; return *this;};
 
 public:
 	~SocketControlBlock(){};

@@ -1,4 +1,5 @@
 #include "EventQueue.hpp"
+#include <unistd.h>
 
 EventQueue::EventQueue()
 		: mKq(kqueue())
@@ -48,11 +49,11 @@ void EventQueue::dispatchEvent()
 	{
 		if (event_list[i].filter == EVFILT_READ)
 		{
-			notifyObservers(q_read, event_list[i]);
+			// notifyObservers(q_read, event_list[i]);
 		}
 		else if (event_list[i].filter == EVFILT_WRITE)
 		{
-			notifyObservers(q_write, event_list[i]);
+			// notifyObservers(q_write, event_list[i]);
 		}
 	}
 }
@@ -61,5 +62,7 @@ int EventQueue::getEvents(struct kevent *event_buf, int size)
 {
 	int result = kevent(mKq, &mChangeList[0], mChangeList.size(), event_buf, size, NULL);
 	mChangeList.clear();
+	if (result == -1)
+		throw std::runtime_error("Failed to get events.");
 	return result;
 }

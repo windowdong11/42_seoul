@@ -2,17 +2,19 @@ cc = c++
 # DEBUG=-g
 cflags = -Wall -Wextra -Werror -std=c++98 $(CPPFLAGS) $(DEBUG)
 NAME = ft_irc
-SRCS = server.cpp
+SRC_DIR = src
+SRCS = $(addprefix $(SRC_DIR)/, channel/Channel.cpp event/EventQueue.cpp main.cpp socket/Socket.cpp user/User.cpp)
 OBJS = $(SRCS:.cpp=.o)
+INCLUDES = -Iinclude
 
 .PHONY: all
 all: $(NAME)
 
 %.o: %.cpp
-	$(cc) $(cflags) -c $^ -o $@
+	$(cc) $(cflags) -c $^ $(INCLUDES) -o $@
 
 $(NAME): $(OBJS)
-	$(cc) $(cflags) $^ -o $@
+	$(cc) $(cflags) $^ $(INCLUDES) -o $@
 
 
 .PHONY: clean
