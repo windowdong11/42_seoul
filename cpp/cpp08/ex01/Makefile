@@ -1,6 +1,6 @@
 cc = c++
 OPTIONS = -Wall -Wextra -Werror -std=c++98 -MMD -MP $(CPPFLAGS)
-NAME = easyfind
+NAME = span
 SRCS = Span.cpp main.cpp
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(OBJS:.o=.d)

@@ -12,7 +12,7 @@ int main()
 	std::cout << sp.shortestSpan() << std::endl;
 	std::cout << sp.longestSpan() << std::endl;
 	std::cout << ">> custom test set << \n";
-	Span span(10);
+	Span span(10000);
 	// span.addNumber(10);
 	// span.addNumber(1);
 	try {
@@ -25,7 +25,7 @@ int main()
 	} catch (const std::exception& e) {
 		std::cout << "[shortestSpan] caught exception : " << e.what() << '\n';
 	}
-	span.fillWithRandomNumbers(100);
+	span.fillWithRandomNumbers(1000000);
 	try {
 		span.addNumber(1);
 	} catch (const std::exception& e) {
