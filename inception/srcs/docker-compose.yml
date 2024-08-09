@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  mariadb:
+    build: ./requirements/mariadb
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - inception-bridge-net
+    healthcheck:
+      test: ["CMD", "sh", "-c", "mysqladmin ping && mysqladmin variables | grep skip_networking | grep -q OFF"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  nginx:
+    build: ./requirements/nginx
+    ports:
+      - "8100:80"
+    volumes:
+      - wordpress_files:/var/www/html
+    depends_on:
+      - wordpress
+    networks:
+      - inception-bridge-net
+
+  wordpress:
+    build: ./requirements/wordpress
+    volumes:
+      - wordpress_files:/var/www/html
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    networks:
+      - inception-bridge-net
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_HOST: mariadb
+      WP_DOMAIN: ${WP_DOMAIN}
+      WP_USER: ${WP_USER}
+      WP_PASSWORD: ${WP_PASSWORD}
+      WP_EMAIL: ${WP_EMAIL}
+
+volumes:
+  mariadb_data:
+  wordpress_files:
+
+networks:
+  inception-bridge-net:
+    driver: bridge
