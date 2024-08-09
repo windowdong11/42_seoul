@@ -20,7 +20,7 @@ services:
   nginx:
     build: ./requirements/nginx
     ports:
-      - "8100:80"
+      - "80:80"
     volumes:
       - wordpress_files:/var/www/html
     depends_on:
