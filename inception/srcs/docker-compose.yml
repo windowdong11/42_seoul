@@ -46,6 +46,9 @@ services:
       WP_USER: ${WP_USER}
       WP_PASSWORD: ${WP_PASSWORD}
       WP_EMAIL: ${WP_EMAIL}
+      USER_NAME: ${USER_NAME}
+      USER_EMAIL: ${USER_EMAIL}
+      USER_PASSWORD: ${USER_PASSWORD}
 
 volumes:
   mariadb_data:
