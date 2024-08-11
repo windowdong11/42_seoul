@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <cstring>
 #include <unistd.h>
+#include <iostream>
 
 Socket::Socket(int socketFd) : mControlBlock(new SocketControlBlock(socketFd))
 {
@@ -12,10 +13,11 @@ Socket::Socket(int socketFd) : mControlBlock(new SocketControlBlock(socketFd))
 		delete mControlBlock;
 		throw std::runtime_error("Failed to initialize socket. socket().");
 	}
+	std::cout << "Socket created with fd: " << mControlBlock->getSocket() << std::endl;
 }
 
 Socket::Socket(const Socket &other)
-		: mControlBlock(mControlBlock)
+		: mControlBlock(other.mControlBlock)
 {
 	mControlBlock->increaseRefCnt();
 }
@@ -27,6 +29,8 @@ Socket &Socket::operator=(const Socket &other)
 		mControlBlock->decreaseRefCnt();
 		if (mControlBlock->getRefCnt() == 0)
 		{
+			std::cout << "Socket removed with fd: " << mControlBlock->getSocket() << std::endl;
+			this->close();
 			delete mControlBlock;
 		}
 		mControlBlock = other.mControlBlock;
@@ -37,9 +41,11 @@ Socket &Socket::operator=(const Socket &other)
 
 Socket::~Socket()
 {
+	std::cout << "Socket removed with fd: " << mControlBlock->getSocket() << std::endl;
 	mControlBlock->decreaseRefCnt();
 	if (mControlBlock->getRefCnt() == 0)
 	{
+		this->close();
 		delete mControlBlock;
 	}
 	mControlBlock = NULL;
@@ -57,7 +63,7 @@ int Socket::bind(int port)
 
 int Socket::listen(int backlog)
 {
-	return ::listen(mControlBlock->getSocket(), 5);
+	return ::listen(mControlBlock->getSocket(), backlog);
 }
 
 void Socket::close()
@@ -89,4 +95,10 @@ int Socket::read(char *buffer, int size)
 int Socket::write(const char *buffer, int size)
 {
 	return ::write(mControlBlock->getSocket(), buffer, size);
+}
+
+bool Socket::operator==(uintptr_t fd) const
+{
+	std::cout << "Comparing " << mControlBlock->getSocket() << " with " << fd << std::endl;
+	return (uintptr_t)mControlBlock->getSocket() == fd;
 }

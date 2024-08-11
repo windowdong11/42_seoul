@@ -37,7 +37,7 @@ public:
     class SocketInitException : public std::exception
     {
     public:
-        virtual char *what() const throw()
+        virtual const char *what() const throw()
         {
             return "Failed to open socket";
         }
@@ -45,7 +45,7 @@ public:
     class BindFailedException : public std::exception
     {
     public:
-        virtual char *what() const throw()
+        virtual const char *what() const throw()
         {
             return "Failed to bind";
         }
@@ -53,7 +53,7 @@ public:
     class ListenFailedException : public std::exception
     {
     public:
-        virtual char *what() const throw()
+        virtual const char *what() const throw()
         {
             return "Failed to listen";
         }
